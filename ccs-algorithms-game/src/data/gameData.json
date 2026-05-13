@@ -7,73 +7,97 @@
   "chapters": [
     {
       "id": 1,
-      "title": "THE SERVER OUTAGE",
+      "title": "THE MATHEMATICAL FOUNDATIONS",
       "nodes": {
         "start": {
-          "text": "Anya looks at the flickering terminal. \"The response time is abysmal!\" she exclaims, nervously tapping her mechanical keyboard. \"The entire deployment is deadlocked. The pressure is suffocating.\"",
-          "speaker": "Anya",
+          "text": "Dodo is rubbing his eyes while Cassie clicks rapidly in Figma. \"D'yan na 'to pantay, Cass. If we use this grid, may 8-pixel gap sa dulo. It looks... messy. Pixel gore levels of messy.\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Implement Dijkstra's Algorithm",
-              "nextNode": "dijkstra_path",
-              "unlocksAlgorithm": "Dijkstra's Algorithm",
-              "icon": "+"
+              "label": "Continue looking for a fix",
+              "nextNode": "figma_crisis",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "figma_crisis": {
+          "text": "Cassie sighs, \"I know! We need the buttons to be perfectly square, zero leftover space in this 1920x1080 frame. Minimalist aesthetic nga 'di ba?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Suggest finding the GCD",
+              "nextNode": "gcd_logic",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "gcd_logic": {
+          "text": "Dodo looks at the screen. \"So we need the largest number that divides both 1920 and 1080? A Greatest Common Divisor? How do we find it fast? My brain is at 2% battery.\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Use Euclid's Algorithm (Remainders)",
+              "nextNode": "scene1_complete",
+              "unlocksAlgorithm": "Euclid's Algorithm",
+              "icon": "➗"
             },
             {
-              "label": "Check the brute-force nested loops.",
-              "nextNode": "brute_force_path",
-              "unlocksAlgorithm": null,
-              "icon": null
+              "label": "Use Consecutive Integer Check",
+              "nextNode": "scene1_complete",
+              "unlocksAlgorithm": "Consecutive Integer Check",
+              "icon": "🔢"
             },
             {
-              "label": "Optimize with a Hash Map",
-              "nextNode": "hashmap_path",
-              "unlocksAlgorithm": "Hash Map",
-              "icon": "-"
+              "label": "Use Middle School Procedure (Prime Factors)",
+              "nextNode": "scene1_complete",
+              "unlocksAlgorithm": "Middle School Procedure",
+              "icon": "🌲"
             }
           ]
         },
-        "dijkstra_path": {
-          "text": "You methodically map out the shortest path to the core services. The nodes begin to stabilize as traffic is routed away from the congestion. Anya sighs in relief.\n\n\"Efficient routing saved us. But wait, what's that spike in the database logs?\"",
-          "speaker": "System",
-          "choices": [
-            {
-              "label": "Investigate the database spike.",
-              "nextNode": "end_demo",
-              "unlocksAlgorithm": null
-            }
-          ]
-        },
-        "brute_force_path": {
-          "text": "You spend hours combing through every single loop. The code is a mess, and while you find a few redundancies, the system is still sluggish. Anya looks disappointed.\n\n\"We need a more algorithmic approach, not just more eyes on the code.\"",
-          "speaker": "Anya",
-          "choices": [
-            {
-              "label": "Try to optimize with a proper algorithm.",
-              "nextNode": "start",
-              "unlocksAlgorithm": null
-            }
-          ]
-        },
-        "hashmap_path": {
-          "text": "By replacing the linear scans with O(1) lookups, the bottleneck disappears instantly. The terminal stops flickering. Anya flashes a quick, tired smile.\n\n\"Linear time was killing us. Constant time is the way to go.\"",
-          "speaker": "Anya",
-          "choices": [
-            {
-              "label": "Move on to Chapter 2: The Debugging Marathon.",
-              "nextNode": "end_demo",
-              "unlocksAlgorithm": null
-            }
-          ]
-        },
-        "end_demo": {
-          "text": "The servers are stable for now, but the day is just beginning. In the distance, you can hear the faint hum of the server room air conditioning. Another challenge awaits tomorrow.\n\n*To be continued...*",
+        "scene1_complete": {
+          "text": "The calculation works! The buttons fit perfectly into the 1920x1080 grid. \"Pixel perfect!\" Cassie exclaims. But wait, you hear a frantic knocking on the door. It's Inigo.",
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RESTART STORY",
-              "nextNode": "start",
+              "label": "Check on Inigo",
+              "nextNode": "morning_panic",
               "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "morning_panic": {
+          "text": "Inigo has one sock on and looks terrified. \"I'm dead! I have to feed the cat, wash dishes, pack my bag, and fix the bed in 15 minutes! Pero 'di ko alam anong uunahin!\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Help him analyze the situation",
+              "nextNode": "permutation_logic",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "permutation_logic": {
+          "text": "Mikaela leans against the doorframe. \"Chill, Inigo. You're frozen by decision paralysis. Do you even realize how many possible sequences you're trying to simulate?\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Calculate Factorial combinations",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": "Factorial (Recursion)",
+              "icon": "❗"
+            }
+          ]
+        },
+        "end_chapter": {
+          "text": "Inigo finally picks a path and starts moving. 24 permutations down to one successful morning. \"Recursive thinking saved my life!\" he shouts while running out.\n\n*Mathematical Foundations Chapter Completed.*",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "RETURN TO MAIN MENU",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "advanceChapter": true
             }
           ]
         }
@@ -595,6 +619,42 @@
       "useCase": "Used primarily in PageRank related tasks and system optimizations.",
       "pseudocode": "function pagerank() {\n  // Implementation pending\n  return true;\n}",
       "icon": "🗝️"
+    },
+    {
+      "id": "Euclid's Algorithm",
+      "title": "EUCLID'S ALGORITHM",
+      "category": "Mathematical Algorithms",
+      "definition": "An efficient method for computing the greatest common divisor (GCD) of two numbers by repeatedly replacing the larger number with the remainder of its division by the smaller number.",
+      "useCase": "Used in Cryptography (RSA), simplifying fractions, and optimizing UI grid layouts.",
+      "pseudocode": "function gcd(a, b):\n  while b != 0:\n    a, b = b, a % b\n  return a",
+      "icon": "➗"
+    },
+    {
+      "id": "Consecutive Integer Check",
+      "title": "CONSECUTIVE INTEGER CHECK",
+      "category": "Mathematical Algorithms",
+      "definition": "A brute-force method to find the GCD by checking all integers starting from the minimum of the two numbers downwards until a common divisor is found.",
+      "useCase": "Simple implementations where efficiency is not critical or for educational purposes.",
+      "pseudocode": "function gcd(a, b):\n  t = min(a, b)\n  while t > 0:\n    if a % t == 0 and b % t == 0: return t\n    t = t - 1",
+      "icon": "🔢"
+    },
+    {
+      "id": "Middle School Procedure",
+      "title": "MIDDLE SCHOOL PROCEDURE",
+      "category": "Mathematical Algorithms",
+      "definition": "Finding the GCD by identifying the prime factorization of both numbers and multiplying the common prime factors together.",
+      "useCase": "Manual calculations and teaching the fundamental theorem of arithmetic.",
+      "pseudocode": "function gcd(a, b):\n  factorsA = primeFactorization(a)\n  factorsB = primeFactorization(b)\n  common = intersection(factorsA, factorsB)\n  return product(common)",
+      "icon": "🌲"
+    },
+    {
+      "id": "Factorial (Recursion)",
+      "title": "FACTORIAL (RECURSION)",
+      "category": "Mathematical Algorithms",
+      "definition": "Calculating the product of all positive integers up to n using a recursive function where f(n) = n * f(n-1).",
+      "useCase": "Calculating permutations, combinations, and understanding recursion.",
+      "pseudocode": "function factorial(n):\n  if n == 0 or n == 1: return 1\n  return n * factorial(n - 1)",
+      "icon": "❗"
     }
   ]
 }
