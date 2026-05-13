@@ -333,20 +333,16 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
       if (e.key === 'ArrowLeft') handlePrev()
       if (e.key === 'ArrowRight') handleNext()
       if (e.key === 'Enter') handleBoot()
-      if (e.key === 'Escape') {
-        audio.playSelect()
-        onClose()
-      }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [handlePrev, handleNext, handleBoot, onClose])
+  }, [handlePrev, handleNext, handleBoot])
 
   const activeChapter = chaptersList[selectedIdx]
 
   return (
     <div className={`relative h-screen w-full overflow-hidden bg-[#111424] text-white flex flex-col items-center justify-center font-retro ${crtEffect ? 'crt-screen' : ''}`}>
-      {/* Background Graphic with Vignette Dimming */}
+      {/* Background Graphic with Vignette Dimming (Kept completely static to block any html body background leaks) */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111424]/90 via-[#111424]/75 to-[#1a1c2c]" />
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
@@ -354,152 +350,155 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
       />
       {crtEffect && <div className="absolute inset-0 scanlines opacity-10 pointer-events-none z-20" />}
 
-      {/* Top Header Navigation */}
-      <header className="absolute top-0 left-0 right-0 p-8 flex justify-between items-center z-10 w-full max-w-7xl mx-auto">
-        <button
-          onClick={() => { audio.playSelect(); onClose(); }}
-          onMouseEnter={() => audio.playHover()}
-          className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
-        >
-          ◀ TERMINATE_BOOT [ESC]
-        </button>
-        <div className="font-pixel text-[8px] text-retro-muted tracking-widest">
-          MODULE_LOADER_V1.2
-        </div>
-      </header>
-
-      {/* Main Title Banner */}
-      <div className="text-center z-10 mb-8 max-w-2xl px-4">
-        <h2 className="font-pixel text-[#73eff7] text-sm md:text-base tracking-widest uppercase pixel-text-outline-small animate-pulse">
-          SELECT SYSTEM COMPONENT
-        </h2>
-        <div className="h-1 w-24 bg-retro-accent mx-auto mt-2" />
-      </div>
-
-      {/* Selector Deck Carousel */}
-      <div className="z-10 w-full relative flex items-center justify-center my-6">
-        {/* Left Arrow */}
-        <div className="absolute left-8 md:left-16 z-30">
+      {/* Animated Content Layer */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center animate-retro-ease-in pointer-events-auto z-10">
+        {/* Top Header Navigation */}
+        <header className="absolute top-0 left-0 right-0 p-8 flex justify-between items-center z-10 w-full max-w-7xl mx-auto">
           <button
-            onClick={handlePrev}
+            onClick={() => { audio.playSelect(); onClose(); }}
             onMouseEnter={() => audio.playHover()}
-            className="btn-pixel-arrow"
+            className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
           >
-            ◀
+            ◀ TERMINATE_BOOT [ESC]
           </button>
+          <div className="font-pixel text-[8px] text-retro-muted tracking-widest">
+            MODULE_LOADER_V1.2
+          </div>
+        </header>
+
+        {/* Main Title Banner */}
+        <div className="text-center z-10 mb-8 max-w-2xl px-4">
+          <h2 className="font-pixel text-[#73eff7] text-sm md:text-base tracking-widest uppercase pixel-text-outline-small animate-pulse">
+            SELECT SYSTEM COMPONENT
+          </h2>
+          <div className="h-1 w-24 bg-retro-accent mx-auto mt-2" />
         </div>
 
-        {/* Viewport for horizontal slider track */}
-        <div className="w-full overflow-hidden py-12 flex items-center relative">
-          <div 
-            className="flex gap-6 md:gap-8 transition-transform duration-500 ease-out pb-4"
-            style={{ 
-              transform: `translateX(calc(50vw - (${selectedIdx} * (350px + 24px)) - (350px / 2)))`
-            }}
-          >
-            {chaptersList.map((chap, index) => {
-              const isActive = selectedIdx === index
-              return (
-                <div
-                  key={chap.id}
-                  onClick={() => {
-                    if (!isActive) {
-                      audio.playSelect()
-                      setSelectedIdx(index)
-                    }
-                  }}
-                  className={`w-[350px] shrink-0 bg-slate-950/85 border-4 rounded-sm p-6 shadow-[0_15px_35px_rgba(0,0,0,0.8)] transition-all duration-500 flex flex-col justify-between select-none relative ${
-                    isActive 
-                      ? 'border-[#f7d354] scale-100 opacity-100 cursor-default' 
-                      : 'border-[#3a495e] scale-90 opacity-35 hover:opacity-60 cursor-pointer blur-[0.5px]'
-                  }`}
-                  style={{
-                    boxShadow: isActive ? '0 0 25px rgba(247, 211, 84, 0.25)' : ''
-                  }}
-                >
-                  <div>
-                    {/* Top Badge Details */}
-                    <div className="flex justify-between items-center mb-4 pb-2 border-b-2 border-[#3a495e]/50">
-                      <span className="font-pixel text-[8px] text-retro-primary tracking-widest uppercase">
-                        SYSTEM MODULE 0{chap.id} / 06
-                      </span>
-                      {isActive && (
-                        <span className="font-pixel text-[8px] text-[#f7d354] px-2 py-0.5 bg-[#f7d354]/10 border border-[#f7d354]/30 uppercase rounded-sm animate-pulse">
-                          ACTIVE_FOCUS
+        {/* Selector Deck Carousel */}
+        <div className="z-10 w-full relative flex items-center justify-center my-6">
+          {/* Left Arrow */}
+          <div className="absolute left-8 md:left-16 z-30">
+            <button
+              onClick={handlePrev}
+              onMouseEnter={() => audio.playHover()}
+              className="btn-pixel-arrow"
+            >
+              ◀
+            </button>
+          </div>
+
+          {/* Viewport for horizontal slider track */}
+          <div className="w-full overflow-hidden py-12 flex items-center relative">
+            <div 
+              className="flex gap-6 md:gap-8 transition-transform duration-500 ease-out pb-4"
+              style={{ 
+                transform: `translateX(calc(50vw - (${selectedIdx} * (350px + 24px)) - (350px / 2)))`
+              }}
+            >
+              {chaptersList.map((chap, index) => {
+                const isActive = selectedIdx === index
+                return (
+                  <div
+                    key={chap.id}
+                    onClick={() => {
+                      if (!isActive) {
+                        audio.playSelect()
+                        setSelectedIdx(index)
+                      }
+                    }}
+                    className={`w-[350px] shrink-0 bg-slate-950/85 border-4 rounded-sm p-6 shadow-[0_15px_35px_rgba(0,0,0,0.8)] transition-all duration-500 flex flex-col justify-between select-none relative ${
+                      isActive 
+                        ? 'border-[#f7d354] scale-100 opacity-100 cursor-default' 
+                        : 'border-[#3a495e] scale-90 opacity-35 hover:opacity-60 cursor-pointer blur-[0.5px]'
+                    }`}
+                    style={{
+                      boxShadow: isActive ? '0 0 25px rgba(247, 211, 84, 0.25)' : ''
+                    }}
+                  >
+                    <div>
+                      {/* Top Badge Details */}
+                      <div className="flex justify-between items-center mb-4 pb-2 border-b-2 border-[#3a495e]/50">
+                        <span className="font-pixel text-[8px] text-retro-primary tracking-widest uppercase">
+                          SYSTEM MODULE 0{chap.id} / 06
                         </span>
-                      )}
+                        {isActive && (
+                          <span className="font-pixel text-[8px] text-[#f7d354] px-2 py-0.5 bg-[#f7d354]/10 border border-[#f7d354]/30 uppercase rounded-sm animate-pulse">
+                            ACTIVE_FOCUS
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Chapter Title */}
+                      <h3 className={`font-pixel uppercase tracking-tight mb-4 min-h-[60px] flex items-center transition-colors duration-300 ${
+                        isActive ? 'text-[#f7d354] text-2xl md:text-3xl' : 'text-retro-muted text-xl'
+                      }`}>
+                        {chap.title}
+                      </h3>
+
+                      {/* Narrative / Focus Details */}
+                      <p className={`text-retro-text text-base leading-relaxed font-retro transition-opacity duration-300 ${
+                        isActive ? 'opacity-100' : 'opacity-60 line-clamp-3'
+                      }`}>
+                        {chap.desc}
+                      </p>
                     </div>
 
-                    {/* Chapter Title */}
-                    <h3 className={`font-pixel uppercase tracking-tight mb-4 min-h-[60px] flex items-center transition-colors duration-300 ${
-                      isActive ? 'text-[#f7d354] text-2xl md:text-3xl' : 'text-retro-muted text-xl'
+                    <div className={`space-y-4 transition-all duration-500 ${
+                      isActive ? 'opacity-100 max-h-[160px] mt-6' : 'opacity-0 max-h-0 overflow-hidden mt-0'
                     }`}>
-                      {chap.title}
-                    </h3>
+                      {/* Focus Algorithm highlights */}
+                      <div className="flex items-center gap-3 py-2 px-3 bg-[#111424] border border-[#3a495e]/30">
+                        <span className="font-pixel text-[8px] text-retro-accent uppercase tracking-wider">FOCUS:</span>
+                        <span className="font-retro text-sm text-[#73eff7] tracking-wider font-bold">
+                          {chap.focus}
+                        </span>
+                      </div>
 
-                    {/* Narrative / Focus Details */}
-                    <p className={`text-retro-text text-base leading-relaxed font-retro transition-opacity duration-300 ${
-                      isActive ? 'opacity-100' : 'opacity-60 line-clamp-3'
-                    }`}>
-                      {chap.desc}
-                    </p>
-                  </div>
-
-                  <div className={`space-y-4 transition-all duration-500 ${
-                    isActive ? 'opacity-100 max-h-[160px] mt-6' : 'opacity-0 max-h-0 overflow-hidden mt-0'
-                  }`}>
-                    {/* Focus Algorithm highlights */}
-                    <div className="flex items-center gap-3 py-2 px-3 bg-[#111424] border border-[#3a495e]/30">
-                      <span className="font-pixel text-[8px] text-retro-accent uppercase tracking-wider">FOCUS:</span>
-                      <span className="font-retro text-sm text-[#73eff7] tracking-wider font-bold">
-                        {chap.focus}
-                      </span>
+                      {/* Boot Command */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleBoot()
+                        }}
+                        onMouseEnter={() => audio.playHover()}
+                        className="btn-pixel-menu text-xs w-full py-3"
+                      >
+                        ENTER CHAPTER [ENTER]
+                      </button>
                     </div>
-
-                    {/* Boot Command */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleBoot()
-                      }}
-                      onMouseEnter={() => audio.playHover()}
-                      className="btn-pixel-menu text-xs w-full py-3"
-                    >
-                      INITIALIZE_BOOT_SEQUENCE [ENTER]
-                    </button>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Right Arrow */}
+          <div className="absolute right-8 md:right-16 z-30">
+            <button
+              onClick={handleNext}
+              onMouseEnter={() => audio.playHover()}
+              className="btn-pixel-arrow"
+            >
+              ▶
+            </button>
           </div>
         </div>
 
-        {/* Right Arrow */}
-        <div className="absolute right-8 md:right-16 z-30">
-          <button
-            onClick={handleNext}
-            onMouseEnter={() => audio.playHover()}
-            className="btn-pixel-arrow"
-          >
-            ▶
-          </button>
+        {/* Pagination Dot indicators */}
+        <div className="z-10 flex gap-4 mt-8">
+          {chaptersList.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => { audio.playSelect(); setSelectedIdx(idx); }}
+              onMouseEnter={() => { if (selectedIdx !== idx) audio.playHover(); }}
+              className={`font-pixel text-xs cursor-pointer focus:outline-none transition-all ${
+                selectedIdx === idx ? 'text-[#f7d354] scale-125' : 'text-[#8b9bb4]/50 hover:text-white'
+              }`}
+            >
+              {selectedIdx === idx ? '■' : '□'}
+            </button>
+          ))}
         </div>
-      </div>
-
-      {/* Pagination Dot indicators */}
-      <div className="z-10 flex gap-4 mt-8">
-        {chaptersList.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => { audio.playSelect(); setSelectedIdx(idx); }}
-            onMouseEnter={() => { if (selectedIdx !== idx) audio.playHover(); }}
-            className={`font-pixel text-xs cursor-pointer focus:outline-none transition-all ${
-              selectedIdx === idx ? 'text-[#f7d354] scale-125' : 'text-[#8b9bb4]/50 hover:text-white'
-            }`}
-          >
-            {selectedIdx === idx ? '■' : '□'}
-          </button>
-        ))}
       </div>
     </div>
   )
@@ -813,17 +812,28 @@ export default function App() {
     setCurrentNode(choice.nextNode)
   }
 
-  // Settings Escape listener
+  // Centralized Escape keybind supervisor
   useEffect(() => {
     const handleEsc = (e) => {
-      if (e.key === 'Escape') {
-        audio.playSelect()
-        setShowSettings(prev => !prev)
+      if (e.key !== 'Escape') return
+      
+      e.preventDefault()
+      audio.playSelect()
+
+      if (showSettings) {
+        // If settings menu is open, always close it first
+        setShowSettings(false)
+      } else if (screen === 'chapter_select' || screen === 'journal') {
+        // If config is closed and we are on a secondary screen, back out to title
+        setScreen('title')
+      } else {
+        // In Game or Title, toggle the config screen
+        setShowSettings(true)
       }
     }
     window.addEventListener('keydown', handleEsc)
     return () => window.removeEventListener('keydown', handleEsc)
-  }, [])
+  }, [showSettings, screen])
 
   if (screen === 'title') {
     return (
