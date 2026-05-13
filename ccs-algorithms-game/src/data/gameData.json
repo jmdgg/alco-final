@@ -80,27 +80,231 @@
       }
     }
   ],
-  "algorithms": {
-    "Dijkstra's Algorithm": {
+  "algorithms": [
+    {
+      "id": "Dijkstra's Algorithm",
+      "title": "DIJKSTRA'S SHORTEST PATH",
       "category": "Graph Algorithms",
-      "timeComplexity": "O(E + V log V)",
-      "spaceComplexity": "O(V)",
-      "description": "Finds the shortest paths between nodes in a graph, which may represent, for example, road networks.",
+      "definition": "An iterative algorithm that finds the shortest path between nodes in a weighted graph.",
+      "useCase": "Used primarily in network routing protocols and GPS navigation to calculate the fastest route.",
+      "pseudocode": "function dijkstra(graph, start)\n  distances = map()\n  distances[start] = 0\n  pq = priority_queue()\n  pq.push(start, 0)\n  while !pq.empty():\n    current = pq.pop()\n    for neighbor in graph[current]:\n      if update(distance):\n        pq.push(neighbor, new_dist)\n  return distances",
       "icon": "📍"
     },
-    "Hash Map": {
-      "category": "Data Structures",
-      "timeComplexity": "O(1) Average",
-      "spaceComplexity": "O(n)",
-      "description": "A structure that can map keys to values, providing efficient lookup, insertion, and deletion.",
+    {
+      "id": "Hash Map",
+      "title": "HASH MAP",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Hash Map related tasks and system optimizations.",
+      "pseudocode": "function hashmap() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🫧"
+    },
+    {
+      "id": "Bubble Sort",
+      "title": "BUBBLE SORT",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Bubble Sort related tasks and system optimizations.",
+      "pseudocode": "function bubblesort() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "⚡"
+    },
+    {
+      "id": "Quick Sort",
+      "title": "QUICK SORT",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Quick Sort related tasks and system optimizations.",
+      "pseudocode": "function quicksort() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🔄"
+    },
+    {
+      "id": "Merge Sort",
+      "title": "MERGE SORT",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Merge Sort related tasks and system optimizations.",
+      "pseudocode": "function mergesort() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🔍"
+    },
+    {
+      "id": "Binary Search",
+      "title": "BINARY SEARCH",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Binary Search related tasks and system optimizations.",
+      "pseudocode": "function binarysearch() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🌳"
+    },
+    {
+      "id": "DFS",
+      "title": "DFS",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in DFS related tasks and system optimizations.",
+      "pseudocode": "function dfs() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🌊"
+    },
+    {
+      "id": "BFS",
+      "title": "BFS",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in BFS related tasks and system optimizations.",
+      "pseudocode": "function bfs() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "⭐"
+    },
+    {
+      "id": "A* Search",
+      "title": "A* SEARCH",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in A* Search related tasks and system optimizations.",
+      "pseudocode": "function asearch() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🧠"
+    },
+    {
+      "id": "Dynamic Programming",
+      "title": "DYNAMIC PROGRAMMING",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Dynamic Programming related tasks and system optimizations.",
+      "pseudocode": "function dynamicprogramming() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🧩"
+    },
+    {
+      "id": "Kruskal's Algorithm",
+      "title": "KRUSKAL'S ALGORITHM",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Kruskal's Algorithm related tasks and system optimizations.",
+      "pseudocode": "function kruskalsalgorithm() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🔗"
+    },
+    {
+      "id": "Prim's Algorithm",
+      "title": "PRIM'S ALGORITHM",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Prim's Algorithm related tasks and system optimizations.",
+      "pseudocode": "function primsalgorithm() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🛡️"
+    },
+    {
+      "id": "Floyd-Warshall",
+      "title": "FLOYD-WARSHALL",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Floyd-Warshall related tasks and system optimizations.",
+      "pseudocode": "function floydwarshall() {\n  // Implementation pending\n  return true;\n}",
       "icon": "🗝️"
     },
-    "Bubble Sort": {
-      "category": "Sorting",
-      "timeComplexity": "O(n²)",
-      "spaceComplexity": "O(1)",
-      "description": "Repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.",
+    {
+      "id": "Bellman-Ford",
+      "title": "BELLMAN-FORD",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Bellman-Ford related tasks and system optimizations.",
+      "pseudocode": "function bellmanford() {\n  // Implementation pending\n  return true;\n}",
       "icon": "🫧"
+    },
+    {
+      "id": "Topological Sort",
+      "title": "TOPOLOGICAL SORT",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Topological Sort related tasks and system optimizations.",
+      "pseudocode": "function topologicalsort() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "⚡"
+    },
+    {
+      "id": "AVL Tree",
+      "title": "AVL TREE",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in AVL Tree related tasks and system optimizations.",
+      "pseudocode": "function avltree() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🔄"
+    },
+    {
+      "id": "Red-Black Tree",
+      "title": "RED-BLACK TREE",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Red-Black Tree related tasks and system optimizations.",
+      "pseudocode": "function redblacktree() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🔍"
+    },
+    {
+      "id": "Trie",
+      "title": "TRIE",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Trie related tasks and system optimizations.",
+      "pseudocode": "function trie() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🌳"
+    },
+    {
+      "id": "Segment Tree",
+      "title": "SEGMENT TREE",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Segment Tree related tasks and system optimizations.",
+      "pseudocode": "function segmenttree() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🌊"
+    },
+    {
+      "id": "Fenwick Tree",
+      "title": "FENWICK TREE",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Fenwick Tree related tasks and system optimizations.",
+      "pseudocode": "function fenwicktree() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "⭐"
+    },
+    {
+      "id": "Knapsack Problem",
+      "title": "KNAPSACK PROBLEM",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Knapsack Problem related tasks and system optimizations.",
+      "pseudocode": "function knapsackproblem() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🧠"
+    },
+    {
+      "id": "Traveling Salesperson",
+      "title": "TRAVELING SALESPERSON",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in Traveling Salesperson related tasks and system optimizations.",
+      "pseudocode": "function travelingsalesperson() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🧩"
+    },
+    {
+      "id": "RSA Encryption",
+      "title": "RSA ENCRYPTION",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in RSA Encryption related tasks and system optimizations.",
+      "pseudocode": "function rsaencryption() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🔗"
+    },
+    {
+      "id": "SHA-256",
+      "title": "SHA-256",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in SHA-256 related tasks and system optimizations.",
+      "pseudocode": "function sha() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🛡️"
+    },
+    {
+      "id": "PageRank",
+      "title": "PAGERANK",
+      "category": "Computer Science",
+      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
+      "useCase": "Used primarily in PageRank related tasks and system optimizations.",
+      "pseudocode": "function pagerank() {\n  // Implementation pending\n  return true;\n}",
+      "icon": "🗝️"
     }
-  }
+  ]
 }
