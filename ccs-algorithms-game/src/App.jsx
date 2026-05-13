@@ -15,7 +15,12 @@ function Atmosphere({ showCollage, crtEffect }) {
           style={{ backgroundImage: 'url(/story-collage.png)', imageRendering: 'pixelated' }}
         />
       )}
-      {crtEffect !== false && <div className="absolute inset-0 scanlines opacity-10" />}
+      {crtEffect !== false && (
+        <>
+          <div className="absolute inset-0 scanlines opacity-25" />
+          <div className="scan-bar" />
+        </>
+      )}
     </div>
   )
 }
@@ -78,7 +83,12 @@ function TitleScreen({ onStart, onOpenSettings, crtEffect }) {
         style={{ backgroundImage: 'url(/bedroom-dev-bg.png)', imageRendering: 'pixelated' }}
       />
 
-      {crtEffect && <div className="absolute inset-0 scanlines opacity-10 pointer-events-none z-20" />}
+      {crtEffect && (
+        <>
+          <div className="absolute inset-0 scanlines opacity-25 pointer-events-none z-20" />
+          <div className="scan-bar z-20" />
+        </>
+      )}
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full w-full">
         <div className="mb-16 text-center bg-slate-950/65 backdrop-blur-[2px] border-y-4 border-[#3a495e] py-6 px-8 md:px-20 max-w-3xl w-full shadow-[0_10px_25px_rgba(0,0,0,0.6)] animate-pop-in">
@@ -145,7 +155,8 @@ function JournalScreen({ onClose, unlockedAlgorithms }) {
 
   return (
     <div className="relative h-screen w-full bg-retro-bg font-retro flex overflow-hidden">
-      <div className="absolute inset-0 scanlines opacity-10 pointer-events-none z-0" />
+      <div className="absolute inset-0 scanlines opacity-25 pointer-events-none z-0" />
+      <div className="scan-bar z-0" />
       
       {/* LEFT PANE: Grid */}
       <div className="w-1/2 h-full flex flex-col border-r-2 border-retro-muted relative z-10">
@@ -348,7 +359,12 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
         style={{ backgroundImage: `url(${activeChapter.bg})`, imageRendering: 'pixelated' }}
       />
-      {crtEffect && <div className="absolute inset-0 scanlines opacity-10 pointer-events-none z-20" />}
+      {crtEffect && (
+        <>
+          <div className="absolute inset-0 scanlines opacity-25 pointer-events-none z-20" />
+          <div className="scan-bar z-20" />
+        </>
+      )}
 
       {/* Animated Content Layer */}
       <div className="absolute inset-0 flex flex-col items-center justify-center animate-retro-ease-in pointer-events-auto z-10">
