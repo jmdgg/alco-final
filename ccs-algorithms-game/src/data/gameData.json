@@ -78,6 +78,296 @@
           ]
         }
       }
+    },
+    {
+      "id": 2,
+      "title": "THE DEBUGGING MARATHON",
+      "nodes": {
+        "start": {
+          "text": "A stack overflow is crashing your recursive solution. Leo is sighing over his lukewarm cup of coffee. \"We need to replace this sorting mechanism, but which approach fits best?\"",
+          "speaker": "Leo",
+          "choices": [
+            {
+              "label": "Implement Quick Sort",
+              "nextNode": "quicksort_path",
+              "unlocksAlgorithm": "Quick Sort",
+              "icon": "⚡"
+            },
+            {
+              "label": "Implement Bubble Sort",
+              "nextNode": "bubblesort_path",
+              "unlocksAlgorithm": "Bubble Sort",
+              "icon": "🫧"
+            }
+          ]
+        },
+        "quicksort_path": {
+          "text": "The O(N log N) recursive tree completes partition divisions in milliseconds. The stack overflow is resolved. Leo raises his coffee mug in victory!\n\n\"Brilliant. Efficient sorting saved our stack!\"",
+          "speaker": "Leo",
+          "choices": [
+            {
+              "label": "Finish Chapter 2",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "bubblesort_path": {
+          "text": "The O(N^2) iterations take excessive time and exhaust the stack on larger datasets. Anya looks worried.\n\n\"That's too slow. We need a more performant sorting algorithm.\"",
+          "speaker": "Anya",
+          "choices": [
+            {
+              "label": "Try again",
+              "nextNode": "start",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "end_chapter": {
+          "text": "You have resolved the recursion bottleneck. Leo can finally rest. But tomorrow's exams are already looming.\n\n*Chapter 2 Completed.*",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "RETURN TO MAIN MENU",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "advanceChapter": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "THE LAB EXAM PANIC",
+      "nodes": {
+        "start": {
+          "text": "Professor Cruz paces the lab rows. \"You have 10 seconds to find the student record inside this massive, sorted database array. No linear searches allowed!\"",
+          "speaker": "Prof. Cruz",
+          "choices": [
+            {
+              "label": "Implement Binary Search",
+              "nextNode": "binarysearch_path",
+              "unlocksAlgorithm": "Binary Search",
+              "icon": "🔍"
+            },
+            {
+              "label": "Implement Linear Search",
+              "nextNode": "linearsearch_path",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "binarysearch_path": {
+          "text": "By halving the search space O(log N), you find the correct record index in exactly 3 steps. Prof. Cruz nods in quiet approval.\n\n\"Excellent logarithmic execution. Full points!\"",
+          "speaker": "Prof. Cruz",
+          "choices": [
+            {
+              "label": "Finish Chapter 3",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "linearsearch_path": {
+          "text": "Scanning item by item takes too long, and your time runs out. The buzzer sounds.\n\n\"Time limit exceeded! O(N) is unacceptable for sorted data.\"",
+          "speaker": "Prof. Cruz",
+          "choices": [
+            {
+              "label": "Retry exam",
+              "nextNode": "start",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "end_chapter": {
+          "text": "You passed the lab exam with flying colors. Logarithmic scaling is the ultimate grading cheat code.\n\n*Chapter 3 Completed.*",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "RETURN TO MAIN MENU",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "advanceChapter": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "THE CAPSTONE DEFENSE",
+      "nodes": {
+        "start": {
+          "text": "The panel members look stern. \"Your deployment map has dependencies in a massive graph. How will you systematically traverse every module to prove there are no cycles?\"",
+          "speaker": "Panel Chair",
+          "choices": [
+            {
+              "label": "Run BFS (Breadth-First)",
+              "nextNode": "bfs_path",
+              "unlocksAlgorithm": "BFS",
+              "icon": "🌊"
+            },
+            {
+              "label": "Run DFS (Depth-First)",
+              "nextNode": "dfs_path",
+              "unlocksAlgorithm": "DFS",
+              "icon": "📍"
+            }
+          ]
+        },
+        "bfs_path": {
+          "text": "Traversing layer-by-layer using a FIFO queue reveals all reachable system packages. The panelists look highly impressed.\n\n\"A clean, level-order traversal logic. Excellent defense!\"",
+          "speaker": "Panel Chair",
+          "choices": [
+            {
+              "label": "Finish Chapter 4",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "dfs_path": {
+          "text": "Plunging deep along each branch using a LIFO stack traces the recursive cycle pathways perfectly. The panelists nod in approval.\n\n\"Excellent back-tracking cycle-detection logic. Outstanding defense!\"",
+          "speaker": "Panel Chair",
+          "choices": [
+            {
+              "label": "Finish Chapter 4",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "end_chapter": {
+          "text": "Your capstone system defense is complete. Anya and Leo celebrate your O(V + E) success in the hallways.\n\n*Chapter 4 Completed.*",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "RETURN TO MAIN MENU",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "advanceChapter": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "THE AI HACKATHON",
+      "nodes": {
+        "start": {
+          "text": "The clock is ticking in the 24-hour hackathon. Your navigation robot needs to find the optimal path in a grid representing a dense maze. Which heuristic fits?",
+          "speaker": "Anya",
+          "choices": [
+            {
+              "label": "Implement A* Search",
+              "nextNode": "astar_path",
+              "unlocksAlgorithm": "A* Search",
+              "icon": "🧠"
+            },
+            {
+              "label": "Implement DFS Search",
+              "nextNode": "dfs_fail_path",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "astar_path": {
+          "text": "Combining distance traveled g(n) and heuristic estimate h(n) leads the robot straight to the exit, bypassing all obstacles. The judges cheer!\n\n\"The optimal, shortest-path heuristic search in record time!\"",
+          "speaker": "Judges",
+          "choices": [
+            {
+              "label": "Finish Chapter 5",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "dfs_fail_path": {
+          "text": "The robot wanders down the deepest blind alley, getting stuck in loops. Time runs out.\n\n\"DFS gets trapped in cycles or takes non-optimal pathways here.\"",
+          "speaker": "Anya",
+          "choices": [
+            {
+              "label": "Try heuristic search",
+              "nextNode": "start",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "end_chapter": {
+          "text": "Your team took home 1st place in the hackathon. Heuristics lead to trophies.\n\n*Chapter 5 Completed.*",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "RETURN TO MAIN MENU",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "advanceChapter": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "THE GRADUATION RITUAL",
+      "nodes": {
+        "start": {
+          "text": "It is graduation day! AUF wants to issue secure digital certificates. How can we ensure they are both tamper-proof and signed?",
+          "speaker": "System",
+          "choices": [
+            {
+              "label": "Use SHA-256 and RSA",
+              "nextNode": "crypto_path",
+              "unlocksAlgorithm": "RSA Encryption",
+              "icon": "🔗"
+            },
+            {
+              "label": "Save in plaintext",
+              "nextNode": "plaintext_path",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "crypto_path": {
+          "text": "Hashing with SHA-256 guarantees integrity, and signing with private RSA keys guarantees authenticity. The registry clicks 'ISSUE'.\n\n\"Your credentials are secure for life! Congratulations, graduate!\"",
+          "speaker": "System",
+          "choices": [
+            {
+              "label": "Graduate",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "plaintext_path": {
+          "text": "Saving certificates in raw plaintext fails the security audit. The university delays graduation.\n\n\"Plaintext is vulnerable to spoofing and MITM manipulation!\"",
+          "speaker": "System",
+          "choices": [
+            {
+              "label": "Secure files",
+              "nextNode": "start",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "end_chapter": {
+          "text": "You march across the stage, degree in hand, as your mechanical keyboard clicks in the distance. The AUF journey is complete.\n\n*Chapter 6 Completed. You are the ultimate CCS student!*",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "RESET STORY PROGRESS",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "advanceChapter": true
+            }
+          ]
+        }
+      }
     }
   ],
   "algorithms": [

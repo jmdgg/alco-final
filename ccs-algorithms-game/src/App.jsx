@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import gameData from './data/gameData.json'
 import { audio } from './utils/audioEngine'
 
 /* ═══════════════════════════════════════════
    Atmosphere
    ═══════════════════════════════════════════ */
-function Atmosphere({ showCollage }) {
+function Atmosphere({ showCollage, crtEffect }) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       <div className="absolute inset-0 bg-retro-bg" />
@@ -15,7 +15,12 @@ function Atmosphere({ showCollage }) {
           style={{ backgroundImage: 'url(/story-collage.png)', imageRendering: 'pixelated' }}
         />
       )}
-      <div className="absolute inset-0 scanlines opacity-10" />
+      {crtEffect !== false && (
+        <>
+          <div className="absolute inset-0 scanlines opacity-25" />
+          <div className="scan-bar" />
+        </>
+      )}
     </div>
   )
 }
@@ -23,20 +28,21 @@ function Atmosphere({ showCollage }) {
 /* ═══════════════════════════════════════════
    Title Screen
    ═══════════════════════════════════════════ */
-function TitleScreen({ onStart }) {
+function TitleScreen({ onStart, onOpenSettings, crtEffect }) {
   const [selected, setSelected] = useState(0)
   const [showAbout, setShowAbout] = useState(false)
 
-  const handleStart = () => {
+  const handleStart = useCallback(() => {
     audio.init()
     audio.playSelect()
     onStart()
-  }
+  }, [onStart])
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     { label: 'SYSTEM BOOT', action: handleStart },
     { label: 'JOURNAL', action: () => { audio.playSelect(); onStart('journal'); } },
-  ]
+    { label: 'SETTINGS', action: () => { audio.playSelect(); onOpenSettings(); } },
+  ], [handleStart, onStart, onOpenSettings])
 
   useEffect(() => {
     const handler = (e) => {
@@ -68,21 +74,28 @@ function TitleScreen({ onStart }) {
   }, [selected, showAbout, menuItems])
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-[#1a1c2c] crt-screen">
-      {/* Dark starry background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#1a1c2c] via-[#262b44] to-[#68386c]" />
+    <div className={`relative h-screen w-full overflow-hidden bg-[#1a1c2c] ${crtEffect ? 'crt-screen' : ''}`}>
+      {/* Dark underlayer background to maintain rich contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#111424] via-[#1a1c2c] to-[#2e1d3c]" />
 
       <div
-        className="absolute inset-0 bg-cover bg-bottom bg-no-repeat opacity-50"
-        style={{ backgroundImage: 'url(/title-bg.png)', imageRendering: 'pixelated' }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90"
+        style={{ backgroundImage: 'url(/bedroom-dev-bg.png)', imageRendering: 'pixelated' }}
       />
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full">
-        <div className="mb-16 text-center">
-          <h1 className="font-pixel text-[#73eff7] text-3xl md:text-5xl leading-normal tracking-tighter drop-shadow-[4px_4px_0_rgba(0,0,0,0.5)]">
+      {crtEffect && (
+        <>
+          <div className="absolute inset-0 scanlines opacity-25 pointer-events-none z-20" />
+          <div className="scan-bar z-20" />
+        </>
+      )}
+
+      <div className="relative z-10 flex flex-col items-center justify-center h-full w-full">
+        <div className="mb-16 text-center bg-slate-950/65 backdrop-blur-[2px] border-y-4 border-[#3a495e] py-6 px-8 md:px-20 max-w-3xl w-full shadow-[0_10px_25px_rgba(0,0,0,0.6)] animate-pop-in">
+          <h1 className="font-pixel text-[#73eff7] text-3xl md:text-5xl leading-normal tracking-tighter pixel-text-outline-large">
             CCS STUDENT:
           </h1>
-          <p className="font-pixel text-[#f7d354] text-sm md:text-base mt-2 tracking-widest drop-shadow-[2px_2px_0_rgba(0,0,0,0.5)]">
+          <p className="font-pixel text-[#f7d354] text-sm md:text-base mt-2 tracking-widest pixel-text-outline-small">
             A DAY IN THE LIFE
           </p>
         </div>
@@ -96,10 +109,11 @@ function TitleScreen({ onStart }) {
                 if (selected !== i) audio.playHover()
                 setSelected(i)
               }}
-              className={`font-pixel text-xs md:text-sm tracking-wide transition-all px-8 py-3 
-                ${selected === i ? 'text-[#f7d354] scale-110' : 'text-[#8b9bb4]'}`}
+              className={`btn-pixel-menu ${selected === i ? 'selected text-[#f7d354]' : ''}`}
             >
-              <span className={`inline-block mr-3 ${selected === i ? 'animate-selector opacity-100' : 'opacity-0'}`}>▶</span>
+              <span className={`inline-block mr-3 transition-all ${selected === i ? 'opacity-100 animate-[bounce-right_0.8s_steps(2)_infinite]' : 'opacity-0 w-0 overflow-hidden'}`}>
+                ▶
+              </span>
               {item.label}
             </button>
           ))}
@@ -130,20 +144,19 @@ function TitleScreen({ onStart }) {
    Journal Screen
    ═══════════════════════════════════════════ */
 function JournalScreen({ onClose, unlockedAlgorithms }) {
-  const allAlgorithms = gameData.algorithms || []
-  const [selectedAlgoIndex, setSelectedAlgoIndex] = useState(0)
-
-  useEffect(() => {
-    // Select the first unlocked algorithm by default
-    const unlockedIdx = allAlgorithms.findIndex(a => unlockedAlgorithms.includes(a.id))
-    if (unlockedIdx !== -1) setSelectedAlgoIndex(unlockedIdx)
-  }, [allAlgorithms, unlockedAlgorithms])
+  const allAlgorithms = useMemo(() => gameData.algorithms || [], [])
+  const [selectedAlgoIndex, setSelectedAlgoIndex] = useState(() => {
+    const all = gameData.algorithms || []
+    const unlockedIdx = all.findIndex(a => unlockedAlgorithms.includes(a.id))
+    return unlockedIdx !== -1 ? unlockedIdx : 0
+  })
 
   const selectedAlgo = allAlgorithms[selectedAlgoIndex]
 
   return (
     <div className="relative h-screen w-full bg-retro-bg font-retro flex overflow-hidden">
-      <div className="absolute inset-0 scanlines opacity-10 pointer-events-none z-0" />
+      <div className="absolute inset-0 scanlines opacity-25 pointer-events-none z-0" />
+      <div className="scan-bar z-0" />
       
       {/* LEFT PANE: Grid */}
       <div className="w-1/2 h-full flex flex-col border-r-2 border-retro-muted relative z-10">
@@ -260,10 +273,447 @@ function JournalScreen({ onClose, unlockedAlgorithms }) {
 }
 
 /* ═══════════════════════════════════════════
+   Chapter Select Screen Component
+   ═══════════════════════════════════════════ */
+function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
+  const [selectedIdx, setSelectedIdx] = useState(0)
+
+  // Map 6 static chapters (Chapter 1 is from gameData, Chapters 2-6 are parsed dynamically or hardcoded for select list info)
+  const chaptersList = useMemo(() => {
+    return gameData.chapters.map((ch, index) => {
+      // Descriptions & algorithm lists mapped elegantly to chapters
+      const details = [
+        {
+          desc: "Anya's terminal is frozen under massive server outage pressure. Resolve bottlenecks and stabilize core routing in constant time.",
+          focus: "📍 Dijkstra's, 🫧 Hash Maps",
+          bg: "/bedroom-dev-bg.png"
+        },
+        {
+          desc: "A recursive loop is exhausting system stack limits. Work with Leo to debug O(N^2) sorting blocks and run O(N log N) partition division models.",
+          focus: "⚡ Quick Sort, 🫧 Bubble Sort",
+          bg: "/bedroom-dev-bg.png"
+        },
+        {
+          desc: "Professor Cruz paces the lab exams. Retrieve specific student records within a 10-second limit using O(log N) query halving.",
+          focus: "🔍 Binary Search, ❌ Linear Scan",
+          bg: "/bedroom-dev-bg.png"
+        },
+        {
+          desc: "Trace complex system dependencies in a package module graph. Traverse and back-track cycles before presenting to the capstone committee.",
+          focus: "🌊 BFS, 📍 DFS Traversals",
+          bg: "/bedroom-dev-bg.png"
+        },
+        {
+          desc: "The 24-hour hackathon clock is running down. Build a heuristic-based maze-solver to guide an autonomous rover to safety.",
+          focus: "🧠 A* Search, ❌ Blind DFS Loops",
+          bg: "/bedroom-dev-bg.png"
+        },
+        {
+          desc: "The final graduation ceremony is here! Secure digital diplomas using high-integrity cryptographic checksum hashes and RSA key bindings.",
+          focus: "🔗 RSA & SHA-256 Signing",
+          bg: "/bedroom-dev-bg.png"
+        }
+      ]
+      return {
+        id: ch.id,
+        title: ch.title,
+        desc: details[index]?.desc || "Solve computer science algorithm challenges and complete AUF coursework under pressure.",
+        focus: details[index]?.focus || "O-notation Complexity analysis",
+        bg: details[index]?.bg || "/bedroom-dev-bg.png"
+      }
+    })
+  }, [])
+
+  const handlePrev = useCallback(() => {
+    audio.playSelect()
+    setSelectedIdx((prev) => (prev > 0 ? prev - 1 : chaptersList.length - 1))
+  }, [chaptersList])
+
+  const handleNext = useCallback(() => {
+    audio.playSelect()
+    setSelectedIdx((prev) => (prev < chaptersList.length - 1 ? prev + 1 : 0))
+  }, [chaptersList])
+
+  const handleBoot = useCallback(() => {
+    audio.playSelect()
+    onSelectChapter(chaptersList[selectedIdx].id)
+  }, [chaptersList, selectedIdx, onSelectChapter])
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === 'ArrowLeft') handlePrev()
+      if (e.key === 'ArrowRight') handleNext()
+      if (e.key === 'Enter') handleBoot()
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [handlePrev, handleNext, handleBoot])
+
+  const activeChapter = chaptersList[selectedIdx]
+
+  return (
+    <div className={`relative h-screen w-full overflow-hidden bg-[#111424] text-white flex flex-col items-center justify-center font-retro ${crtEffect ? 'crt-screen' : ''}`}>
+      {/* Background Graphic with Vignette Dimming (Kept completely static to block any html body background leaks) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#111424]/90 via-[#111424]/75 to-[#1a1c2c]" />
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
+        style={{ backgroundImage: `url(${activeChapter.bg})`, imageRendering: 'pixelated' }}
+      />
+      {crtEffect && (
+        <>
+          <div className="absolute inset-0 scanlines opacity-25 pointer-events-none z-20" />
+          <div className="scan-bar z-20" />
+        </>
+      )}
+
+      {/* Animated Content Layer */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center animate-retro-ease-in pointer-events-auto z-10">
+        {/* Top Header Navigation */}
+        <header className="absolute top-0 left-0 right-0 p-8 flex justify-between items-center z-10 w-full max-w-7xl mx-auto">
+          <button
+            onClick={() => { audio.playSelect(); onClose(); }}
+            onMouseEnter={() => audio.playHover()}
+            className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
+          >
+            ◀ TERMINATE_BOOT [ESC]
+          </button>
+          <div className="font-pixel text-[8px] text-retro-muted tracking-widest">
+            MODULE_LOADER_V1.2
+          </div>
+        </header>
+
+        {/* Main Title Banner */}
+        <div className="text-center z-10 mb-8 max-w-2xl px-4">
+          <h2 className="font-pixel text-[#73eff7] text-sm md:text-base tracking-widest uppercase pixel-text-outline-small animate-pulse">
+            SELECT SYSTEM COMPONENT
+          </h2>
+          <div className="h-1 w-24 bg-retro-accent mx-auto mt-2" />
+        </div>
+
+        {/* Selector Deck Carousel */}
+        <div className="z-10 w-full relative flex items-center justify-center my-6">
+          {/* Left Arrow */}
+          <div className="absolute left-8 md:left-16 z-30">
+            <button
+              onClick={handlePrev}
+              onMouseEnter={() => audio.playHover()}
+              className="btn-pixel-arrow"
+            >
+              ◀
+            </button>
+          </div>
+
+          {/* Viewport for horizontal slider track */}
+          <div className="w-full overflow-hidden py-12 flex items-center relative">
+            <div 
+              className="flex gap-6 md:gap-8 transition-transform duration-500 ease-out pb-4"
+              style={{ 
+                transform: `translateX(calc(50vw - (${selectedIdx} * (350px + 24px)) - (350px / 2)))`
+              }}
+            >
+              {chaptersList.map((chap, index) => {
+                const isActive = selectedIdx === index
+                return (
+                  <div
+                    key={chap.id}
+                    onClick={() => {
+                      if (!isActive) {
+                        audio.playSelect()
+                        setSelectedIdx(index)
+                      }
+                    }}
+                    className={`w-[350px] shrink-0 bg-slate-950/85 border-4 rounded-sm p-6 shadow-[0_15px_35px_rgba(0,0,0,0.8)] transition-all duration-500 flex flex-col justify-between select-none relative ${
+                      isActive 
+                        ? 'border-[#f7d354] scale-100 opacity-100 cursor-default' 
+                        : 'border-[#3a495e] scale-90 opacity-35 hover:opacity-60 cursor-pointer blur-[0.5px]'
+                    }`}
+                    style={{
+                      boxShadow: isActive ? '0 0 25px rgba(247, 211, 84, 0.25)' : ''
+                    }}
+                  >
+                    <div>
+                      {/* Top Badge Details */}
+                      <div className="flex justify-between items-center mb-4 pb-2 border-b-2 border-[#3a495e]/50">
+                        <span className="font-pixel text-[8px] text-retro-primary tracking-widest uppercase">
+                          SYSTEM MODULE 0{chap.id} / 06
+                        </span>
+                        {isActive && (
+                          <span className="font-pixel text-[8px] text-[#f7d354] px-2 py-0.5 bg-[#f7d354]/10 border border-[#f7d354]/30 uppercase rounded-sm animate-pulse">
+                            ACTIVE_FOCUS
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Chapter Title */}
+                      <h3 className={`font-pixel uppercase tracking-tight mb-4 min-h-[60px] flex items-center transition-colors duration-300 ${
+                        isActive ? 'text-[#f7d354] text-2xl md:text-3xl' : 'text-retro-muted text-xl'
+                      }`}>
+                        {chap.title}
+                      </h3>
+
+                      {/* Narrative / Focus Details */}
+                      <p className={`text-retro-text text-base leading-relaxed font-retro transition-opacity duration-300 ${
+                        isActive ? 'opacity-100' : 'opacity-60 line-clamp-3'
+                      }`}>
+                        {chap.desc}
+                      </p>
+                    </div>
+
+                    <div className={`space-y-4 transition-all duration-500 ${
+                      isActive ? 'opacity-100 max-h-[160px] mt-6' : 'opacity-0 max-h-0 overflow-hidden mt-0'
+                    }`}>
+                      {/* Focus Algorithm highlights */}
+                      <div className="flex items-center gap-3 py-2 px-3 bg-[#111424] border border-[#3a495e]/30">
+                        <span className="font-pixel text-[8px] text-retro-accent uppercase tracking-wider">FOCUS:</span>
+                        <span className="font-retro text-sm text-[#73eff7] tracking-wider font-bold">
+                          {chap.focus}
+                        </span>
+                      </div>
+
+                      {/* Boot Command */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleBoot()
+                        }}
+                        onMouseEnter={() => audio.playHover()}
+                        className="btn-pixel-menu text-xs w-full py-3"
+                      >
+                        ENTER CHAPTER [ENTER]
+                      </button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Right Arrow */}
+          <div className="absolute right-8 md:right-16 z-30">
+            <button
+              onClick={handleNext}
+              onMouseEnter={() => audio.playHover()}
+              className="btn-pixel-arrow"
+            >
+              ▶
+            </button>
+          </div>
+        </div>
+
+        {/* Pagination Dot indicators */}
+        <div className="z-10 flex gap-4 mt-8">
+          {chaptersList.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => { audio.playSelect(); setSelectedIdx(idx); }}
+              onMouseEnter={() => { if (selectedIdx !== idx) audio.playHover(); }}
+              className={`font-pixel text-xs cursor-pointer focus:outline-none transition-all ${
+                selectedIdx === idx ? 'text-[#f7d354] scale-125' : 'text-[#8b9bb4]/50 hover:text-white'
+              }`}
+            >
+              {selectedIdx === idx ? '■' : '□'}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   Settings Modal Component
+   ═══════════════════════════════════════════ */
+function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress }) {
+  const [resetConfirm, setResetConfirm] = useState(false)
+
+  const handleVolumeChange = (e) => {
+    const val = parseFloat(e.target.value)
+    onChangeSettings(prev => ({ ...prev, masterVolume: val }))
+  }
+
+  const handleBgmChange = (e) => {
+    const val = parseFloat(e.target.value)
+    onChangeSettings(prev => ({ ...prev, bgmVolume: val }))
+  }
+
+  const handleSpeedChange = (speed) => {
+    audio.playSelect()
+    onChangeSettings(prev => ({ ...prev, typewriterSpeed: speed }))
+  }
+
+  const handleCrtChange = (e) => {
+    audio.playSelect()
+    onChangeSettings(prev => ({ ...prev, crtEffect: e.target.checked }))
+  }
+
+  const triggerReset = () => {
+    audio.playSelect()
+    if (!resetConfirm) {
+      setResetConfirm(true)
+    } else {
+      onResetProgress()
+      setResetConfirm(false)
+      audio.playAdvance()
+      onClose()
+    }
+  }
+
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-[1px] px-4">
+      <div className="bg-[#1a1c2c] border-4 border-[#3a495e] p-8 max-w-md w-full shadow-[0_15px_35px_rgba(0,0,0,0.8)] animate-pop-in font-retro text-white">
+        <h2 className="font-pixel text-[#f7d354] text-center text-xs md:text-sm mb-8 uppercase tracking-widest text-shadow-md">
+          [ SYSTEM CONFIG ]
+        </h2>
+
+        <div className="space-y-6 font-retro">
+          {/* Master Volume */}
+          <div className="space-y-2">
+            <div className="flex justify-between font-pixel text-[8px] md:text-[10px] text-[#8b9bb4]">
+              <span>MASTER_VOLUME</span>
+              <span>{Math.round(settings.masterVolume * 100)}%</span>
+            </div>
+            <input 
+              type="range" 
+              min="0" 
+              max="1" 
+              step="0.05" 
+              value={settings.masterVolume} 
+              onChange={handleVolumeChange}
+              onMouseUp={() => audio.playSelect()}
+              className="w-full pixel-slider"
+            />
+          </div>
+
+          {/* BGM Volume */}
+          <div className="space-y-2">
+            <div className="flex justify-between font-pixel text-[8px] md:text-[10px] text-[#8b9bb4]">
+              <span>BGM_VOLUME</span>
+              <span>{Math.round(settings.bgmVolume * 100)}%</span>
+            </div>
+            <input 
+              type="range" 
+              min="0" 
+              max="1" 
+              step="0.05" 
+              value={settings.bgmVolume} 
+              onChange={handleBgmChange}
+              onMouseUp={() => audio.playSelect()}
+              className="w-full pixel-slider"
+            />
+          </div>
+
+          {/* Typewriter Speed */}
+          <div className="space-y-3">
+            <span className="block font-pixel text-[8px] md:text-[10px] text-[#8b9bb4]">TEXT_SPEED</span>
+            <div className="grid grid-cols-4 gap-2">
+              {['slow', 'normal', 'fast', 'instant'].map((sp) => (
+                <button
+                  key={sp}
+                  onClick={() => handleSpeedChange(sp)}
+                  onMouseEnter={() => audio.playHover()}
+                  className={`font-pixel text-[6px] md:text-[8px] py-2 border-2 text-center transition-all cursor-pointer uppercase ${
+                    settings.typewriterSpeed === sp 
+                      ? 'border-[#f7d354] text-[#f7d354] bg-[#2c2f44]' 
+                      : 'border-[#3a495e] text-[#8b9bb4] hover:border-white hover:text-white'
+                  }`}
+                >
+                  {sp}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* CRT Overlay Toggle */}
+          <div className="flex items-center justify-between py-2 border-t border-b border-[#3a495e]/50">
+            <span className="font-pixel text-[8px] md:text-[10px] text-[#8b9bb4]">CRT_EMULATION</span>
+            <input 
+              type="checkbox" 
+              checked={settings.crtEffect}
+              onChange={handleCrtChange}
+              className="pixel-checkbox"
+            />
+          </div>
+
+          {/* Reset progress */}
+          {onResetProgress && (
+            <div className="pt-2">
+              <button
+                onClick={triggerReset}
+                onMouseEnter={() => audio.playHover()}
+                className={`w-full font-pixel text-[6px] md:text-[8px] py-2 border-2 text-center transition-all cursor-pointer uppercase ${
+                  resetConfirm 
+                    ? 'border-red-500 text-red-500 bg-red-950/20 animate-pulse' 
+                    : 'border-[#3a495e] text-[#8b9bb4] hover:border-red-500 hover:text-red-500'
+                }`}
+              >
+                {resetConfirm ? 'CONFIRM_RESET ?' : 'RESET_SYSTEM_PROGRESS'}
+              </button>
+              {resetConfirm && (
+                <button 
+                  onClick={() => { audio.playSelect(); setResetConfirm(false); }}
+                  className="w-full text-center font-retro text-red-400 text-xs mt-1 hover:underline cursor-pointer uppercase"
+                >
+                  [ CANCEL_ABORT ]
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Close Button */}
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={() => { audio.playSelect(); onClose(); }}
+            onMouseEnter={() => audio.playHover()}
+            className="btn-pixel-menu text-[10px] md:text-xs w-full py-2"
+          >
+            CONFIRM & CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════
    Main Game Screen
    ═══════════════════════════════════════════ */
 export default function App() {
   const [screen, setScreen] = useState('title')
+  const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem('ccs_student_settings')
+    if (saved) {
+      try {
+        return JSON.parse(saved)
+      } catch {
+        // default settings
+      }
+    }
+    return {
+      masterVolume: 0.5,
+      bgmVolume: 0.5,
+      typewriterSpeed: 'normal',
+      crtEffect: true
+    }
+  })
+  const [showSettings, setShowSettings] = useState(false)
+
+  // Sync settings to localStorage and audioEngine
+  useEffect(() => {
+    localStorage.setItem('ccs_student_settings', JSON.stringify(settings))
+    audio.setMasterVolume(settings.masterVolume)
+    audio.setBgmVolume(settings.bgmVolume)
+  }, [settings])
+
+  const speedMap = useMemo(() => ({
+    slow: 60,
+    normal: 30,
+    fast: 10,
+    instant: 0
+  }), [])
+
+  const typewriterDelay = speedMap[settings.typewriterSpeed] ?? 30
+
   const [currentChapter, setCurrentChapter] = useState(1)
   const [currentNode, setCurrentNode] = useState('start')
   const [unlockedAlgorithms, setUnlockedAlgorithms] = useState([])
@@ -290,10 +740,19 @@ export default function App() {
   // Typewriter Effect logic
   useEffect(() => {
     if (screen !== 'game' || !node) return;
-    setDisplayedText('')
-    setTextIndex(0)
-    setIsTyping(true)
-  }, [node, screen])
+    const timer = setTimeout(() => {
+      if (settings.typewriterSpeed === 'instant') {
+        setDisplayedText(node.text)
+        setTextIndex(node.text.length)
+        setIsTyping(false)
+      } else {
+        setDisplayedText('')
+        setTextIndex(0)
+        setIsTyping(true)
+      }
+    }, 0)
+    return () => clearTimeout(timer)
+  }, [node, screen, settings.typewriterSpeed])
 
   useEffect(() => {
     if (screen !== 'game' || !node || !isTyping) return;
@@ -303,12 +762,15 @@ export default function App() {
         setDisplayedText(node.text.slice(0, textIndex + 1))
         audio.playTypewriter()
         setTextIndex(prev => prev + 1)
-      }, 30)
+      }, typewriterDelay)
       return () => clearTimeout(timer)
     } else {
-      setIsTyping(false)
+      const timer = setTimeout(() => {
+        setIsTyping(false)
+      }, 0)
+      return () => clearTimeout(timer)
     }
-  }, [textIndex, isTyping, node, screen])
+  }, [textIndex, isTyping, node, screen, typewriterDelay])
 
   // Choice Pop Sounds
   useEffect(() => {
@@ -366,106 +828,209 @@ export default function App() {
     setCurrentNode(choice.nextNode)
   }
 
+  // Centralized Escape keybind supervisor
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key !== 'Escape') return
+      
+      e.preventDefault()
+      audio.playSelect()
+
+      if (showSettings) {
+        // If settings menu is open, always close it first
+        setShowSettings(false)
+      } else if (screen === 'chapter_select' || screen === 'journal') {
+        // If config is closed and we are on a secondary screen, back out to title
+        setScreen('title')
+      } else {
+        // In Game or Title, toggle the config screen
+        setShowSettings(true)
+      }
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => window.removeEventListener('keydown', handleEsc)
+  }, [showSettings, screen])
+
   if (screen === 'title') {
-    return <TitleScreen onStart={(target = 'game') => setScreen(target)} />
+    return (
+      <>
+        <TitleScreen 
+          onStart={(target = 'chapter_select') => setScreen(target)} 
+          onOpenSettings={() => setShowSettings(true)}
+          crtEffect={settings.crtEffect}
+        />
+        {showSettings && (
+          <SettingsModal 
+            settings={settings} 
+            onChangeSettings={setSettings} 
+            onClose={() => setShowSettings(false)} 
+            onResetProgress={() => {
+              setUnlockedAlgorithms([])
+              setCurrentChapter(1)
+              setCurrentNode('start')
+            }}
+          />
+        )}
+      </>
+    )
+  }
+
+  if (screen === 'chapter_select') {
+    return (
+      <>
+        <ChapterSelectScreen
+          onSelectChapter={(chapId) => {
+            setCurrentChapter(chapId)
+            setCurrentNode('start')
+            setScreen('game')
+          }}
+          onClose={() => setScreen('title')}
+          crtEffect={settings.crtEffect}
+        />
+        {showSettings && (
+          <SettingsModal 
+            settings={settings} 
+            onChangeSettings={setSettings} 
+            onClose={() => setShowSettings(false)} 
+            onResetProgress={() => {
+              setUnlockedAlgorithms([])
+              setCurrentChapter(1)
+              setCurrentNode('start')
+            }}
+          />
+        )}
+      </>
+    )
   }
 
   if (screen === 'journal') {
-    return <JournalScreen onClose={() => setScreen('title')} unlockedAlgorithms={unlockedAlgorithms} />
+    return (
+      <>
+        <JournalScreen onClose={() => setScreen('title')} unlockedAlgorithms={unlockedAlgorithms} />
+        {showSettings && (
+          <SettingsModal 
+            settings={settings} 
+            onChangeSettings={setSettings} 
+            onClose={() => setShowSettings(false)} 
+          />
+        )}
+      </>
+    )
   }
 
   if (!chapter || !node) return null
 
   return (
-    <div className="flex h-screen w-full bg-retro-bg overflow-hidden font-retro">
-      <Atmosphere showCollage={true} />
+    <>
+      <div className={`flex h-screen w-full bg-retro-bg overflow-hidden font-retro ${settings.crtEffect ? 'crt-screen' : ''}`}>
+        <Atmosphere showCollage={true} crtEffect={settings.crtEffect} />
 
-      {/* LEFT COLUMN: Narrative & Choices */}
-      <div className="w-1/2 flex flex-col dialogue-panel z-10 relative">
-        <header className="px-8 pt-8 pb-4 flex justify-between items-start">
-          <h2 className="font-pixel text-retro-accent text-sm md:text-base glow-accent tracking-tighter uppercase">
-            CHAPTER {chapter.id}: {chapter.title}
-          </h2>
-          <div className="flex gap-4">
-            <button
-              onClick={() => { audio.playSelect(); setScreen('journal'); }}
-              className="font-pixel text-[8px] text-retro-primary hover:text-retro-accent transition-colors cursor-pointer"
-            >
-              [J] JOURNAL
-            </button>
-            <button
-              onClick={() => { audio.playSelect(); setScreen('title'); }}
-              className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
-            >
-              ◀ MENU
-            </button>
-          </div>
-        </header>
+        {/* LEFT COLUMN: Narrative & Choices */}
+        <div className="w-1/2 flex flex-col dialogue-panel z-10 relative">
+          <header className="px-8 pt-8 pb-4 flex justify-between items-start">
+            <h2 className="font-pixel text-retro-accent text-sm md:text-base glow-accent tracking-tighter uppercase">
+              CHAPTER {chapter.id}: {chapter.title}
+            </h2>
+            <div className="flex gap-4">
+              <button
+                onClick={() => { audio.playSelect(); setShowSettings(true); }}
+                className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
+              >
+                [S] SETTINGS
+              </button>
+              <button
+                onClick={() => { audio.playSelect(); setScreen('journal'); }}
+                className="font-pixel text-[8px] text-retro-primary hover:text-retro-accent transition-colors cursor-pointer"
+              >
+                [J] JOURNAL
+              </button>
+              <button
+                onClick={() => { audio.playSelect(); setScreen('title'); }}
+                className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
+              >
+                ◀ MENU
+              </button>
+            </div>
+          </header>
 
-        <div className="flex-1 overflow-y-auto px-8 py-4 space-y-6 relative">
-          
-          {/* Achievement Popup */}
-          {achievementPopup && (
-            <div className="absolute top-0 left-8 z-50 achievement-popup">
-              <div className="bg-[#fcebb6] border-4 border-[#b97a2e] rounded-sm p-3 flex items-center gap-4 shadow-[4px_4px_0_rgba(0,0,0,0.2)] max-w-sm">
-                <div className="text-3xl filter drop-shadow-md relative">
-                  🎖️
-                  {/* Subtle Sparkle Effects */}
-                  <span className="absolute -top-1 -left-1 text-[#ffea00] animate-pulse text-xs">✨</span>
-                  <span className="absolute -bottom-1 -right-1 text-[#ffea00] animate-pulse text-xs" style={{animationDelay: '0.2s'}}>✨</span>
-                </div>
-                <div>
-                  <p className="font-pixel text-[10px] text-[#8a5a22] tracking-wider mb-1">ACHIEVEMENT UNLOCKED:</p>
-                  <p className="font-retro text-[#5c3c16] text-lg font-bold leading-none">{achievementPopup}</p>
+          <div className="flex-1 overflow-y-auto px-8 py-4 space-y-6 relative">
+            
+            {/* Achievement Popup */}
+            {achievementPopup && (
+              <div className="absolute top-0 left-8 z-50 achievement-popup">
+                <div className="bg-[#fcebb6] border-4 border-[#b97a2e] rounded-sm p-3 flex items-center gap-4 shadow-[4px_4px_0_rgba(0,0,0,0.2)] max-w-sm">
+                  <div className="text-3xl filter drop-shadow-md relative">
+                    🎖️
+                    {/* Subtle Sparkle Effects */}
+                    <span className="absolute -top-1 -left-1 text-[#ffea00] animate-pulse text-xs">✨</span>
+                    <span className="absolute -bottom-1 -right-1 text-[#ffea00] animate-pulse text-xs" style={{animationDelay: '0.2s'}}>✨</span>
+                  </div>
+                  <div>
+                    <p className="font-pixel text-[10px] text-[#8a5a22] tracking-wider mb-1">ACHIEVEMENT UNLOCKED:</p>
+                    <p className="font-retro text-[#5c3c16] text-lg font-bold leading-none">{achievementPopup}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {node.speaker && (
-            <span className="inline-block px-3 py-1 bg-retro-primary/10 text-retro-primary font-pixel text-[10px] border border-retro-primary/30 uppercase">
-              {node.speaker}
-            </span>
-          )}
-          <p className="text-2xl md:text-3xl leading-relaxed text-retro-text opacity-90 font-retro min-h-[100px]">
-            {displayedText}
-            {isTyping && <span className="inline-block w-2 h-6 bg-retro-accent ml-1 animate-pulse" />}
-          </p>
-        </div>
-
-        <div className="p-8 space-y-4 mb-8 min-h-[300px]">
-          {!isTyping && node.choices.map((choice, i) => (
-            <button
-              key={i}
-              onMouseEnter={() => { audio.playHover(); setHoveredChoice(i); }}
-              onMouseLeave={() => setHoveredChoice(null)}
-              onClick={() => handleChoice(choice)}
-              className={`choice-btn w-full text-left font-retro opacity-0 animate-pop-in ${hoveredChoice === i ? 'selected' : ''}`}
-              style={{ animationDelay: `${i * 150}ms` }}
-            >
-              <span className="flex items-center gap-3">
-                {choice.icon && (
-                  <span className="font-pixel text-xs text-retro-primary opacity-70">[{choice.icon}]</span>
-                )}
-                {choice.label}
+            {node.speaker && (
+              <span className="inline-block px-3 py-1 bg-retro-primary/10 text-retro-primary font-pixel text-[10px] border border-retro-primary/30 uppercase">
+                {node.speaker}
               </span>
-              {choice.unlocksAlgorithm && (
-                <span className="font-pixel text-[8px] text-retro-primary opacity-60">
-                  + ACHIEVEMENT
+            )}
+            <p className="text-2xl md:text-3xl leading-relaxed text-retro-text opacity-90 font-retro min-h-[100px]">
+              {displayedText}
+              {isTyping && <span className="inline-block w-2 h-6 bg-retro-accent ml-1 animate-pulse" />}
+            </p>
+          </div>
+
+          <div className="p-8 space-y-4 mb-8 min-h-[300px]">
+            {!isTyping && node.choices.map((choice, i) => (
+              <button
+                key={i}
+                onMouseEnter={() => { audio.playHover(); setHoveredChoice(i); }}
+                onMouseLeave={() => setHoveredChoice(null)}
+                onClick={() => handleChoice(choice)}
+                className={`choice-btn w-full text-left font-retro opacity-0 animate-pop-in ${hoveredChoice === i ? 'selected' : ''}`}
+                style={{ animationDelay: `${i * 150}ms` }}
+              >
+                <span className="flex items-center gap-3">
+                  {choice.icon && (
+                    <span className="font-pixel text-xs text-retro-primary opacity-70">[{choice.icon}]</span>
+                  )}
+                  {choice.label}
                 </span>
-              )}
-            </button>
-          ))}
+                {choice.unlocksAlgorithm && (
+                  <span className="font-pixel text-[8px] text-retro-primary opacity-60">
+                    + ACHIEVEMENT
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          <footer className="px-8 py-4 border-t border-retro-accent/10 flex justify-between items-center text-[10px] font-pixel text-retro-muted">
+            <span>ALGORITHMS UNLOCKED: {unlockedAlgorithms.length}</span>
+            <span className="opacity-50 tracking-widest">[SHIFT] FAST_FORWARD</span>
+          </footer>
         </div>
 
-        <footer className="px-8 py-4 border-t border-retro-accent/10 flex justify-between items-center text-[10px] font-pixel text-retro-muted">
-          <span>ALGORITHMS UNLOCKED: {unlockedAlgorithms.length}</span>
-          <span className="opacity-50 tracking-widest">[SHIFT] FAST_FORWARD</span>
-        </footer>
+        {/* RIGHT COLUMN: Spacer for background */}
+        <div className="w-1/2 h-full pointer-events-none" />
       </div>
 
-      {/* RIGHT COLUMN: Spacer for background */}
-      <div className="w-1/2 h-full pointer-events-none" />
-    </div>
+      {showSettings && (
+        <SettingsModal 
+          settings={settings} 
+          onChangeSettings={setSettings} 
+          onClose={() => setShowSettings(false)} 
+          onResetProgress={() => {
+            setUnlockedAlgorithms([])
+            setCurrentChapter(1)
+            setCurrentNode('start')
+          }}
+        />
+      )}
+    </>
   )
 }
