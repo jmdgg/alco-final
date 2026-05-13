@@ -105,50 +105,92 @@
     },
     {
       "id": 2,
-      "title": "THE DEBUGGING MARATHON",
+      "title": "SEARCHING & PATTERN MATCHING",
       "nodes": {
         "start": {
-          "text": "A stack overflow is crashing your recursive solution. Leo is sighing over his lukewarm cup of coffee. \"We need to replace this sorting mechanism, but which approach fits best?\"",
-          "speaker": "Leo",
+          "text": "Cassie is staring intently at her laptop screen in VS Code. \"Guys, our database login system keeps accepting duplicate user registrations. It's messing up the backend!\"",
+          "speaker": "Cassie",
           "choices": [
             {
-              "label": "Implement Quick Sort",
-              "nextNode": "quicksort_path",
-              "unlocksAlgorithm": "Quick Sort",
-              "icon": "⚡"
-            },
-            {
-              "label": "Implement Bubble Sort",
-              "nextNode": "bubblesort_path",
-              "unlocksAlgorithm": "Bubble Sort",
-              "icon": "🫧"
+              "label": "Use UniqueElements (Validation)",
+              "nextNode": "unique_elements_node",
+              "unlocksAlgorithm": "Unique Elements"
             }
           ]
         },
-        "quicksort_path": {
-          "text": "The O(N log N) recursive tree completes partition divisions in milliseconds. The stack overflow is resolved. Leo raises his coffee mug in victory!\n\n\"Brilliant. Efficient sorting saved our stack!\"",
-          "speaker": "Leo",
+        "unique_elements_node": {
+          "text": "\"Good call! By checking if all usernames in the collection are distinct, we prevented duplicates,\" Cassie smiles. Just then, Mikaela bursts into the room holding up her phone. \"The Alco quiz results are out! Whoever got the highest score has to treat the whole class to lunch!\"",
+          "speaker": "Mikaela",
           "choices": [
             {
-              "label": "Finish Chapter 2",
+              "label": "Use MaxElement (Iteration)",
+              "nextNode": "max_element_node",
+              "unlocksAlgorithm": "Max Element"
+            }
+          ]
+        },
+        "max_element_node": {
+          "text": "\"By iterating through the array and maintaining a variable tracking the largest value, we found the top scorer!\" Dodo groans, \"Wow, I got the highest score... goodbye allowance. Come on, let's head out. We need to catch a jeep at the terminal.\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Use Sequential Search (Linear Search)",
+              "nextNode": "sequential_search_node",
+              "unlocksAlgorithm": "Sequential Search"
+            }
+          ]
+        },
+        "sequential_search_node": {
+          "text": "At the bustling jeepney terminal, you scan linearly from start to finish to find the correct jeep route. You board successfully and arrive at the karaoke spot! Inigo is flipping through a massive, sorted karaoke songbook looking for his favorite OPM song. \"There are thousands of songs here! How do we find it fast?\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Use Binary Search (Divide & Conquer)",
+              "nextNode": "binary_search_node",
+              "unlocksAlgorithm": "Binary Search"
+            },
+            {
+              "label": "Use Interpolation Search (Improved Search)",
+              "nextNode": "interpolation_search_node",
+              "unlocksAlgorithm": "Interpolation Search"
+            }
+          ]
+        },
+        "binary_search_node": {
+          "text": "By repeatedly dividing the sorted songbook interval in half O(log N), Inigo finds his OPM song efficiently! While Inigo sings his heart out, Cassie pulls out her phone to play a multiplayer RPG game. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use BF String Matching (String Processing)",
+              "nextNode": "bf_string_node",
+              "unlocksAlgorithm": "BF String Matching"
+            }
+          ]
+        },
+        "interpolation_search_node": {
+          "text": "Knowing the songbook is uniformly distributed alphabetically, you estimate the target position based on value. Instant match! While Inigo sings his heart out, Cassie pulls out her phone to play a multiplayer RPG game. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use BF String Matching (String Processing)",
+              "nextNode": "bf_string_node",
+              "unlocksAlgorithm": "BF String Matching"
+            }
+          ]
+        },
+        "bf_string_node": {
+          "text": "Aligning the pattern at every possible position until a match is found, Cassie successfully locates and adds her friend to the RPG guild party!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Complete Chapter 2",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
-        "bubblesort_path": {
-          "text": "The O(N^2) iterations take excessive time and exhaust the stack on larger datasets. Anya looks worried.\n\n\"That's too slow. We need a more performant sorting algorithm.\"",
-          "speaker": "Anya",
-          "choices": [
-            {
-              "label": "Try again",
-              "nextNode": "start",
-              "unlocksAlgorithm": null
-            }
-          ]
-        },
         "end_chapter": {
-          "text": "You have resolved the recursion bottleneck. Leo can finally rest. But tomorrow's exams are already looming.\n\n*Chapter 2 Completed.*",
+          "text": "From debugging login validation to finding jeepneys and belting out OPM hits, your searching and pattern matching skills saved the day!\n\n*Searching & Pattern Matching Chapter Completed.*",
           "speaker": "Narrator",
           "choices": [
             {
@@ -443,11 +485,56 @@
     {
       "id": "Binary Search",
       "title": "BINARY SEARCH",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Binary Search related tasks and system optimizations.",
-      "pseudocode": "function binarysearch() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🌳"
+      "category": "Searching & Pattern Matching",
+      "definition": "Efficiently finds a target in a sorted array by repeatedly dividing the search interval in half.",
+      "useCase": "Finding your favorite OPM song in a karaoke songbook.",
+      "pseudocode": "function binarySearch(arr, target):\n  low = 0, high = arr.length - 1\n  while low <= high:\n    mid = (low + high) / 2\n    if arr[mid] == target: return mid\n    else if arr[mid] < target: low = mid + 1\n    else: high = mid - 1\n  return -1",
+      "icon": "📖"
+    },
+    {
+      "id": "Sequential Search",
+      "title": "SEQUENTIAL SEARCH",
+      "category": "Searching & Pattern Matching",
+      "definition": "Scans a list linearly from start to finish to find a target value or determine its absence.",
+      "useCase": "Finding the correct jeep to take in a jeepney terminal.",
+      "pseudocode": "function sequentialSearch(arr, target):\n  for i = 0 to arr.length - 1:\n    if arr[i] == target: return i\n  return -1",
+      "icon": "🛺"
+    },
+    {
+      "id": "Interpolation Search",
+      "title": "INTERPOLATION SEARCH",
+      "category": "Searching & Pattern Matching",
+      "definition": "An improvement on binary search for uniformly distributed sorted data that estimates the target's position based on its value.",
+      "useCase": "Finding your favorite OPM song in a karaoke songbook.",
+      "pseudocode": "function interpolationSearch(arr, target):\n  low = 0, high = arr.length - 1\n  while low <= high and target >= arr[low] and target <= arr[high]:\n    pos = low + ((target - arr[low]) * (high - low)) / (arr[high] - arr[low])\n    if arr[pos] == target: return pos\n    else if arr[pos] < target: low = pos + 1\n    else: high = pos - 1\n  return -1",
+      "icon": "🎯"
+    },
+    {
+      "id": "Max Element",
+      "title": "MAX ELEMENT",
+      "category": "Searching & Pattern Matching",
+      "definition": "Iterates through an array while maintaining a variable that tracks the largest value encountered.",
+      "useCase": "Finding who got the highest score in the alco quiz who will treat the whole class.",
+      "pseudocode": "function maxElement(arr):\n  maxVal = arr[0]\n  for i = 1 to arr.length - 1:\n    if arr[i] > maxVal: maxVal = arr[i]\n  return maxVal",
+      "icon": "👑"
+    },
+    {
+      "id": "Unique Elements",
+      "title": "UNIQUE ELEMENTS",
+      "category": "Searching & Pattern Matching",
+      "definition": "Checks if all elements in a collection are distinct by comparing each pair or using a frequency tracker.",
+      "useCase": "Used in unique username login systems for the database system in VS code.",
+      "pseudocode": "function uniqueElements(arr):\n  seen = new Set()\n  for item in arr:\n    if seen.has(item): return false\n    seen.add(item)\n  return true",
+      "icon": "🛡️"
+    },
+    {
+      "id": "BF String Matching",
+      "title": "BF STRING MATCHING",
+      "category": "Searching & Pattern Matching",
+      "definition": "Checks for a pattern within a text by aligning it at every possible position until a match is found.",
+      "useCase": "Finding your friend to add him in the rpg game (Brute Force).",
+      "pseudocode": "function bfStringMatch(text, pattern):\n  n = text.length, m = pattern.length\n  for i = 0 to n - m:\n    j = 0\n    while j < m and text[i + j] == pattern[j]: j++\n    if j == m: return i\n  return -1",
+      "icon": "⚔️"
     },
     {
       "id": "DFS",
