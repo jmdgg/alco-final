@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import gameData from './data/gameData.json'
 import { audio } from './utils/audioEngine'
 
@@ -27,16 +27,16 @@ function TitleScreen({ onStart }) {
   const [selected, setSelected] = useState(0)
   const [showAbout, setShowAbout] = useState(false)
 
-  const handleStart = () => {
+  const handleStart = useCallback(() => {
     audio.init()
     audio.playSelect()
     onStart()
-  }
+  }, [onStart])
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     { label: 'SYSTEM BOOT', action: handleStart },
     { label: 'JOURNAL', action: () => { audio.playSelect(); onStart('journal'); } },
-  ]
+  ], [handleStart, onStart])
 
   useEffect(() => {
     const handler = (e) => {
@@ -69,20 +69,20 @@ function TitleScreen({ onStart }) {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-[#1a1c2c] crt-screen">
-      {/* Dark starry background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#1a1c2c] via-[#262b44] to-[#68386c]" />
+      {/* Dark underlayer background to maintain rich contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#111424] via-[#1a1c2c] to-[#2e1d3c]" />
 
       <div
-        className="absolute inset-0 bg-cover bg-bottom bg-no-repeat opacity-50"
-        style={{ backgroundImage: 'url(/title-bg.png)', imageRendering: 'pixelated' }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90"
+        style={{ backgroundImage: 'url(/bedroom-dev-bg.png)', imageRendering: 'pixelated' }}
       />
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full">
-        <div className="mb-16 text-center">
-          <h1 className="font-pixel text-[#73eff7] text-3xl md:text-5xl leading-normal tracking-tighter drop-shadow-[4px_4px_0_rgba(0,0,0,0.5)]">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full w-full">
+        <div className="mb-16 text-center bg-slate-950/65 backdrop-blur-[2px] border-y-4 border-[#3a495e] py-6 px-8 md:px-20 max-w-3xl w-full shadow-[0_10px_25px_rgba(0,0,0,0.6)] animate-pop-in">
+          <h1 className="font-pixel text-[#73eff7] text-3xl md:text-5xl leading-normal tracking-tighter pixel-text-outline-large">
             CCS STUDENT:
           </h1>
-          <p className="font-pixel text-[#f7d354] text-sm md:text-base mt-2 tracking-widest drop-shadow-[2px_2px_0_rgba(0,0,0,0.5)]">
+          <p className="font-pixel text-[#f7d354] text-sm md:text-base mt-2 tracking-widest pixel-text-outline-small">
             A DAY IN THE LIFE
           </p>
         </div>
@@ -96,10 +96,11 @@ function TitleScreen({ onStart }) {
                 if (selected !== i) audio.playHover()
                 setSelected(i)
               }}
-              className={`font-pixel text-xs md:text-sm tracking-wide transition-all px-8 py-3 
-                ${selected === i ? 'text-[#f7d354] scale-110' : 'text-[#8b9bb4]'}`}
+              className={`btn-pixel-menu ${selected === i ? 'selected text-[#f7d354]' : ''}`}
             >
-              <span className={`inline-block mr-3 ${selected === i ? 'animate-selector opacity-100' : 'opacity-0'}`}>▶</span>
+              <span className={`inline-block mr-3 transition-all ${selected === i ? 'opacity-100 animate-[bounce-right_0.8s_steps(2)_infinite]' : 'opacity-0 w-0 overflow-hidden'}`}>
+                ▶
+              </span>
               {item.label}
             </button>
           ))}
@@ -130,14 +131,12 @@ function TitleScreen({ onStart }) {
    Journal Screen
    ═══════════════════════════════════════════ */
 function JournalScreen({ onClose, unlockedAlgorithms }) {
-  const allAlgorithms = gameData.algorithms || []
-  const [selectedAlgoIndex, setSelectedAlgoIndex] = useState(0)
-
-  useEffect(() => {
-    // Select the first unlocked algorithm by default
-    const unlockedIdx = allAlgorithms.findIndex(a => unlockedAlgorithms.includes(a.id))
-    if (unlockedIdx !== -1) setSelectedAlgoIndex(unlockedIdx)
-  }, [allAlgorithms, unlockedAlgorithms])
+  const allAlgorithms = useMemo(() => gameData.algorithms || [], [])
+  const [selectedAlgoIndex, setSelectedAlgoIndex] = useState(() => {
+    const all = gameData.algorithms || []
+    const unlockedIdx = all.findIndex(a => unlockedAlgorithms.includes(a.id))
+    return unlockedIdx !== -1 ? unlockedIdx : 0
+  })
 
   const selectedAlgo = allAlgorithms[selectedAlgoIndex]
 
@@ -290,9 +289,12 @@ export default function App() {
   // Typewriter Effect logic
   useEffect(() => {
     if (screen !== 'game' || !node) return;
-    setDisplayedText('')
-    setTextIndex(0)
-    setIsTyping(true)
+    const timer = setTimeout(() => {
+      setDisplayedText('')
+      setTextIndex(0)
+      setIsTyping(true)
+    }, 0)
+    return () => clearTimeout(timer)
   }, [node, screen])
 
   useEffect(() => {
@@ -306,7 +308,10 @@ export default function App() {
       }, 30)
       return () => clearTimeout(timer)
     } else {
-      setIsTyping(false)
+      const timer = setTimeout(() => {
+        setIsTyping(false)
+      }, 0)
+      return () => clearTimeout(timer)
     }
   }, [textIndex, isTyping, node, screen])
 
