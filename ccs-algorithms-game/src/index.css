@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+/* ===== CCS Student: Daytime Inviting Theme ===== */
+@theme {
+  /* --- Positive & Inviting Palette (Beiges, Light Blues, Soft Greens) --- */
+  --color-retro-bg: #f5f5dc;
+  /* Beige / Cream background */
+  --color-retro-dark: #e8e4d9;
+  /* Slightly darker beige for panels */
+  --color-retro-panel: rgba(245, 245, 220, 0.9);
+  --color-retro-accent: #2980b9;
+  /* Stronger Blue for contrast */
+  --color-retro-primary: #27ae60;
+  /* Darker Green for visibility */
+  --color-retro-secondary: #3498db;
+  /* Vibrant Blue */
+  --color-retro-text: #2c3e50;
+  /* Deep Navy-Gray for text */
+  --color-retro-muted: #5d6d7e;
+  /* Muted Blue-Gray */
+  --color-retro-gold: #d4af37;
+  /* Soft gold for selection */
+  --color-retro-border: rgba(74, 144, 226, 0.3);
+
+  /* --- Fonts --- */
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-retro: 'VT323', monospace;
+}
+
+/* ===== Base Layer ===== */
+@layer base {
+  html {
+    image-rendering: pixelated;
+    background-color: var(--color-retro-bg);
+  }
+
+  body {
+    font-family: var(--font-retro);
+    color: var(--color-retro-text);
+    min-height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: none;
+  }
+}
+
+/* ===== Soft Atmosphere Utilities ===== */
+@layer utilities {
+
+  /* Subtle Scanlines (preserved for pixel vibe) */
+  .scanlines::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.05) 50%);
+    z-index: 100;
+    background-size: 100% 4px;
+    pointer-events: none;
+  }
+
+  /* Bloom - Softer for daytime */
+  .glow-accent {
+    text-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+  }
+
+  .glow-primary {
+    text-shadow: 0 0 5px rgba(80, 200, 120, 0.3);
+  }
+
+  /* Dialogue Box - Light & Inviting */
+  .dialogue-panel {
+    background: rgba(224, 242, 254, 0.75); /* Translucent Sky Blue */
+    border-right: 2px solid var(--color-retro-accent);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Choice Button - Premium RPG Menu Style */
+  .choice-btn {
+    position: relative;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+    border: 2px solid var(--color-retro-border);
+    color: var(--color-retro-text);
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    transition: all 0.1s steps(2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.05); /* Soft Pixel Shadow */
+  }
+
+  .choice-btn:hover,
+  .choice-btn.selected {
+    border-color: var(--color-retro-accent);
+    color: var(--color-retro-accent);
+    background: white;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-retro-accent); /* Blue Accent Shadow */
+  }
+
+  .choice-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0 var(--color-retro-accent);
+  }
+
+  .choice-btn.selected::before {
+    content: '▶';
+    position: absolute;
+    left: -24px;
+    color: var(--color-retro-accent);
+    animation: bounce-right 0.8s steps(2) infinite;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+  }
+
+  @keyframes bounce-right {
+
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    50% {
+      transform: translateX(5px);
+    }
+  }
+
+  /* Image Side - Daytime Filter */
+  .collage-side {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    image-rendering: pixelated;
+  }
+
+  .collage-side::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(245, 245, 220, 0.4) 0%, transparent 20%, transparent 80%, rgba(245, 245, 220, 0.4) 100%);
+    pointer-events: none;
+  }
+
+  @keyframes pop-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.9) translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .animate-pop-in {
+    animation: pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  /* Retro Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-retro-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-retro-accent);
+  }
+}

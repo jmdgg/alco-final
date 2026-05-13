@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "title": "A Day in the Life of a CCS Student",
+    "description": "Navigate the pressures of a Computer Science curriculum at AUF.",
+    "version": "1.0.0"
+  },
+  "chapters": [
+    {
+      "id": 1,
+      "title": "THE SERVER OUTAGE",
+      "nodes": {
+        "start": {
+          "text": "Anya looks at the flickering terminal. \"The response time is abysmal!\" she exclaims, nervously tapping her mechanical keyboard. \"The entire deployment is deadlocked. The pressure is suffocating.\"",
+          "speaker": "Anya",
+          "choices": [
+            {
+              "label": "Implement Dijkstra's Algorithm",
+              "nextNode": "dijkstra_path",
+              "unlocksAlgorithm": "Dijkstra's Algorithm",
+              "icon": "+"
+            },
+            {
+              "label": "Check the brute-force nested loops.",
+              "nextNode": "brute_force_path",
+              "unlocksAlgorithm": null,
+              "icon": null
+            },
+            {
+              "label": "Optimize with a Hash Map",
+              "nextNode": "hashmap_path",
+              "unlocksAlgorithm": "Hash Map",
+              "icon": "-"
+            }
+          ]
+        },
+        "dijkstra_path": {
+          "text": "You methodically map out the shortest path to the core services. The nodes begin to stabilize as traffic is routed away from the congestion. Anya sighs in relief.\n\n\"Efficient routing saved us. But wait, what's that spike in the database logs?\"",
+          "speaker": "System",
+          "choices": [
+            {
+              "label": "Investigate the database spike.",
+              "nextNode": "end_demo",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "brute_force_path": {
+          "text": "You spend hours combing through every single loop. The code is a mess, and while you find a few redundancies, the system is still sluggish. Anya looks disappointed.\n\n\"We need a more algorithmic approach, not just more eyes on the code.\"",
+          "speaker": "Anya",
+          "choices": [
+            {
+              "label": "Try to optimize with a proper algorithm.",
+              "nextNode": "start",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "hashmap_path": {
+          "text": "By replacing the linear scans with O(1) lookups, the bottleneck disappears instantly. The terminal stops flickering. Anya flashes a quick, tired smile.\n\n\"Linear time was killing us. Constant time is the way to go.\"",
+          "speaker": "Anya",
+          "choices": [
+            {
+              "label": "Move on to Chapter 2: The Debugging Marathon.",
+              "nextNode": "end_demo",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "end_demo": {
+          "text": "The servers are stable for now, but the day is just beginning. In the distance, you can hear the faint hum of the server room air conditioning. Another challenge awaits tomorrow.\n\n*To be continued...*",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "RESTART STORY",
+              "nextNode": "start",
+              "unlocksAlgorithm": null
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "algorithms": {
+    "Dijkstra's Algorithm": {
+      "category": "Graph Algorithms",
+      "timeComplexity": "O(E + V log V)",
+      "spaceComplexity": "O(V)",
+      "description": "Finds the shortest paths between nodes in a graph, which may represent, for example, road networks.",
+      "icon": "📍"
+    },
+    "Hash Map": {
+      "category": "Data Structures",
+      "timeComplexity": "O(1) Average",
+      "spaceComplexity": "O(n)",
+      "description": "A structure that can map keys to values, providing efficient lookup, insertion, and deletion.",
+      "icon": "🗝️"
+    },
+    "Bubble Sort": {
+      "category": "Sorting",
+      "timeComplexity": "O(n²)",
+      "spaceComplexity": "O(1)",
+      "description": "Repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.",
+      "icon": "🫧"
+    }
+  }
+}
