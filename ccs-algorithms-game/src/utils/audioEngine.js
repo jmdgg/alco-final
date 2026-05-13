@@ -8,18 +8,22 @@ class AudioEngine {
     this.ctx = null;
     this.masterGain = null;
     this.enabled = false;
+    this.masterVolumeSetting = 0.5; // Persistent volume setting (0 to 1)
+    this.bgmVolumeSetting = 0.5;    // Persistent BGM volume setting (0 to 1)
   }
 
   init() {
     if (this.ctx) return;
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     this.masterGain = this.ctx.createGain();
-    this.masterGain.gain.value = 0.2; // Global volume
+    // Map master volume (0.0 to 1.0) to actual safe gain limit (0.0 to 0.4)
+    this.masterGain.gain.value = this.masterVolumeSetting * 0.4;
     this.masterGain.connect(this.ctx.destination);
     
     // Background Music specific gain
     this.bgmGain = this.ctx.createGain();
-    this.bgmGain.gain.value = 0.15; // Lower volume for BGM
+    // Map relative BGM volume (0.0 to 1.0) to safe gain limit (0.0 to 0.3)
+    this.bgmGain.gain.value = this.bgmVolumeSetting * 0.3;
     this.bgmGain.connect(this.masterGain);
 
     this.enabled = true;
@@ -309,6 +313,20 @@ class AudioEngine {
 
     osc.start(time);
     osc.stop(time + 0.25);
+  }
+
+  setMasterVolume(val) {
+    this.masterVolumeSetting = val;
+    if (this.masterGain) {
+      this.masterGain.gain.value = val * 0.4;
+    }
+  }
+
+  setBgmVolume(val) {
+    this.bgmVolumeSetting = val;
+    if (this.bgmGain) {
+      this.bgmGain.gain.value = val * 0.3;
+    }
   }
 }
 

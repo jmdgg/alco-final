@@ -282,6 +282,66 @@
       -2px  0px 0 #000,  2px  0px 0 #000,  0px -2px 0 #000,  0px  2px 0 #000,
        3px  3px 0px rgba(0, 0, 0, 0.7);
   }
+  /* Retro Sliders & Controls */
+  .pixel-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 14px;
+    background: #111424;
+    border: 3px solid #8b9bb4;
+    outline: none;
+    image-rendering: pixelated;
+  }
+
+  .pixel-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #f7d354;
+    border: 3px solid #000;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 #000;
+  }
+
+  .pixel-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #f7d354;
+    border: 3px solid #000;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 #000;
+  }
+
+  /* Retro Checkbox Styling */
+  .pixel-checkbox {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #8b9bb4;
+    background-color: #111424;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    image-rendering: pixelated;
+    vertical-align: middle;
+  }
+
+  .pixel-checkbox:checked {
+    border-color: #f7d354;
+    background-color: #f7d354;
+  }
+
+  .pixel-checkbox:checked::after {
+    content: '✔';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #111424;
+    font-size: 14px;
+    font-family: var(--font-pixel);
+  }
 
   /* Retro Scrollbar */
   ::-webkit-scrollbar {

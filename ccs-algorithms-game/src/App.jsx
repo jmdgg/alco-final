@@ -5,7 +5,7 @@ import { audio } from './utils/audioEngine'
 /* ═══════════════════════════════════════════
    Atmosphere
    ═══════════════════════════════════════════ */
-function Atmosphere({ showCollage }) {
+function Atmosphere({ showCollage, crtEffect }) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       <div className="absolute inset-0 bg-retro-bg" />
@@ -15,7 +15,7 @@ function Atmosphere({ showCollage }) {
           style={{ backgroundImage: 'url(/story-collage.png)', imageRendering: 'pixelated' }}
         />
       )}
-      <div className="absolute inset-0 scanlines opacity-10" />
+      {crtEffect !== false && <div className="absolute inset-0 scanlines opacity-10" />}
     </div>
   )
 }
@@ -23,7 +23,7 @@ function Atmosphere({ showCollage }) {
 /* ═══════════════════════════════════════════
    Title Screen
    ═══════════════════════════════════════════ */
-function TitleScreen({ onStart }) {
+function TitleScreen({ onStart, onOpenSettings, crtEffect }) {
   const [selected, setSelected] = useState(0)
   const [showAbout, setShowAbout] = useState(false)
 
@@ -36,7 +36,8 @@ function TitleScreen({ onStart }) {
   const menuItems = useMemo(() => [
     { label: 'SYSTEM BOOT', action: handleStart },
     { label: 'JOURNAL', action: () => { audio.playSelect(); onStart('journal'); } },
-  ], [handleStart, onStart])
+    { label: 'SETTINGS', action: () => { audio.playSelect(); onOpenSettings(); } },
+  ], [handleStart, onStart, onOpenSettings])
 
   useEffect(() => {
     const handler = (e) => {
@@ -68,7 +69,7 @@ function TitleScreen({ onStart }) {
   }, [selected, showAbout, menuItems])
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-[#1a1c2c] crt-screen">
+    <div className={`relative h-screen w-full overflow-hidden bg-[#1a1c2c] ${crtEffect ? 'crt-screen' : ''}`}>
       {/* Dark underlayer background to maintain rich contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111424] via-[#1a1c2c] to-[#2e1d3c]" />
 
@@ -76,6 +77,8 @@ function TitleScreen({ onStart }) {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90"
         style={{ backgroundImage: 'url(/bedroom-dev-bg.png)', imageRendering: 'pixelated' }}
       />
+
+      {crtEffect && <div className="absolute inset-0 scanlines opacity-10 pointer-events-none z-20" />}
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full w-full">
         <div className="mb-16 text-center bg-slate-950/65 backdrop-blur-[2px] border-y-4 border-[#3a495e] py-6 px-8 md:px-20 max-w-3xl w-full shadow-[0_10px_25px_rgba(0,0,0,0.6)] animate-pop-in">
@@ -259,10 +262,199 @@ function JournalScreen({ onClose, unlockedAlgorithms }) {
 }
 
 /* ═══════════════════════════════════════════
+   Settings Modal Component
+   ═══════════════════════════════════════════ */
+function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress }) {
+  const [resetConfirm, setResetConfirm] = useState(false)
+
+  const handleVolumeChange = (e) => {
+    const val = parseFloat(e.target.value)
+    onChangeSettings(prev => ({ ...prev, masterVolume: val }))
+  }
+
+  const handleBgmChange = (e) => {
+    const val = parseFloat(e.target.value)
+    onChangeSettings(prev => ({ ...prev, bgmVolume: val }))
+  }
+
+  const handleSpeedChange = (speed) => {
+    audio.playSelect()
+    onChangeSettings(prev => ({ ...prev, typewriterSpeed: speed }))
+  }
+
+  const handleCrtChange = (e) => {
+    audio.playSelect()
+    onChangeSettings(prev => ({ ...prev, crtEffect: e.target.checked }))
+  }
+
+  const triggerReset = () => {
+    audio.playSelect()
+    if (!resetConfirm) {
+      setResetConfirm(true)
+    } else {
+      onResetProgress()
+      setResetConfirm(false)
+      audio.playAdvance()
+      onClose()
+    }
+  }
+
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-[1px] px-4">
+      <div className="bg-[#1a1c2c] border-4 border-[#3a495e] p-8 max-w-md w-full shadow-[0_15px_35px_rgba(0,0,0,0.8)] animate-pop-in font-retro text-white">
+        <h2 className="font-pixel text-[#f7d354] text-center text-xs md:text-sm mb-8 uppercase tracking-widest text-shadow-md">
+          [ SYSTEM CONFIG ]
+        </h2>
+
+        <div className="space-y-6 font-retro">
+          {/* Master Volume */}
+          <div className="space-y-2">
+            <div className="flex justify-between font-pixel text-[8px] md:text-[10px] text-[#8b9bb4]">
+              <span>MASTER_VOLUME</span>
+              <span>{Math.round(settings.masterVolume * 100)}%</span>
+            </div>
+            <input 
+              type="range" 
+              min="0" 
+              max="1" 
+              step="0.05" 
+              value={settings.masterVolume} 
+              onChange={handleVolumeChange}
+              onMouseUp={() => audio.playSelect()}
+              className="w-full pixel-slider"
+            />
+          </div>
+
+          {/* BGM Volume */}
+          <div className="space-y-2">
+            <div className="flex justify-between font-pixel text-[8px] md:text-[10px] text-[#8b9bb4]">
+              <span>BGM_VOLUME</span>
+              <span>{Math.round(settings.bgmVolume * 100)}%</span>
+            </div>
+            <input 
+              type="range" 
+              min="0" 
+              max="1" 
+              step="0.05" 
+              value={settings.bgmVolume} 
+              onChange={handleBgmChange}
+              onMouseUp={() => audio.playSelect()}
+              className="w-full pixel-slider"
+            />
+          </div>
+
+          {/* Typewriter Speed */}
+          <div className="space-y-3">
+            <span className="block font-pixel text-[8px] md:text-[10px] text-[#8b9bb4]">TEXT_SPEED</span>
+            <div className="grid grid-cols-4 gap-2">
+              {['slow', 'normal', 'fast', 'instant'].map((sp) => (
+                <button
+                  key={sp}
+                  onClick={() => handleSpeedChange(sp)}
+                  onMouseEnter={() => audio.playHover()}
+                  className={`font-pixel text-[6px] md:text-[8px] py-2 border-2 text-center transition-all cursor-pointer uppercase ${
+                    settings.typewriterSpeed === sp 
+                      ? 'border-[#f7d354] text-[#f7d354] bg-[#2c2f44]' 
+                      : 'border-[#3a495e] text-[#8b9bb4] hover:border-white hover:text-white'
+                  }`}
+                >
+                  {sp}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* CRT Overlay Toggle */}
+          <div className="flex items-center justify-between py-2 border-t border-b border-[#3a495e]/50">
+            <span className="font-pixel text-[8px] md:text-[10px] text-[#8b9bb4]">CRT_EMULATION</span>
+            <input 
+              type="checkbox" 
+              checked={settings.crtEffect}
+              onChange={handleCrtChange}
+              className="pixel-checkbox"
+            />
+          </div>
+
+          {/* Reset progress */}
+          {onResetProgress && (
+            <div className="pt-2">
+              <button
+                onClick={triggerReset}
+                onMouseEnter={() => audio.playHover()}
+                className={`w-full font-pixel text-[6px] md:text-[8px] py-2 border-2 text-center transition-all cursor-pointer uppercase ${
+                  resetConfirm 
+                    ? 'border-red-500 text-red-500 bg-red-950/20 animate-pulse' 
+                    : 'border-[#3a495e] text-[#8b9bb4] hover:border-red-500 hover:text-red-500'
+                }`}
+              >
+                {resetConfirm ? 'CONFIRM_RESET ?' : 'RESET_SYSTEM_PROGRESS'}
+              </button>
+              {resetConfirm && (
+                <button 
+                  onClick={() => { audio.playSelect(); setResetConfirm(false); }}
+                  className="w-full text-center font-retro text-red-400 text-xs mt-1 hover:underline cursor-pointer uppercase"
+                >
+                  [ CANCEL_ABORT ]
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Close Button */}
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={() => { audio.playSelect(); onClose(); }}
+            onMouseEnter={() => audio.playHover()}
+            className="btn-pixel-menu text-[10px] md:text-xs w-full py-2"
+          >
+            CONFIRM & CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════
    Main Game Screen
    ═══════════════════════════════════════════ */
 export default function App() {
   const [screen, setScreen] = useState('title')
+  const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem('ccs_student_settings')
+    if (saved) {
+      try {
+        return JSON.parse(saved)
+      } catch {
+        // default settings
+      }
+    }
+    return {
+      masterVolume: 0.5,
+      bgmVolume: 0.5,
+      typewriterSpeed: 'normal',
+      crtEffect: true
+    }
+  })
+  const [showSettings, setShowSettings] = useState(false)
+
+  // Sync settings to localStorage and audioEngine
+  useEffect(() => {
+    localStorage.setItem('ccs_student_settings', JSON.stringify(settings))
+    audio.setMasterVolume(settings.masterVolume)
+    audio.setBgmVolume(settings.bgmVolume)
+  }, [settings])
+
+  const speedMap = useMemo(() => ({
+    slow: 60,
+    normal: 30,
+    fast: 10,
+    instant: 0
+  }), [])
+
+  const typewriterDelay = speedMap[settings.typewriterSpeed] ?? 30
+
   const [currentChapter, setCurrentChapter] = useState(1)
   const [currentNode, setCurrentNode] = useState('start')
   const [unlockedAlgorithms, setUnlockedAlgorithms] = useState([])
@@ -290,12 +482,18 @@ export default function App() {
   useEffect(() => {
     if (screen !== 'game' || !node) return;
     const timer = setTimeout(() => {
-      setDisplayedText('')
-      setTextIndex(0)
-      setIsTyping(true)
+      if (settings.typewriterSpeed === 'instant') {
+        setDisplayedText(node.text)
+        setTextIndex(node.text.length)
+        setIsTyping(false)
+      } else {
+        setDisplayedText('')
+        setTextIndex(0)
+        setIsTyping(true)
+      }
     }, 0)
     return () => clearTimeout(timer)
-  }, [node, screen])
+  }, [node, screen, settings.typewriterSpeed])
 
   useEffect(() => {
     if (screen !== 'game' || !node || !isTyping) return;
@@ -305,7 +503,7 @@ export default function App() {
         setDisplayedText(node.text.slice(0, textIndex + 1))
         audio.playTypewriter()
         setTextIndex(prev => prev + 1)
-      }, 30)
+      }, typewriterDelay)
       return () => clearTimeout(timer)
     } else {
       const timer = setTimeout(() => {
@@ -313,7 +511,7 @@ export default function App() {
       }, 0)
       return () => clearTimeout(timer)
     }
-  }, [textIndex, isTyping, node, screen])
+  }, [textIndex, isTyping, node, screen, typewriterDelay])
 
   // Choice Pop Sounds
   useEffect(() => {
@@ -371,106 +569,170 @@ export default function App() {
     setCurrentNode(choice.nextNode)
   }
 
+  // Settings Escape listener
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        audio.playSelect()
+        setShowSettings(prev => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => window.removeEventListener('keydown', handleEsc)
+  }, [])
+
   if (screen === 'title') {
-    return <TitleScreen onStart={(target = 'game') => setScreen(target)} />
+    return (
+      <>
+        <TitleScreen 
+          onStart={(target = 'game') => setScreen(target)} 
+          onOpenSettings={() => setShowSettings(true)}
+          crtEffect={settings.crtEffect}
+        />
+        {showSettings && (
+          <SettingsModal 
+            settings={settings} 
+            onChangeSettings={setSettings} 
+            onClose={() => setShowSettings(false)} 
+            onResetProgress={() => {
+              setUnlockedAlgorithms([])
+              setCurrentChapter(1)
+              setCurrentNode('start')
+            }}
+          />
+        )}
+      </>
+    )
   }
 
   if (screen === 'journal') {
-    return <JournalScreen onClose={() => setScreen('title')} unlockedAlgorithms={unlockedAlgorithms} />
+    return (
+      <>
+        <JournalScreen onClose={() => setScreen('title')} unlockedAlgorithms={unlockedAlgorithms} />
+        {showSettings && (
+          <SettingsModal 
+            settings={settings} 
+            onChangeSettings={setSettings} 
+            onClose={() => setShowSettings(false)} 
+          />
+        )}
+      </>
+    )
   }
 
   if (!chapter || !node) return null
 
   return (
-    <div className="flex h-screen w-full bg-retro-bg overflow-hidden font-retro">
-      <Atmosphere showCollage={true} />
+    <>
+      <div className={`flex h-screen w-full bg-retro-bg overflow-hidden font-retro ${settings.crtEffect ? 'crt-screen' : ''}`}>
+        <Atmosphere showCollage={true} crtEffect={settings.crtEffect} />
 
-      {/* LEFT COLUMN: Narrative & Choices */}
-      <div className="w-1/2 flex flex-col dialogue-panel z-10 relative">
-        <header className="px-8 pt-8 pb-4 flex justify-between items-start">
-          <h2 className="font-pixel text-retro-accent text-sm md:text-base glow-accent tracking-tighter uppercase">
-            CHAPTER {chapter.id}: {chapter.title}
-          </h2>
-          <div className="flex gap-4">
-            <button
-              onClick={() => { audio.playSelect(); setScreen('journal'); }}
-              className="font-pixel text-[8px] text-retro-primary hover:text-retro-accent transition-colors cursor-pointer"
-            >
-              [J] JOURNAL
-            </button>
-            <button
-              onClick={() => { audio.playSelect(); setScreen('title'); }}
-              className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
-            >
-              ◀ MENU
-            </button>
-          </div>
-        </header>
+        {/* LEFT COLUMN: Narrative & Choices */}
+        <div className="w-1/2 flex flex-col dialogue-panel z-10 relative">
+          <header className="px-8 pt-8 pb-4 flex justify-between items-start">
+            <h2 className="font-pixel text-retro-accent text-sm md:text-base glow-accent tracking-tighter uppercase">
+              CHAPTER {chapter.id}: {chapter.title}
+            </h2>
+            <div className="flex gap-4">
+              <button
+                onClick={() => { audio.playSelect(); setShowSettings(true); }}
+                className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
+              >
+                [S] SETTINGS
+              </button>
+              <button
+                onClick={() => { audio.playSelect(); setScreen('journal'); }}
+                className="font-pixel text-[8px] text-retro-primary hover:text-retro-accent transition-colors cursor-pointer"
+              >
+                [J] JOURNAL
+              </button>
+              <button
+                onClick={() => { audio.playSelect(); setScreen('title'); }}
+                className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
+              >
+                ◀ MENU
+              </button>
+            </div>
+          </header>
 
-        <div className="flex-1 overflow-y-auto px-8 py-4 space-y-6 relative">
-          
-          {/* Achievement Popup */}
-          {achievementPopup && (
-            <div className="absolute top-0 left-8 z-50 achievement-popup">
-              <div className="bg-[#fcebb6] border-4 border-[#b97a2e] rounded-sm p-3 flex items-center gap-4 shadow-[4px_4px_0_rgba(0,0,0,0.2)] max-w-sm">
-                <div className="text-3xl filter drop-shadow-md relative">
-                  🎖️
-                  {/* Subtle Sparkle Effects */}
-                  <span className="absolute -top-1 -left-1 text-[#ffea00] animate-pulse text-xs">✨</span>
-                  <span className="absolute -bottom-1 -right-1 text-[#ffea00] animate-pulse text-xs" style={{animationDelay: '0.2s'}}>✨</span>
-                </div>
-                <div>
-                  <p className="font-pixel text-[10px] text-[#8a5a22] tracking-wider mb-1">ACHIEVEMENT UNLOCKED:</p>
-                  <p className="font-retro text-[#5c3c16] text-lg font-bold leading-none">{achievementPopup}</p>
+          <div className="flex-1 overflow-y-auto px-8 py-4 space-y-6 relative">
+            
+            {/* Achievement Popup */}
+            {achievementPopup && (
+              <div className="absolute top-0 left-8 z-50 achievement-popup">
+                <div className="bg-[#fcebb6] border-4 border-[#b97a2e] rounded-sm p-3 flex items-center gap-4 shadow-[4px_4px_0_rgba(0,0,0,0.2)] max-w-sm">
+                  <div className="text-3xl filter drop-shadow-md relative">
+                    🎖️
+                    {/* Subtle Sparkle Effects */}
+                    <span className="absolute -top-1 -left-1 text-[#ffea00] animate-pulse text-xs">✨</span>
+                    <span className="absolute -bottom-1 -right-1 text-[#ffea00] animate-pulse text-xs" style={{animationDelay: '0.2s'}}>✨</span>
+                  </div>
+                  <div>
+                    <p className="font-pixel text-[10px] text-[#8a5a22] tracking-wider mb-1">ACHIEVEMENT UNLOCKED:</p>
+                    <p className="font-retro text-[#5c3c16] text-lg font-bold leading-none">{achievementPopup}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {node.speaker && (
-            <span className="inline-block px-3 py-1 bg-retro-primary/10 text-retro-primary font-pixel text-[10px] border border-retro-primary/30 uppercase">
-              {node.speaker}
-            </span>
-          )}
-          <p className="text-2xl md:text-3xl leading-relaxed text-retro-text opacity-90 font-retro min-h-[100px]">
-            {displayedText}
-            {isTyping && <span className="inline-block w-2 h-6 bg-retro-accent ml-1 animate-pulse" />}
-          </p>
-        </div>
-
-        <div className="p-8 space-y-4 mb-8 min-h-[300px]">
-          {!isTyping && node.choices.map((choice, i) => (
-            <button
-              key={i}
-              onMouseEnter={() => { audio.playHover(); setHoveredChoice(i); }}
-              onMouseLeave={() => setHoveredChoice(null)}
-              onClick={() => handleChoice(choice)}
-              className={`choice-btn w-full text-left font-retro opacity-0 animate-pop-in ${hoveredChoice === i ? 'selected' : ''}`}
-              style={{ animationDelay: `${i * 150}ms` }}
-            >
-              <span className="flex items-center gap-3">
-                {choice.icon && (
-                  <span className="font-pixel text-xs text-retro-primary opacity-70">[{choice.icon}]</span>
-                )}
-                {choice.label}
+            {node.speaker && (
+              <span className="inline-block px-3 py-1 bg-retro-primary/10 text-retro-primary font-pixel text-[10px] border border-retro-primary/30 uppercase">
+                {node.speaker}
               </span>
-              {choice.unlocksAlgorithm && (
-                <span className="font-pixel text-[8px] text-retro-primary opacity-60">
-                  + ACHIEVEMENT
+            )}
+            <p className="text-2xl md:text-3xl leading-relaxed text-retro-text opacity-90 font-retro min-h-[100px]">
+              {displayedText}
+              {isTyping && <span className="inline-block w-2 h-6 bg-retro-accent ml-1 animate-pulse" />}
+            </p>
+          </div>
+
+          <div className="p-8 space-y-4 mb-8 min-h-[300px]">
+            {!isTyping && node.choices.map((choice, i) => (
+              <button
+                key={i}
+                onMouseEnter={() => { audio.playHover(); setHoveredChoice(i); }}
+                onMouseLeave={() => setHoveredChoice(null)}
+                onClick={() => handleChoice(choice)}
+                className={`choice-btn w-full text-left font-retro opacity-0 animate-pop-in ${hoveredChoice === i ? 'selected' : ''}`}
+                style={{ animationDelay: `${i * 150}ms` }}
+              >
+                <span className="flex items-center gap-3">
+                  {choice.icon && (
+                    <span className="font-pixel text-xs text-retro-primary opacity-70">[{choice.icon}]</span>
+                  )}
+                  {choice.label}
                 </span>
-              )}
-            </button>
-          ))}
+                {choice.unlocksAlgorithm && (
+                  <span className="font-pixel text-[8px] text-retro-primary opacity-60">
+                    + ACHIEVEMENT
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          <footer className="px-8 py-4 border-t border-retro-accent/10 flex justify-between items-center text-[10px] font-pixel text-retro-muted">
+            <span>ALGORITHMS UNLOCKED: {unlockedAlgorithms.length}</span>
+            <span className="opacity-50 tracking-widest">[SHIFT] FAST_FORWARD</span>
+          </footer>
         </div>
 
-        <footer className="px-8 py-4 border-t border-retro-accent/10 flex justify-between items-center text-[10px] font-pixel text-retro-muted">
-          <span>ALGORITHMS UNLOCKED: {unlockedAlgorithms.length}</span>
-          <span className="opacity-50 tracking-widest">[SHIFT] FAST_FORWARD</span>
-        </footer>
+        {/* RIGHT COLUMN: Spacer for background */}
+        <div className="w-1/2 h-full pointer-events-none" />
       </div>
 
-      {/* RIGHT COLUMN: Spacer for background */}
-      <div className="w-1/2 h-full pointer-events-none" />
-    </div>
+      {showSettings && (
+        <SettingsModal 
+          settings={settings} 
+          onChangeSettings={setSettings} 
+          onClose={() => setShowSettings(false)} 
+          onResetProgress={() => {
+            setUnlockedAlgorithms([])
+            setCurrentChapter(1)
+            setCurrentNode('start')
+          }}
+        />
+      )}
+    </>
   )
 }
