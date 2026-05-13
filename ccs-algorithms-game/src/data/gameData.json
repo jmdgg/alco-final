@@ -7,74 +7,81 @@
   "chapters": [
     {
       "id": 1,
-      "title": "THE SERVER OUTAGE",
+      "title": "SEARCHING & PATTERN MATCHING",
+      "icon": "🔍",
+      "description": "Master the art of finding information in large datasets.",
       "nodes": {
         "start": {
-          "text": "Anya looks at the flickering terminal. \"The response time is abysmal!\" she exclaims, nervously tapping her mechanical keyboard. \"The entire deployment is deadlocked. The pressure is suffocating.\"",
-          "speaker": "Anya",
+          "text": "Chapter 1: Searching & Pattern Matching. Welcome to your first module.",
+          "speaker": "Instructor",
           "choices": [
-            {
-              "label": "Implement Dijkstra's Algorithm",
-              "nextNode": "dijkstra_path",
-              "unlocksAlgorithm": "Dijkstra's Algorithm",
-              "icon": "+"
-            },
-            {
-              "label": "Check the brute-force nested loops.",
-              "nextNode": "brute_force_path",
-              "unlocksAlgorithm": null,
-              "icon": null
-            },
-            {
-              "label": "Optimize with a Hash Map",
-              "nextNode": "hashmap_path",
-              "unlocksAlgorithm": "Hash Map",
-              "icon": "-"
-            }
+            { "label": "Start Learning", "nextNode": "lesson_1" }
           ]
         },
-        "dijkstra_path": {
-          "text": "You methodically map out the shortest path to the core services. The nodes begin to stabilize as traffic is routed away from the congestion. Anya sighs in relief.\n\n\"Efficient routing saved us. But wait, what's that spike in the database logs?\"",
-          "speaker": "System",
+        "lesson_1": {
+          "text": "Searching is fundamental...",
           "choices": [
-            {
-              "label": "Investigate the database spike.",
-              "nextNode": "end_demo",
-              "unlocksAlgorithm": null
-            }
+            { "label": "Next", "nextNode": "start" }
           ]
-        },
-        "brute_force_path": {
-          "text": "You spend hours combing through every single loop. The code is a mess, and while you find a few redundancies, the system is still sluggish. Anya looks disappointed.\n\n\"We need a more algorithmic approach, not just more eyes on the code.\"",
-          "speaker": "Anya",
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "SORTING",
+      "icon": "📊",
+      "description": "Organize data efficiently to optimize performance.",
+      "nodes": {
+        "start": {
+          "text": "Chapter 2: Sorting. Time to put things in order.",
+          "speaker": "Instructor",
           "choices": [
-            {
-              "label": "Try to optimize with a proper algorithm.",
-              "nextNode": "start",
-              "unlocksAlgorithm": null
-            }
+            { "label": "Begin Module", "nextNode": "start" }
           ]
-        },
-        "hashmap_path": {
-          "text": "By replacing the linear scans with O(1) lookups, the bottleneck disappears instantly. The terminal stops flickering. Anya flashes a quick, tired smile.\n\n\"Linear time was killing us. Constant time is the way to go.\"",
-          "speaker": "Anya",
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "GRAPHS & NETWORKS",
+      "icon": "🕸️",
+      "description": "Navigate complex connections and find the shortest paths.",
+      "nodes": {
+        "start": {
+          "text": "Chapter 3: Graphs & Networks. Mapping the digital world.",
+          "speaker": "Instructor",
           "choices": [
-            {
-              "label": "Move on to Chapter 2: The Debugging Marathon.",
-              "nextNode": "end_demo",
-              "unlocksAlgorithm": null
-            }
+            { "label": "Begin Module", "nextNode": "start" }
           ]
-        },
-        "end_demo": {
-          "text": "The servers are stable for now, but the day is just beginning. In the distance, you can hear the faint hum of the server room air conditioning. Another challenge awaits tomorrow.\n\n*To be continued...*",
-          "speaker": "Narrator",
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "DYNAMIC PROGRAMMING",
+      "icon": "🧩",
+      "description": "Solve complex problems by breaking them into simpler subproblems.",
+      "nodes": {
+        "start": {
+          "text": "Chapter 4: Dynamic Programming. Optimization at its finest.",
+          "speaker": "Instructor",
           "choices": [
-            {
-              "label": "RESTART STORY",
-              "nextNode": "start",
-              "unlocksAlgorithm": null
-            }
+            { "label": "Begin Module", "nextNode": "start" }
+          ]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "STATE-SPACE SEARCH",
+      "icon": "🌳",
+      "description": "Explore all possible states to find the optimal decision path.",
+      "nodes": {
+        "start": {
+          "text": "Chapter 5: State-Space Search. Deciding the future.",
+          "speaker": "Instructor",
+          "choices": [
+            { "label": "Begin Module", "nextNode": "start" }
           ]
         }
       }

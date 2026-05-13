@@ -30,7 +30,7 @@ function TitleScreen({ onStart }) {
   const handleStart = () => {
     audio.init()
     audio.playSelect()
-    onStart()
+    onStart('chapterSelection')
   }
 
   const menuItems = [
@@ -122,6 +122,151 @@ function TitleScreen({ onStart }) {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   Chapter Selection (Course Syllabus)
+   ═══════════════════════════════════════════ */
+function ChapterSelectionScreen({ onBack, onSelect }) {
+  const [hovered, setHovered] = useState(null)
+  
+  const chapters = [
+    { id: 1, title: 'Searching & Pattern Matching', iconPos: '0px 0px', description: 'Master the art of finding information in large datasets.' },
+    { id: 2, title: 'Sorting', iconPos: '-32px 0px', description: 'Organize data efficiently to optimize performance.' },
+    { id: 3, title: 'Graphs & Networks', iconPos: '-64px 0px', description: 'Navigate complex connections and find shortest paths.' },
+    { id: 4, title: 'Dynamic Programming', iconPos: '-96px 0px', description: 'Solve complex problems via subproblem optimization.' },
+    { id: 5, title: 'State-Space Search', iconPos: '-128px 0px', description: 'Explore decision trees to find optimal paths.' }
+  ]
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === 'Escape') {
+        audio.playSelect()
+        onBack()
+      }
+      if (e.key === 'Enter' && hovered !== null) {
+        audio.playSelect()
+        onSelect(chapters[hovered].id)
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [onBack, onSelect, hovered, chapters])
+
+  return (
+    <div className="relative h-screen w-full overflow-hidden bg-retro-bg font-retro">
+      {/* Background with Blur */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-[2px] opacity-40 grayscale-[20%]"
+        style={{ backgroundImage: 'url(/syllabus-bg.png)', imageRendering: 'pixelated' }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/40" />
+      <div className="absolute inset-0 scanlines opacity-5" />
+
+      {/* Header */}
+      <header className="relative z-20 p-8 flex justify-between items-center">
+        <button 
+          onClick={() => { audio.playSelect(); onBack(); }}
+          className="font-pixel text-[10px] text-retro-accent hover:text-retro-primary transition-all flex items-center gap-2 group"
+        >
+          <span className="group-hover:-translate-x-1 transition-transform">[ ESC ]</span> BACK
+        </button>
+        
+        <h1 className="font-pixel text-retro-text text-xl md:text-3xl tracking-tighter drop-shadow-sm">
+          COURSE SYLLABUS: <span className="text-retro-accent">SELECT MODULE</span>
+        </h1>
+        
+        <div className="w-[100px]" /> {/* Spacer */}
+      </header>
+
+      {/* Curriculum Map / Grid */}
+      <main className="relative z-20 max-w-6xl mx-auto px-8 py-4 h-[calc(100vh-160px)] flex flex-col justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+          {chapters.map((ch, i) => (
+            <div
+              key={ch.id}
+              onMouseEnter={() => { audio.playHover(); setHovered(i); }}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => { audio.playSelect(); onSelect(ch.id); }}
+              className={`relative cursor-pointer transition-all duration-200 group
+                ${hovered === i ? 'scale-105 z-10' : 'scale-100 opacity-90'}
+              `}
+            >
+              {/* Connection Line (Visual Only) */}
+              {i < chapters.length - 1 && (
+                <div className="hidden md:block absolute top-1/2 -right-3 w-6 h-[2px] bg-retro-border z-0" />
+              )}
+
+              <div className={`
+                bg-white/90 border-4 p-6 flex flex-col items-center text-center gap-4
+                shadow-[8px_8px_0_rgba(0,0,0,0.05)] h-full
+                transition-colors duration-200
+                ${hovered === i ? 'border-retro-accent bg-white' : 'border-retro-muted/30'}
+              `}>
+                {/* Pixel Art Icon Container */}
+                <div className={`
+                  w-20 h-20 border-2 flex items-center justify-center bg-retro-dark
+                  ${hovered === i ? 'border-retro-accent' : 'border-retro-muted/20'}
+                `}>
+                  <div 
+                    className="w-16 h-16"
+                    style={{ 
+                      backgroundImage: 'url(/chapter-icons.png)',
+                      backgroundPosition: ch.iconPos,
+                      backgroundSize: '160px 32px', // Adjusted to match icon sheet scale
+                      imageRendering: 'pixelated',
+                      transform: 'scale(2)', // Scale up for better visibility
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <p className="font-pixel text-[8px] text-retro-muted mb-2">MODULE 0{ch.id}</p>
+                  <h3 className={`font-pixel text-[10px] md:text-xs leading-tight mb-3
+                    ${hovered === i ? 'text-retro-accent' : 'text-retro-text'}
+                  `}>
+                    {ch.title}
+                  </h3>
+                  <p className="text-sm text-retro-muted leading-tight line-clamp-3">
+                    {ch.description}
+                  </p>
+                </div>
+
+                {hovered === i && (
+                  <div className="mt-auto pt-4 animate-pulse">
+                    <span className="font-pixel text-[8px] text-retro-primary">[ CLICK TO SELECT ]</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="relative z-20 p-8 flex justify-between items-end">
+        <div className="max-w-md">
+          <p className="font-pixel text-[8px] text-retro-muted uppercase tracking-widest mb-2 opacity-60">Status: Enrolled</p>
+          <div className="w-48 h-2 bg-retro-dark border border-retro-muted/30">
+            <div className="h-full bg-retro-primary w-1/5 shadow-[0_0_10px_rgba(39,174,96,0.3)]" />
+          </div>
+        </div>
+
+        <button 
+          onClick={() => { if(hovered !== null) { audio.playSelect(); onSelect(chapters[hovered].id); } }}
+          className={`
+            font-pixel text-xs px-8 py-4 border-4 shadow-[6px_6px_0_rgba(0,0,0,0.1)] transition-all
+            ${hovered !== null 
+              ? 'bg-retro-accent text-white border-white scale-110 shadow-[8px_8px_0_var(--color-retro-primary)]' 
+              : 'bg-retro-dark text-retro-muted border-retro-muted/20 opacity-50 cursor-not-allowed'}
+          `}
+        >
+          [ ENTER ] START TERM
+        </button>
+      </footer>
     </div>
   )
 }
@@ -372,6 +517,19 @@ export default function App() {
 
   if (screen === 'journal') {
     return <JournalScreen onClose={() => setScreen('title')} unlockedAlgorithms={unlockedAlgorithms} />
+  }
+
+  if (screen === 'chapterSelection') {
+    return (
+      <ChapterSelectionScreen 
+        onBack={() => setScreen('title')} 
+        onSelect={(chapterId) => {
+          setCurrentChapter(chapterId)
+          setCurrentNode('start')
+          setScreen('game')
+        }} 
+      />
+    )
   }
 
   if (!chapter || !node) return null
