@@ -2,6 +2,13 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import gameData from './data/gameData.json'
 import { audio } from './utils/audioEngine'
 
+const CHARACTER_SPRITES = {
+  "Dodo": "/DODO.png",
+  "Cassie": "/CS - CASSIE.png",
+  "Inigo": "/IT - INIGO.png",
+  "Mikaela": "/MMA - MIKAELA.png"
+}
+
 /* ═══════════════════════════════════════════
    Atmosphere
    ═══════════════════════════════════════════ */
@@ -284,8 +291,8 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
       // Descriptions & algorithm lists mapped elegantly to chapters
       const details = [
         {
-          desc: "Anya's terminal is frozen under massive server outage pressure. Resolve bottlenecks and stabilize core routing in constant time.",
-          focus: "📍 Dijkstra's, 🫧 Hash Maps",
+          desc: "Help Dodo and Cassie solve UI/UX grid alignment issues using mathematical properties, then assist Inigo in managing his morning chaos.",
+          focus: "➗ Euclid's, ❗ Factorials",
           bg: "/bedroom-dev-bg.png"
         },
         {
@@ -1015,8 +1022,29 @@ export default function App() {
           </footer>
         </div>
 
-        {/* RIGHT COLUMN: Spacer for background */}
-        <div className="w-1/2 h-full pointer-events-none" />
+        {/* RIGHT COLUMN: Character Sprites */}
+        <div className="w-1/2 h-full relative pointer-events-none overflow-hidden flex items-end justify-end">
+          <div className="relative w-full h-full flex items-end justify-end translate-y-48 translate-x-12">
+             {Object.entries(CHARACTER_SPRITES).map(([name, src], idx) => {
+               const isActive = node.speaker === name;
+               const isSpeaking = isActive && isTyping;
+               return (
+                 <img 
+                   key={name}
+                   src={src} 
+                   alt={name}
+                   className={`character-sprite ${isActive ? 'active' : ''} ${isSpeaking ? 'sprite-talking' : ''} absolute`}
+                   style={{ 
+                     right: `${(Object.keys(CHARACTER_SPRITES).length - 1 - idx) * 280 - 120}px`, 
+                     zIndex: isActive ? 40 : 10 + idx,
+                     maxWidth: '550px',
+                     height: '110vh'
+                   }}
+                 />
+               )
+             })}
+          </div>
+        </div>
       </div>
 
       {showSettings && (
