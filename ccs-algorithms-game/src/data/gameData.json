@@ -105,10 +105,18 @@
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RETURN TO MAIN MENU",
+              "label": "CONTINUE TO NEXT CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -210,19 +218,62 @@
           ]
         },
         "suboptimal_karaoke_node": {
-          "text": "Inigo flips through the massive songbook page by page. \"Hmm, this linear scan is taking way longer than expected! I wonder if there's a faster way to do this by halving the book... Finally found it!\" While Inigo sings his heart out, Cassie pulls out her phone to play an RPG. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "text": "Inigo flips through the massive songbook page by page. \"Hmm, this linear scan is taking way longer than expected! I wonder if there's a faster way to do this by halving the book... Finally found it!\" Before he sings, Dodo pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
           "speaker": "Inigo",
           "choices": [
             {
-              "label": "Use BF String Matching (String Processing)",
-              "nextNode": "bf_string_node",
-              "unlocksAlgorithm": "BF String Matching"
+              "label": "Use Insertion Search (Sorted Insertion)",
+              "nextNode": "insertion_search_node",
+              "unlocksAlgorithm": "Insertion Search",
+              "icon": "🗂️"
+            },
+            {
+              "label": "Insert cards randomly",
+              "nextNode": "insertion_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
             }
           ]
         },
         "binary_search_node": {
-          "text": "By repeatedly dividing the sorted songbook interval in half O(log N), Inigo finds his OPM song efficiently! While Inigo sings his heart out, Cassie pulls out her phone to play a multiplayer RPG game. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "text": "By repeatedly dividing the sorted songbook interval in half O(log N), Inigo finds his OPM song efficiently! Before he sings, Dodo pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
           "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use Insertion Search (Sorted Insertion)",
+              "nextNode": "insertion_search_node",
+              "unlocksAlgorithm": "Insertion Search",
+              "icon": "🗂️"
+            },
+            {
+              "label": "Insert cards randomly",
+              "nextNode": "insertion_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "interpolation_search_node": {
+          "text": "Knowing the songbook is uniformly distributed alphabetically, you estimate the target position based on value. Instant match! Before Inigo sings, Dodo pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use Insertion Search (Sorted Insertion)",
+              "nextNode": "insertion_search_node",
+              "unlocksAlgorithm": "Insertion Search",
+              "icon": "🗂️"
+            },
+            {
+              "label": "Insert cards randomly",
+              "nextNode": "insertion_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "insertion_suboptimal": {
+          "text": "Dodo stuffs the flashcards in randomly. \"Hmm, inserting cards without locating the correct position is taking longer than expected when I try to find them later! I wonder if there's an insertion search method to maintain order... Stack sorted!\" Cassie then pulls out her phone to play an RPG. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "speaker": "Dodo",
           "choices": [
             {
               "label": "Use BF String Matching (String Processing)",
@@ -231,9 +282,9 @@
             }
           ]
         },
-        "interpolation_search_node": {
-          "text": "Knowing the songbook is uniformly distributed alphabetically, you estimate the target position based on value. Instant match! While Inigo sings his heart out, Cassie pulls out her phone to play a multiplayer RPG game. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
-          "speaker": "Cassie",
+        "insertion_search_node": {
+          "text": "By locating the correct position for each element within the sorted sub-list, Dodo keeps his ethics flashcards perfectly ordered! Cassie then pulls out her phone to play a multiplayer RPG game. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "speaker": "Narrator",
           "choices": [
             {
               "label": "Use BF String Matching (String Processing)",
@@ -258,10 +309,18 @@
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RETURN TO MAIN MENU",
+              "label": "CONTINUE TO NEXT CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -347,10 +406,18 @@
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RETURN TO MAIN MENU",
+              "label": "CONTINUE TO NEXT CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -519,10 +586,18 @@
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RETURN TO MAIN MENU",
+              "label": "CONTINUE TO NEXT CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -697,10 +772,18 @@
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RETURN TO MAIN MENU",
+              "label": "CONTINUE TO NEXT CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -795,10 +878,18 @@
           "speaker": "Narrator",
           "choices": [
             {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
+            },
+            {
               "label": "RESET STORY PROGRESS",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "resetProgress": true,
+              "icon": "🔄"
             }
           ]
         }
@@ -807,22 +898,103 @@
   ],
   "algorithms": [
     {
-      "id": "Dijkstra's Algorithm",
-      "title": "DIJKSTRA'S SHORTEST PATH",
-      "category": "Graph & Network",
-      "definition": "Finds the shortest path from a starting node to all other nodes in a weighted graph with non-negative edge weights.",
-      "useCase": "Finding the quickest campus walkway path to get to the Computer Science building when waking up late.",
-      "pseudocode": "function dijkstra(graph, start):\n  dist = map(), pq = new PriorityQueue()\n  for node in graph: dist[node] = Infinity\n  dist[start] = 0, pq.push(start, 0)\n  while !pq.isEmpty():\n    curr = pq.pop()\n    for neighbor, weight in graph[curr]:\n      newDist = dist[curr] + weight\n      if newDist < dist[neighbor]:\n        dist[neighbor] = newDist\n        pq.push(neighbor, newDist)\n  return dist",
-      "icon": "📍"
+      "id": "Euclid's Algorithm",
+      "title": "EUCLID'S ALGORITHM",
+      "category": "Mathematical Algorithms",
+      "definition": "An efficient method for computing the greatest common divisor (GCD) of two numbers by repeatedly replacing the larger number with the remainder of its division by the smaller number.",
+      "useCase": "Used in Cryptography (RSA), simplifying fractions, and optimizing UI grid layouts.",
+      "pseudocode": "function gcd(a, b):\n  while b != 0:\n    a, b = b, a % b\n  return a",
+      "icon": "➗"
     },
     {
-      "id": "Hash Map",
-      "title": "HASH MAP",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Hash Map related tasks and system optimizations.",
-      "pseudocode": "function hashmap() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🫧"
+      "id": "Consecutive Integer Check",
+      "title": "CONSECUTIVE INTEGER CHECK",
+      "category": "Mathematical Algorithms",
+      "definition": "A brute-force method to find the GCD by checking all integers starting from the minimum of the two numbers downwards until a common divisor is found.",
+      "useCase": "Simple implementations where efficiency is not critical or for educational purposes.",
+      "pseudocode": "function gcd(a, b):\n  t = min(a, b)\n  while t > 0:\n    if a % t == 0 and b % t == 0: return t\n    t = t - 1",
+      "icon": "🔢"
+    },
+    {
+      "id": "Middle School Procedure",
+      "title": "MIDDLE SCHOOL PROCEDURE",
+      "category": "Mathematical Algorithms",
+      "definition": "Finding the GCD by identifying the prime factorization of both numbers and multiplying the common prime factors together.",
+      "useCase": "Manual calculations and teaching the fundamental theorem of arithmetic.",
+      "pseudocode": "function gcd(a, b):\n  factorsA = primeFactorization(a)\n  factorsB = primeFactorization(b)\n  common = intersection(factorsA, factorsB)\n  return product(common)",
+      "icon": "🌲"
+    },
+    {
+      "id": "Factorial (Recursion)",
+      "title": "FACTORIAL (RECURSION)",
+      "category": "Mathematical Algorithms",
+      "definition": "Calculating the product of all positive integers up to n using a recursive function where f(n) = n * f(n-1).",
+      "useCase": "Calculating permutations, combinations, and understanding recursion.",
+      "pseudocode": "function factorial(n):\n  if n == 0 or n == 1: return 1\n  return n * factorial(n - 1)",
+      "icon": "❗"
+    },
+    {
+      "id": "Sequential Search",
+      "title": "SEQUENTIAL SEARCH",
+      "category": "Searching & Pattern Matching",
+      "definition": "Scans a list linearly from start to finish to find a target value or determine its absence.",
+      "useCase": "Finding the correct jeep to take in a jeepney terminal.",
+      "pseudocode": "function sequentialSearch(arr, target):\n  for i = 0 to arr.length - 1:\n    if arr[i] == target: return i\n  return -1",
+      "icon": "🛺"
+    },
+    {
+      "id": "Binary Search",
+      "title": "BINARY SEARCH",
+      "category": "Searching & Pattern Matching",
+      "definition": "Efficiently finds a target in a sorted array by repeatedly dividing the search interval in half.",
+      "useCase": "Finding your favorite OPM song in a karaoke songbook.",
+      "pseudocode": "function binarySearch(arr, target):\n  low = 0, high = arr.length - 1\n  while low <= high:\n    mid = (low + high) / 2\n    if arr[mid] == target: return mid\n    else if arr[mid] < target: low = mid + 1\n    else: high = mid - 1\n  return -1",
+      "icon": "📖"
+    },
+    {
+      "id": "Interpolation Search",
+      "title": "INTERPOLATION SEARCH",
+      "category": "Searching & Pattern Matching",
+      "definition": "An improvement on binary search for uniformly distributed sorted data that estimates the target's position based on its value.",
+      "useCase": "Finding your favorite OPM song in a karaoke songbook.",
+      "pseudocode": "function interpolationSearch(arr, target):\n  low = 0, high = arr.length - 1\n  while low <= high and target >= arr[low] and target <= arr[high]:\n    pos = low + ((target - arr[low]) * (high - low)) / (arr[high] - arr[low])\n    if arr[pos] == target: return pos\n    else if arr[pos] < target: low = pos + 1\n    else: high = pos - 1\n  return -1",
+      "icon": "🎯"
+    },
+    {
+      "id": "Insertion Search",
+      "title": "INSERTION SEARCH",
+      "category": "Searching & Pattern Matching",
+      "definition": "Locates the correct position for an element within a sorted sub-list to maintain order.",
+      "useCase": "Organizing your flashcards for your upcoming ethics enumeration quiz.",
+      "pseudocode": "function insertionSearch(arr, key):\n  i = arr.length - 1\n  while i >= 0 and arr[i] > key:\n    arr[i + 1] = arr[i]\n    i--\n  arr[i + 1] = key\n  return i + 1",
+      "icon": "🗂️"
+    },
+    {
+      "id": "Max Element",
+      "title": "MAX ELEMENT",
+      "category": "Searching & Pattern Matching",
+      "definition": "Iterates through an array while maintaining a variable that tracks the largest value encountered.",
+      "useCase": "Finding who got the highest score in the alco quiz who will treat the whole class.",
+      "pseudocode": "function maxElement(arr):\n  maxVal = arr[0]\n  for i = 1 to arr.length - 1:\n    if arr[i] > maxVal: maxVal = arr[i]\n  return maxVal",
+      "icon": "👑"
+    },
+    {
+      "id": "Unique Elements",
+      "title": "UNIQUE ELEMENTS",
+      "category": "Searching & Pattern Matching",
+      "definition": "Checks if all elements in a collection are distinct by comparing each pair or using a frequency tracker.",
+      "useCase": "Used in unique username login systems for the database system in VS code.",
+      "pseudocode": "function uniqueElements(arr):\n  seen = new Set()\n  for item in arr:\n    if seen.has(item): return false\n    seen.add(item)\n  return true",
+      "icon": "🛡️"
+    },
+    {
+      "id": "BF String Matching",
+      "title": "BF STRING MATCHING",
+      "category": "Searching & Pattern Matching",
+      "definition": "Checks for a pattern within a text by aligning it at every possible position until a match is found.",
+      "useCase": "Finding your friend to add him in the rpg game (Brute Force).",
+      "pseudocode": "function bfStringMatch(text, pattern):\n  n = text.length, m = pattern.length\n  for i = 0 to n - m:\n    j = 0\n    while j < m and text[i + j] == pattern[j]: j++\n    if j == m: return i\n  return -1",
+      "icon": "⚔️"
     },
     {
       "id": "Selection Sort",
@@ -870,60 +1042,6 @@
       "icon": "🌲"
     },
     {
-      "id": "Binary Search",
-      "title": "BINARY SEARCH",
-      "category": "Searching & Pattern Matching",
-      "definition": "Efficiently finds a target in a sorted array by repeatedly dividing the search interval in half.",
-      "useCase": "Finding your favorite OPM song in a karaoke songbook.",
-      "pseudocode": "function binarySearch(arr, target):\n  low = 0, high = arr.length - 1\n  while low <= high:\n    mid = (low + high) / 2\n    if arr[mid] == target: return mid\n    else if arr[mid] < target: low = mid + 1\n    else: high = mid - 1\n  return -1",
-      "icon": "📖"
-    },
-    {
-      "id": "Sequential Search",
-      "title": "SEQUENTIAL SEARCH",
-      "category": "Searching & Pattern Matching",
-      "definition": "Scans a list linearly from start to finish to find a target value or determine its absence.",
-      "useCase": "Finding the correct jeep to take in a jeepney terminal.",
-      "pseudocode": "function sequentialSearch(arr, target):\n  for i = 0 to arr.length - 1:\n    if arr[i] == target: return i\n  return -1",
-      "icon": "🛺"
-    },
-    {
-      "id": "Interpolation Search",
-      "title": "INTERPOLATION SEARCH",
-      "category": "Searching & Pattern Matching",
-      "definition": "An improvement on binary search for uniformly distributed sorted data that estimates the target's position based on its value.",
-      "useCase": "Finding your favorite OPM song in a karaoke songbook.",
-      "pseudocode": "function interpolationSearch(arr, target):\n  low = 0, high = arr.length - 1\n  while low <= high and target >= arr[low] and target <= arr[high]:\n    pos = low + ((target - arr[low]) * (high - low)) / (arr[high] - arr[low])\n    if arr[pos] == target: return pos\n    else if arr[pos] < target: low = pos + 1\n    else: high = pos - 1\n  return -1",
-      "icon": "🎯"
-    },
-    {
-      "id": "Max Element",
-      "title": "MAX ELEMENT",
-      "category": "Searching & Pattern Matching",
-      "definition": "Iterates through an array while maintaining a variable that tracks the largest value encountered.",
-      "useCase": "Finding who got the highest score in the alco quiz who will treat the whole class.",
-      "pseudocode": "function maxElement(arr):\n  maxVal = arr[0]\n  for i = 1 to arr.length - 1:\n    if arr[i] > maxVal: maxVal = arr[i]\n  return maxVal",
-      "icon": "👑"
-    },
-    {
-      "id": "Unique Elements",
-      "title": "UNIQUE ELEMENTS",
-      "category": "Searching & Pattern Matching",
-      "definition": "Checks if all elements in a collection are distinct by comparing each pair or using a frequency tracker.",
-      "useCase": "Used in unique username login systems for the database system in VS code.",
-      "pseudocode": "function uniqueElements(arr):\n  seen = new Set()\n  for item in arr:\n    if seen.has(item): return false\n    seen.add(item)\n  return true",
-      "icon": "🛡️"
-    },
-    {
-      "id": "BF String Matching",
-      "title": "BF STRING MATCHING",
-      "category": "Searching & Pattern Matching",
-      "definition": "Checks for a pattern within a text by aligning it at every possible position until a match is found.",
-      "useCase": "Finding your friend to add him in the rpg game (Brute Force).",
-      "pseudocode": "function bfStringMatch(text, pattern):\n  n = text.length, m = pattern.length\n  for i = 0 to n - m:\n    j = 0\n    while j < m and text[i + j] == pattern[j]: j++\n    if j == m: return i\n  return -1",
-      "icon": "⚔️"
-    },
-    {
       "id": "DFS",
       "title": "DFS (DEPTH-FIRST SEARCH)",
       "category": "Graph & Network",
@@ -942,6 +1060,33 @@
       "icon": "🌊"
     },
     {
+      "id": "Prim's Algorithm",
+      "title": "PRIM'S ALGORITHM",
+      "category": "Graph & Network",
+      "definition": "A greedy algorithm that builds a Minimum Spanning Tree (MST) by starting from a single node and adding the cheapest edge to a new vertex.",
+      "useCase": "Connecting several lab workstations using the minimum amount of wiring possible to save on costs without loops.",
+      "pseudocode": "function primMST(graph):\n  mst = [], visited = new Set([0])\n  pq = new PriorityQueue()\n  pq.pushAll(graph.edgesFrom(0))\n  while visited.size < graph.numVertices:\n    edge = pq.popCheapest()\n    if !visited.has(edge.to):\n      visited.add(edge.to)\n      mst.push(edge)\n      pq.pushAll(graph.edgesFrom(edge.to))\n  return mst",
+      "icon": "🛡️"
+    },
+    {
+      "id": "Kruskal's Algorithm",
+      "title": "KRUSKAL'S ALGORITHM",
+      "category": "Graph & Network",
+      "definition": "A greedy algorithm that builds an MST by sorting all edges by weight and adding the cheapest ones that do not form a cycle.",
+      "useCase": "Connecting several lab workstations using the minimum amount of wiring possible to save on costs without loops.",
+      "pseudocode": "function kruskalMST(edges, numVertices):\n  mst = [], ds = new DisjointSet(numVertices)\n  edges.sort((a, b) => a.weight - b.weight)\n  for edge in edges:\n    if ds.find(edge.u) != ds.find(edge.v):\n      ds.union(edge.u, edge.v)\n      mst.push(edge)\n  return mst",
+      "icon": "🔗"
+    },
+    {
+      "id": "Dijkstra's Algorithm",
+      "title": "DIJKSTRA'S SHORTEST PATH",
+      "category": "Graph & Network",
+      "definition": "Finds the shortest path from a starting node to all other nodes in a weighted graph with non-negative edge weights.",
+      "useCase": "Finding the quickest campus walkway path to get to the Computer Science building when waking up late.",
+      "pseudocode": "function dijkstra(graph, start):\n  dist = map(), pq = new PriorityQueue()\n  for node in graph: dist[node] = Infinity\n  dist[start] = 0, pq.push(start, 0)\n  while !pq.isEmpty():\n    curr = pq.pop()\n    for neighbor, weight in graph[curr]:\n      newDist = dist[curr] + weight\n      if newDist < dist[neighbor]:\n        dist[neighbor] = newDist\n        pq.push(neighbor, newDist)\n  return dist",
+      "icon": "📍"
+    },
+    {
       "id": "Coin Row",
       "title": "COIN ROW",
       "category": "Dynamic Programming & Optimization",
@@ -958,24 +1103,6 @@
       "useCase": "Providing exact change for a bag of chips at a vintage vending machine using minimal coins.",
       "pseudocode": "function minChange(coins, amount):\n  dp = new Array(amount + 1).fill(Infinity)\n  dp[0] = 0\n  for i = 1 to amount:\n    for coin in coins:\n      if i - coin >= 0:\n        dp[i] = min(dp[i], dp[i - coin] + 1)\n  return dp[amount]",
       "icon": "🏧"
-    },
-    {
-      "id": "Kruskal's Algorithm",
-      "title": "KRUSKAL'S ALGORITHM",
-      "category": "Graph & Network",
-      "definition": "A greedy algorithm that builds an MST by sorting all edges by weight and adding the cheapest ones that do not form a cycle.",
-      "useCase": "Connecting several lab workstations using the minimum amount of wiring possible to save on costs without loops.",
-      "pseudocode": "function kruskalMST(edges, numVertices):\n  mst = [], ds = new DisjointSet(numVertices)\n  edges.sort((a, b) => a.weight - b.weight)\n  for edge in edges:\n    if ds.find(edge.u) != ds.find(edge.v):\n      ds.union(edge.u, edge.v)\n      mst.push(edge)\n  return mst",
-      "icon": "🔗"
-    },
-    {
-      "id": "Prim's Algorithm",
-      "title": "PRIM'S ALGORITHM",
-      "category": "Graph & Network",
-      "definition": "A greedy algorithm that builds a Minimum Spanning Tree (MST) by starting from a single node and adding the cheapest edge to a new vertex.",
-      "useCase": "Connecting several lab workstations using the minimum amount of wiring possible to save on costs without loops.",
-      "pseudocode": "function primMST(graph):\n  mst = [], visited = new Set([0])\n  pq = new PriorityQueue()\n  pq.pushAll(graph.edgesFrom(0))\n  while visited.size < graph.numVertices:\n    edge = pq.popCheapest()\n    if !visited.has(edge.to):\n      visited.add(edge.to)\n      mst.push(edge)\n      pq.pushAll(graph.edgesFrom(edge.to))\n  return mst",
-      "icon": "🛡️"
     },
     {
       "id": "Coin Collecting",
@@ -1012,123 +1139,6 @@
       "useCase": "Packing tech pouch essentials for tomorrow's presentation, discarding heavy cable combinations early.",
       "pseudocode": "function branchAndBound(root):\n  best = Infinity, pq = new PriorityQueue()\n  pq.push(root)\n  while !pq.isEmpty():\n    node = pq.pop()\n    if node.bound < best:\n      if node.isLeaf: best = min(best, node.cost)\n      else pq.pushAll(node.children())\n  return best",
       "icon": "✂️"
-    },
-    {
-      "id": "Red-Black Tree",
-      "title": "RED-BLACK TREE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Red-Black Tree related tasks and system optimizations.",
-      "pseudocode": "function redblacktree() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔍"
-    },
-    {
-      "id": "Trie",
-      "title": "TRIE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Trie related tasks and system optimizations.",
-      "pseudocode": "function trie() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🌳"
-    },
-    {
-      "id": "Segment Tree",
-      "title": "SEGMENT TREE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Segment Tree related tasks and system optimizations.",
-      "pseudocode": "function segmenttree() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🌊"
-    },
-    {
-      "id": "Fenwick Tree",
-      "title": "FENWICK TREE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Fenwick Tree related tasks and system optimizations.",
-      "pseudocode": "function fenwicktree() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "⭐"
-    },
-    {
-      "id": "Knapsack Problem",
-      "title": "KNAPSACK PROBLEM",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Knapsack Problem related tasks and system optimizations.",
-      "pseudocode": "function knapsackproblem() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🧠"
-    },
-    {
-      "id": "Traveling Salesperson",
-      "title": "TRAVELING SALESPERSON",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Traveling Salesperson related tasks and system optimizations.",
-      "pseudocode": "function travelingsalesperson() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🧩"
-    },
-    {
-      "id": "RSA Encryption",
-      "title": "RSA ENCRYPTION",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in RSA Encryption related tasks and system optimizations.",
-      "pseudocode": "function rsaencryption() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔗"
-    },
-    {
-      "id": "SHA-256",
-      "title": "SHA-256",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in SHA-256 related tasks and system optimizations.",
-      "pseudocode": "function sha() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🛡️"
-    },
-    {
-      "id": "PageRank",
-      "title": "PAGERANK",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in PageRank related tasks and system optimizations.",
-      "pseudocode": "function pagerank() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🗝️"
-    },
-    {
-      "id": "Euclid's Algorithm",
-      "title": "EUCLID'S ALGORITHM",
-      "category": "Mathematical Algorithms",
-      "definition": "An efficient method for computing the greatest common divisor (GCD) of two numbers by repeatedly replacing the larger number with the remainder of its division by the smaller number.",
-      "useCase": "Used in Cryptography (RSA), simplifying fractions, and optimizing UI grid layouts.",
-      "pseudocode": "function gcd(a, b):\n  while b != 0:\n    a, b = b, a % b\n  return a",
-      "icon": "➗"
-    },
-    {
-      "id": "Consecutive Integer Check",
-      "title": "CONSECUTIVE INTEGER CHECK",
-      "category": "Mathematical Algorithms",
-      "definition": "A brute-force method to find the GCD by checking all integers starting from the minimum of the two numbers downwards until a common divisor is found.",
-      "useCase": "Simple implementations where efficiency is not critical or for educational purposes.",
-      "pseudocode": "function gcd(a, b):\n  t = min(a, b)\n  while t > 0:\n    if a % t == 0 and b % t == 0: return t\n    t = t - 1",
-      "icon": "🔢"
-    },
-    {
-      "id": "Middle School Procedure",
-      "title": "MIDDLE SCHOOL PROCEDURE",
-      "category": "Mathematical Algorithms",
-      "definition": "Finding the GCD by identifying the prime factorization of both numbers and multiplying the common prime factors together.",
-      "useCase": "Manual calculations and teaching the fundamental theorem of arithmetic.",
-      "pseudocode": "function gcd(a, b):\n  factorsA = primeFactorization(a)\n  factorsB = primeFactorization(b)\n  common = intersection(factorsA, factorsB)\n  return product(common)",
-      "icon": "🌲"
-    },
-    {
-      "id": "Factorial (Recursion)",
-      "title": "FACTORIAL (RECURSION)",
-      "category": "Mathematical Algorithms",
-      "definition": "Calculating the product of all positive integers up to n using a recursive function where f(n) = n * f(n-1).",
-      "useCase": "Calculating permutations, combinations, and understanding recursion.",
-      "pseudocode": "function factorial(n):\n  if n == 0 or n == 1: return 1\n  return n * factorial(n - 1)",
-      "icon": "❗"
     }
   ]
 }

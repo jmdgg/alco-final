@@ -680,6 +680,7 @@ function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress })
    ═══════════════════════════════════════════ */
 export default function App() {
   const [screen, setScreen] = useState('title')
+  const [prevScreen, setPrevScreen] = useState('title')
   const [settings, setSettings] = useState(() => {
     const saved = localStorage.getItem('ccs_student_settings')
     if (saved) {
@@ -816,6 +817,18 @@ export default function App() {
         setAchievementPopup((prev) => prev === choice.unlocksAlgorithm ? null : prev)
       }, 4000)
     }
+    if (choice.returnToMenu) {
+      setScreen('chapter_select')
+      return
+    }
+    if (choice.resetProgress) {
+      audio.playAdvance()
+      setUnlockedAlgorithms([])
+      setCurrentChapter(1)
+      setCurrentNode('start')
+      setScreen('title')
+      return
+    }
     if (choice.advanceChapter) {
       audio.playAdvance()
       const nextIdx = gameData.chapters.findIndex((c) => c.id === currentChapter) + 1
@@ -839,8 +852,9 @@ export default function App() {
       if (showSettings) {
         // If settings menu is open, always close it first
         setShowSettings(false)
-      } else if (screen === 'chapter_select' || screen === 'journal') {
-        // If config is closed and we are on a secondary screen, back out to title
+      } else if (screen === 'journal') {
+        setScreen(prevScreen)
+      } else if (screen === 'chapter_select') {
         setScreen('title')
       } else {
         // In Game or Title, toggle the config screen
@@ -849,13 +863,13 @@ export default function App() {
     }
     window.addEventListener('keydown', handleEsc)
     return () => window.removeEventListener('keydown', handleEsc)
-  }, [showSettings, screen])
+  }, [showSettings, screen, prevScreen])
 
   if (screen === 'title') {
     return (
       <>
         <TitleScreen
-          onStart={(target = 'chapter_select') => setScreen(target)}
+          onStart={(target = 'chapter_select') => { setPrevScreen(screen); setScreen(target); }}
           onOpenSettings={() => setShowSettings(true)}
           crtEffect={settings.crtEffect}
         />
@@ -906,7 +920,7 @@ export default function App() {
   if (screen === 'journal') {
     return (
       <>
-        <JournalScreen onClose={() => setScreen('title')} unlockedAlgorithms={unlockedAlgorithms} />
+        <JournalScreen onClose={() => setScreen(prevScreen)} unlockedAlgorithms={unlockedAlgorithms} />
         {showSettings && (
           <SettingsModal
             settings={settings}
@@ -939,7 +953,7 @@ export default function App() {
                 [S] SETTINGS
               </button>
               <button
-                onClick={() => { audio.playSelect(); setScreen('journal'); }}
+                onClick={() => { audio.playSelect(); setPrevScreen(screen); setScreen('journal'); }}
                 className="font-pixel text-[8px] text-retro-primary hover:text-retro-accent transition-colors cursor-pointer"
               >
                 [J] JOURNAL
