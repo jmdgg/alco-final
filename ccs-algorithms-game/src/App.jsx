@@ -14,13 +14,17 @@ const CHARACTER_SPRITES = {
    ═══════════════════════════════════════════ */
 function Atmosphere({ showCollage, crtEffect }) {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      <div className="absolute inset-0 bg-retro-bg" />
-      {showCollage && (
+    <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-[#0a0b16] overflow-hidden pointer-events-none z-0 border-l-2 border-[#3a495e]/40 shadow-2xl">
+      {showCollage ? (
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-35"
           style={{ backgroundImage: 'url(/story-collage.png)', imageRendering: 'pixelated' }}
         />
+      ) : (
+        <>
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" style={{ backgroundImage: 'url(/universal_hallway_bg.png)', imageRendering: 'pixelated' }} />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#64748b15_1px,transparent_1px),linear-gradient(to_bottom,#64748b15_1px,transparent_1px)] bg-[size:24px_24px]" />
+        </>
       )}
       {crtEffect !== false && (
         <>
@@ -775,7 +779,7 @@ function VisualDiagramRenderer({ algoId }) {
         <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">🔂 Backtracking: Trial & Error Pruning</div>
         <div className="relative w-64 h-40 my-2 flex flex-col items-center justify-between">
           <div className="w-16 py-1 bg-[#73eff7] text-black font-bold text-center rounded text-[10px] shadow-md z-10">Root</div>
-          
+
           <div className="flex w-full justify-around z-10">
             <div className={`w-14 py-1 border rounded text-center text-[10px] ${activeNodes.includes('A') ? 'bg-[#4ade80] text-black font-bold shadow-[0_0_10px_#4ade80]' : 'bg-[#1a1c2c] text-gray-500 border-gray-700'}`}>Option A</div>
           </div>
@@ -1048,33 +1052,27 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
       const details = [
         {
           desc: "Help Dodo and Cassie solve UI/UX grid alignment issues using mathematical properties, then assist Inigo in managing his morning chaos.",
-          focus: "➗ Euclid's, ❗ Factorials",
-          bg: "/bedroom-dev-bg.png"
+          focus: "➗ Euclid's, ❗ Factorials"
         },
         {
           desc: "Help Cassie validate unique login usernames, find the highest Alco quiz scorer with Mikaela, navigate jeepney terminals, search OPM karaoke books, and match RPG friend names.",
-          focus: "🔍 Binary & Interpolation, ⚔️ BF String",
-          bg: "/bedroom-dev-bg.png"
+          focus: "🔍 Binary & Interpolation, ⚔️ BF String"
         },
         {
           desc: "Help Dodo organize cluttered Figma UI icons by file size, then assist Cassie, Mikaela, and Inigo in compiling and sorting a massive student management database using stable merge sort, quicksort, and heapsort.",
-          focus: "🖱️ Selection, 🫧 Bubble, 🔀 Merge, ⚡ Quick, 🌲 Heap",
-          bg: "/bedroom-dev-bg.png"
+          focus: "🖱️ Selection, 🫧 Bubble, 🔀 Merge, ⚡ Quick, 🌲 Heap"
         },
         {
           desc: "Help Inigo find the shortest campus walkway route using Dijkstra's, assist Dodo and Cassie in wiring lab workstations efficiently with Prim's and Kruskal's MSTs, then explore Cassie's RPG character skill tree using BFS and DFS traversals.",
-          focus: "📍 Dijkstra, 🛡️ Prim, 🔗 Kruskal, 🌊 BFS, 📍 DFS",
-          bg: "/bedroom-dev-bg.png"
+          focus: "📍 Dijkstra, 🛡️ Prim, 🔗 Kruskal, 🌊 BFS, 📍 DFS"
         },
         {
           desc: "Calculate optimal coin combinations at vending machines with Change Making, collect dropped bench bounties using Coin Row DP, set grid game high scores with Coin Collecting, and compress documentation files losslessly using Huffman Coding.",
-          focus: "🏧 Change, 🪙 Coin Row, 🕹️ Coin Collect, 🗜️ Huffman",
-          bg: "/bedroom-dev-bg.png"
+          focus: "🏧 Change, 🪙 Coin Row, 🕹️ Coin Collect, 🗜️ Huffman"
         },
         {
           desc: "Debug intricate logic circuits incrementally with Backtracking exhaustive search, and pack presentation essentials optimally using Branch and Bound pruning techniques before graduation.",
-          focus: "🔂 Backtracking, ✂️ Branch & Bound",
-          bg: "/bedroom-dev-bg.png"
+          focus: "🔂 Backtracking, ✂️ Branch & Bound"
         }
       ]
       return {
@@ -1082,7 +1080,7 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
         title: ch.title,
         desc: details[index]?.desc || "Solve computer science algorithm challenges and complete AUF coursework under pressure.",
         focus: details[index]?.focus || "O-notation Complexity analysis",
-        bg: details[index]?.bg || "/bedroom-dev-bg.png"
+        bg: "/universal_hallway_bg.png"
       }
     })
   }, [])
@@ -1130,12 +1128,12 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
 
   return (
     <div onWheel={handleWheel} className={`relative h-screen w-full overflow-hidden bg-[#111424] text-white flex flex-col items-center justify-center font-retro ${crtEffect ? 'crt-screen' : ''}`}>
-      {/* Background Graphic with Vignette Dimming (Kept completely static to block any html body background leaks) */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#111424]/90 via-[#111424]/75 to-[#1a1c2c]" />
+      <div className="absolute inset-0 bg-[#111424]" />
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80"
         style={{ backgroundImage: `url(${activeChapter.bg})`, imageRendering: 'pixelated' }}
       />
+      <div className="absolute inset-0 bg-black/40" />
       {crtEffect && (
         <>
           <div className="absolute inset-0 scanlines opacity-25 pointer-events-none z-20" />
@@ -1200,8 +1198,8 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
                       }
                     }}
                     className={`w-[350px] shrink-0 bg-slate-950/85 border-4 rounded-sm p-6 shadow-[0_15px_35px_rgba(0,0,0,0.8)] transition-all duration-500 flex flex-col justify-between select-none relative ${isActive
-                        ? 'border-[#f7d354] scale-100 opacity-100 cursor-default'
-                        : 'border-[#3a495e] scale-90 opacity-35 hover:opacity-60 cursor-pointer blur-[0.5px]'
+                      ? 'border-[#f7d354] scale-100 opacity-100 cursor-default'
+                      : 'border-[#3a495e] scale-90 opacity-35 hover:opacity-60 cursor-pointer blur-[0.5px]'
                       }`}
                     style={{
                       boxShadow: isActive ? '0 0 25px rgba(247, 211, 84, 0.25)' : ''
@@ -1384,8 +1382,8 @@ function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress })
                   onClick={() => handleSpeedChange(sp)}
                   onMouseEnter={() => audio.playHover()}
                   className={`font-pixel text-[6px] md:text-[8px] py-2 border-2 text-center transition-all cursor-pointer uppercase ${settings.typewriterSpeed === sp
-                      ? 'border-[#f7d354] text-[#f7d354] bg-[#2c2f44]'
-                      : 'border-[#3a495e] text-[#8b9bb4] hover:border-white hover:text-white'
+                    ? 'border-[#f7d354] text-[#f7d354] bg-[#2c2f44]'
+                    : 'border-[#3a495e] text-[#8b9bb4] hover:border-white hover:text-white'
                     }`}
                 >
                   {sp}
@@ -1412,8 +1410,8 @@ function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress })
                 onClick={triggerReset}
                 onMouseEnter={() => audio.playHover()}
                 className={`w-full font-pixel text-[6px] md:text-[8px] py-2 border-2 text-center transition-all cursor-pointer uppercase ${resetConfirm
-                    ? 'border-red-500 text-red-500 bg-red-950/20 animate-pulse'
-                    : 'border-[#3a495e] text-[#8b9bb4] hover:border-red-500 hover:text-red-500'
+                  ? 'border-red-500 text-red-500 bg-red-950/20 animate-pulse'
+                  : 'border-[#3a495e] text-[#8b9bb4] hover:border-red-500 hover:text-red-500'
                   }`}
               >
                 {resetConfirm ? 'CONFIRM_RESET ?' : 'RESET_SYSTEM_PROGRESS'}
@@ -2087,7 +2085,7 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
     const nextSwitches = [...switches]
     nextSwitches[idx] = !nextSwitches[idx]
     setSwitches(nextSwitches)
-    const stateStr = `[SW1:${nextSwitches[0]?'ON':'OFF'}, SW2:${nextSwitches[1]?'ON':'OFF'}, SW3:${nextSwitches[2]?'ON':'OFF'}]`
+    const stateStr = `[SW1:${nextSwitches[0] ? 'ON' : 'OFF'}, SW2:${nextSwitches[1] ? 'ON' : 'OFF'}, SW3:${nextSwitches[2] ? 'ON' : 'OFF'}]`
     setBacktrackHistory([...backtrackHistory, stateStr])
 
     // Configuration constraint: if switch 0 and switch 1 are both true without switch 2, short circuit!
@@ -2727,7 +2725,7 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
               <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">
                 {!success ? `Greedily pick the next unvisited vertex with the minimum cumulative travel time from Gate!` : "Shortest path to CS Building secured!"}
               </p>
-              
+
               <div className="bg-[#10121c] border border-[#3a495e] p-4 rounded-sm max-w-md mx-auto">
                 <div className="grid grid-cols-2 gap-6 text-center font-pixel text-xs">
                   <div className={`p-3 border rounded ${visitedNodes.includes('Gate') ? 'bg-[#27ae60] border-white text-white shadow-md' : 'bg-[#2c2f44] border-[#3a495e]'}`}>
@@ -3564,7 +3562,7 @@ export default function App() {
   return (
     <>
       <div className={`flex h-screen w-full bg-retro-bg overflow-hidden font-retro ${settings.crtEffect ? 'crt-screen' : ''}`}>
-        <Atmosphere showCollage={true} crtEffect={settings.crtEffect} />
+        <Atmosphere showCollage={false} crtEffect={settings.crtEffect} chapterId={chapter.id} nodeId={currentNode} />
 
         {/* LEFT COLUMN: Narrative & Choices */}
         <div className="w-1/2 flex flex-col dialogue-panel z-10 relative">
@@ -3672,7 +3670,7 @@ export default function App() {
 
         {/* RIGHT COLUMN: Character Sprites */}
         <div className="w-1/2 h-full relative pointer-events-none overflow-hidden flex items-end justify-end">
-          <div className="relative w-full h-full flex items-end justify-end translate-y-48 translate-x-12">
+          <div className="relative w-full h-full flex items-end justify-end translate-y-48">
             {Object.entries(CHARACTER_SPRITES).map(([name, src], idx) => {
               const isActive = node.speaker === name;
               const isSpeaking = isActive && isTyping;
@@ -3683,8 +3681,8 @@ export default function App() {
                   alt={name}
                   className={`character-sprite ${isActive ? 'active' : ''} ${isSpeaking ? 'sprite-talking' : ''} absolute`}
                   style={{
-                    right: `${(Object.keys(CHARACTER_SPRITES).length - 1 - idx) * 280 - 120}px`,
-                    zIndex: isActive ? 40 : 10 + idx,
+                    right: `${(Object.keys(CHARACTER_SPRITES).length - 1 - idx) * 225 - 120}px`,
+                    zIndex: isActive ? 40 : 30 - idx,
                     maxWidth: '550px',
                     height: '110vh'
                   }}
