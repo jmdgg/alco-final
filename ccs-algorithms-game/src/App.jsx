@@ -687,6 +687,11 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
   const [numA, setNumA] = useState(1920)
   const [numB, setNumB] = useState(1080)
 
+  // Chapter 1 additions (1920x1080)
+  const [consecT, setConsecT] = useState(150) // checking GCD(1920, 1080) starting at 150
+  const [consecError, setConsecError] = useState(null)
+  const [selectedPrimes, setSelectedPrimes] = useState([])
+
   // 2. Binary Search
   const [arr] = useState([12, 24, 35, 47, 58, 69, 72, 85])
   const target = 58
@@ -730,6 +735,41 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
     setNumA(numB)
     setNumB(rem)
     if (rem === 0) {
+      audio.playUnlock()
+      setSuccess(true)
+    }
+  }
+
+  const handleConsecCheck = () => {
+    audio.playSelect()
+    if (consecT === 120) {
+      setConsecError(null)
+      audio.playUnlock()
+      setSuccess(true)
+    } else if (consecT < 120 && 1920 % consecT === 0 && 1080 % consecT === 0) {
+      audio.playPop()
+      setConsecError(`t=${consecT} is a common divisor, but not the GREATEST! You skipped past t=120. Resetting back to 150!`)
+      setConsecT(150)
+    } else {
+      audio.playPop()
+      setConsecError(`t=${consecT} does not divide both 1920 and 1080. Keep decrementing!`)
+    }
+  }
+
+  const handleConsecDecrement = () => {
+    audio.playSelect()
+    setConsecError(null)
+    if (consecT > 10) setConsecT(consecT - 10)
+  }
+
+  const handlePrimeSelect = (idx) => {
+    audio.playSelect()
+    if (selectedPrimes.includes(idx)) return
+    const nextPrimes = [...selectedPrimes, idx]
+    setSelectedPrimes(nextPrimes)
+
+    // Common primes are [2, 2, 2, 3, 5] (indices 0, 1, 2, 3, 4). All 5 must be selected!
+    if (nextPrimes.length === 5) {
       audio.playUnlock()
       setSuccess(true)
     }
@@ -853,24 +893,24 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
 
   return (
     <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
-      <div className="bg-[#1a1c2c] border-4 border-[#f7d354] p-8 max-w-lg w-full shadow-[0_15px_35px_rgba(0,0,0,0.8)] animate-pop-in font-retro text-white relative">
+      <div className="bg-[#1a1c2c] border-4 border-[#f7d354] p-8 max-w-xl w-full shadow-[0_15px_35px_rgba(0,0,0,0.8)] animate-pop-in font-retro text-white relative">
         {/* Header */}
-        <h2 className="font-pixel text-[#f7d354] text-center text-xs md:text-base mb-2 uppercase tracking-widest text-shadow-md flex items-center justify-center gap-2">
+        <h2 className="font-pixel text-[#f7d354] text-center text-sm md:text-lg mb-2 uppercase tracking-widest text-shadow-md flex items-center justify-center gap-2">
           <span>🕹️</span> [ ALGORITHM MINIGAME ]
         </h2>
-        <p className="font-retro text-[11px] text-[#f7d354] font-bold text-center mb-1">
+        <p className="font-retro text-xs md:text-sm text-[#f7d354] font-bold text-center mb-1">
           {choice.label}
         </p>
-        <p className="font-retro text-[10px] text-[#8b9bb4] text-center mb-6">
+        <p className="font-retro text-xs md:text-sm text-[#8b9bb4] text-center mb-6 leading-relaxed">
           Execute the algorithm steps correctly to optimize computational performance!
         </p>
 
         {/* Content based on minigame type */}
-        <div className="my-6 min-h-[180px] flex flex-col items-center justify-center bg-[#10121c] border border-[#3a495e] p-6 rounded-sm">
+        <div className="my-6 min-h-[200px] flex flex-col items-center justify-center bg-[#10121c] border border-[#3a495e] p-6 rounded-sm">
           {type === 'gcd' && (
             <div className="w-full space-y-4 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">Euclid's GCD Algorithm</p>
-              <div className="flex justify-center items-center gap-6 font-pixel text-lg py-4 bg-[#1a1c2c] border border-[#3a495e] rounded-sm">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Euclid's GCD Algorithm</p>
+              <div className="flex justify-center items-center gap-6 font-pixel text-xl py-4 bg-[#1a1c2c] border border-[#3a495e] rounded-sm">
                 <div>A: <span className="text-[#4ade80]">{numA}</span></div>
                 <div>%</div>
                 <div>B: <span className="text-[#f7d354]">{numB}</span></div>
@@ -878,29 +918,55 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
               {!success ? (
                 <button
                   onClick={handleGcdStep}
-                  className="btn-pixel-menu py-2 px-6 text-xs uppercase cursor-pointer"
+                  className="btn-pixel-menu py-3 px-8 text-sm md:text-base uppercase cursor-pointer"
                 >
                   Step: A = B, B = A % B
                 </button>
               ) : (
-                <div className="text-[#4ade80] font-pixel text-sm animate-pulse">🎉 GCD Found: {numA}! Perfectly aligned!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base animate-pulse">🎉 GCD Found: {numA}! Perfectly aligned!</div>
               )}
             </div>
           )}
 
-          {type === 'binary_search' && (
+          {type === 'consecutive_check' && (
             <div className="w-full space-y-4 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Binary Search'} for Target: <span className="text-[#f7d354]">{target}</span></p>
-              <p className="text-[10px] text-[#8b9bb4]">Click the middle element (Index {Math.floor((low + high) / 2)}) of the current search bounds!</p>
-              <div className="grid grid-cols-4 gap-2 pt-2">
-                {arr.map((val, idx) => {
-                  const inBounds = idx >= low && idx <= high;
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Consecutive Integer Check GCD</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Find GCD(1920, 1080). Dodo checks from t = 150 downwards! Does t divide both 1920 and 1080?</p>
+              <div className="flex justify-center items-center gap-6 font-pixel text-xl py-3 bg-[#1a1c2c] border border-[#3a495e] rounded-sm">
+                <div>Testing t = <span className="text-[#f7d354]">{consecT}</span></div>
+              </div>
+              <div className="flex justify-center gap-4 pt-2 font-pixel">
+                <button onClick={handleConsecCheck} disabled={success} className="btn-pixel-menu py-3 px-6 text-xs md:text-sm cursor-pointer">
+                  CHECK DIVISIBILITY
+                </button>
+                <button onClick={handleConsecDecrement} disabled={success} className="py-3 px-6 bg-[#2c2f44] border border-[#3a495e] hover:border-white text-xs md:text-sm cursor-pointer">
+                  DECREMENT t = t - 10
+                </button>
+              </div>
+              {consecError && !success && (
+                <div className="text-red-400 font-pixel text-xs md:text-sm animate-bounce bg-red-950/40 p-3 border border-red-800 rounded-sm">
+                  ⚠️ {consecError}
+                </div>
+              )}
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base pt-2 animate-pulse">🎉 Divisibility confirmed! GCD is {consecT}! Buttons fit perfectly!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'middle_school' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Middle School Procedure GCD</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Prime factors of 1920 = [2⁷ × 3 × 5]. Prime factors of 1080 = [2³ × 3³ × 5]. Select the shared common prime factors [2, 2, 2, 3, 5] to multiply!</p>
+              <div className="flex justify-center gap-4 pt-4 font-pixel text-sm md:text-base">
+                {[2, 2, 2, 3, 5].map((val, idx) => {
+                  const isSel = selectedPrimes.includes(idx);
                   return (
                     <button
                       key={idx}
-                      disabled={!inBounds || success}
-                      onClick={() => handleBinarySearchClick(idx)}
-                      className={`font-pixel text-xs py-3 border-2 text-center transition-all ${success && foundMid === idx ? 'bg-[#27ae60] border-white text-white animate-bounce' : inBounds ? 'bg-[#2c2f44] border-[#3a495e] hover:border-[#f7d354] text-white cursor-pointer' : 'bg-black/40 border-black/40 text-gray-700 opacity-30 line-through'}`}
+                      disabled={success || isSel}
+                      onClick={() => handlePrimeSelect(idx)}
+                      className={`py-3 px-6 border-2 text-center transition-all cursor-pointer ${isSel ? 'bg-[#27ae60] border-white text-white shadow-md' : 'bg-[#2c2f44] border-[#3a495e] hover:border-[#f7d354]'}`}
                     >
                       {val}
                     </button>
@@ -908,120 +974,145 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
                 })}
               </div>
               {success && (
-                <div className="text-[#4ade80] font-pixel text-xs mt-4 animate-pulse">🎉 Target {target} located at O(log N) speed!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base mt-2 animate-pulse">🎉 Shared primes multiplied! 2 × 2 × 2 × 3 × 5 = 120! Perfectly square buttons!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'binary_search' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Binary Search'} for Target: <span className="text-[#f7d354]">{target}</span></p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Click the middle element (Index {Math.floor((low + high) / 2)}) of the current search bounds!</p>
+              <div className="grid grid-cols-4 gap-3 pt-2">
+                {arr.map((val, idx) => {
+                  const inBounds = idx >= low && idx <= high;
+                  return (
+                    <button
+                      key={idx}
+                      disabled={!inBounds || success}
+                      onClick={() => handleBinarySearchClick(idx)}
+                      className={`font-pixel text-sm md:text-base py-3 border-2 text-center transition-all ${success && foundMid === idx ? 'bg-[#27ae60] border-white text-white animate-bounce' : inBounds ? 'bg-[#2c2f44] border-[#3a495e] hover:border-[#f7d354] text-white cursor-pointer' : 'bg-black/40 border-black/40 text-gray-700 opacity-30 line-through'}`}
+                    >
+                      {val}
+                    </button>
+                  )
+                })}
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base mt-4 animate-pulse">🎉 Target {target} located at O(log N) speed!</div>
               )}
             </div>
           )}
 
           {type === 'bubble_sort' && (
             <div className="w-full space-y-4 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">Bubble Sort Figma Icons</p>
-              <p className="text-[10px] text-[#8b9bb4]">Click a bar to swap it with the adjacent bar to its right until ascending!</p>
-              <div className="flex items-end justify-center gap-4 h-32 pt-4">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Bubble Sort Figma Icons</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Click a bar to swap it with the adjacent bar to its right until ascending!</p>
+              <div className="flex items-end justify-center gap-6 h-36 pt-4">
                 {bars.map((val, idx) => (
                   <div key={idx} className="flex flex-col items-center gap-2">
                     <div
                       onClick={() => handleSortSwap(idx)}
-                      className={`w-10 bg-[#3b82f6] border-2 border-[#60a5fa] rounded-t-sm hover:bg-[#60a5fa] cursor-pointer transition-all ${success ? 'bg-[#27ae60] border-[#4ade80]' : ''}`}
+                      className={`w-12 bg-[#3b82f6] border-2 border-[#60a5fa] rounded-t-sm hover:bg-[#60a5fa] cursor-pointer transition-all ${success ? 'bg-[#27ae60] border-[#4ade80]' : ''}`}
                       style={{ height: `${val}px` }}
                     />
-                    <span className="font-pixel text-[10px]">{val}KB</span>
+                    <span className="font-pixel text-xs md:text-sm">{val}KB</span>
                   </div>
                 ))}
               </div>
               {success && (
-                <div className="text-[#4ade80] font-pixel text-xs animate-pulse">🎉 Assets bubble sorted perfectly!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base animate-pulse">🎉 Assets bubble sorted perfectly!</div>
               )}
             </div>
           )}
 
           {type === 'selection_sort' && (
             <div className="w-full space-y-4 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">Selection Sort Figma Icons</p>
-              <p className="text-[10px] text-[#8b9bb4]">Click the smallest asset bar (12KB) to select and swap it to the front!</p>
-              <div className="flex items-end justify-center gap-4 h-32 pt-4">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Selection Sort Figma Icons</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Click the smallest asset bar (12KB) to select and swap it to the front!</p>
+              <div className="flex items-end justify-center gap-6 h-36 pt-4">
                 {bars.map((val, idx) => (
                   <div key={idx} className="flex flex-col items-center gap-2">
                     <div
                       onClick={() => handleSelectionClick(idx)}
-                      className={`w-10 bg-[#3b82f6] border-2 border-[#60a5fa] rounded-t-sm hover:bg-[#f7d354] cursor-pointer transition-all ${success ? 'bg-[#27ae60] border-[#4ade80]' : ''}`}
+                      className={`w-12 bg-[#3b82f6] border-2 border-[#60a5fa] rounded-t-sm hover:bg-[#f7d354] cursor-pointer transition-all ${success ? 'bg-[#27ae60] border-[#4ade80]' : ''}`}
                       style={{ height: `${val}px` }}
                     />
-                    <span className="font-pixel text-[10px]">{val}KB</span>
+                    <span className="font-pixel text-xs md:text-sm">{val}KB</span>
                   </div>
                 ))}
               </div>
               {success && (
-                <div className="text-[#4ade80] font-pixel text-xs animate-pulse">🎉 Minimum asset selected and sorted!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base animate-pulse">🎉 Minimum asset selected and sorted!</div>
               )}
             </div>
           )}
 
           {type === 'merge_sort' && (
             <div className="w-full space-y-4 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">Merge Sort Sub-Arrays</p>
-              <p className="text-[10px] text-[#8b9bb4]">Merge sub-arrays [12, 45] and [23, 67] by clicking the smallest remaining element in order (12 → 23 → 45 → 67)!</p>
-              <div className="flex justify-center gap-8 pt-4 font-pixel text-xs">
-                <div className="p-3 bg-[#2c2f44] border rounded-sm">
-                  <p className="text-[#f7d354] mb-2">Left: [12, 45]</p>
-                  <div className="flex gap-2">
-                    <button onClick={() => handleMergeClick(12)} disabled={mergeStep > 0} className="p-2 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">12</button>
-                    <button onClick={() => handleMergeClick(45)} disabled={mergeStep > 2} className="p-2 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">45</button>
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Merge Sort Sub-Arrays</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Merge sub-arrays [12, 45] and [23, 67] by clicking the smallest remaining element in order (12 → 23 → 45 → 67)!</p>
+              <div className="flex justify-center gap-8 pt-4 font-pixel text-sm md:text-base">
+                <div className="p-4 bg-[#2c2f44] border rounded-sm">
+                  <p className="text-[#f7d354] mb-3">Left: [12, 45]</p>
+                  <div className="flex gap-3">
+                    <button onClick={() => handleMergeClick(12)} disabled={mergeStep > 0} className="p-3 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">12</button>
+                    <button onClick={() => handleMergeClick(45)} disabled={mergeStep > 2} className="p-3 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">45</button>
                   </div>
                 </div>
-                <div className="p-3 bg-[#2c2f44] border rounded-sm">
-                  <p className="text-[#4ade80] mb-2">Right: [23, 67]</p>
-                  <div className="flex gap-2">
-                    <button onClick={() => handleMergeClick(23)} disabled={mergeStep > 1} className="p-2 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">23</button>
-                    <button onClick={() => handleMergeClick(67)} disabled={mergeStep > 3} className="p-2 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">67</button>
+                <div className="p-4 bg-[#2c2f44] border rounded-sm">
+                  <p className="text-[#4ade80] mb-3">Right: [23, 67]</p>
+                  <div className="flex gap-3">
+                    <button onClick={() => handleMergeClick(23)} disabled={mergeStep > 1} className="p-3 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">23</button>
+                    <button onClick={() => handleMergeClick(67)} disabled={mergeStep > 3} className="p-3 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">67</button>
                   </div>
                 </div>
               </div>
               {success && (
-                <div className="text-[#4ade80] font-pixel text-xs mt-2 animate-pulse">🎉 Sub-arrays merged perfectly at O(N log N)!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base mt-2 animate-pulse">🎉 Sub-arrays merged perfectly at O(N log N)!</div>
               )}
             </div>
           )}
 
           {type === 'quicksort' && (
             <div className="w-full space-y-4 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">Quicksort Asset Partitioning</p>
-              <p className="text-[10px] text-[#8b9bb4]">Pivot is 45KB! Click elements smaller than 45 (12, 23) to move them to Left Partition, then greater (67, 89) to Right Partition!</p>
-              <div className="flex justify-center gap-3 pt-2 font-pixel text-xs">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Quicksort Asset Partitioning</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Pivot is 45KB! Click elements smaller than 45 (12, 23) to move them to Left Partition, then greater (67, 89) to Right Partition!</p>
+              <div className="flex justify-center gap-4 pt-2 font-pixel text-sm md:text-base">
                 {[12, 89, 23, 67].map((val, idx) => (
-                  <button key={idx} onClick={() => handleQuickClick(val)} disabled={success} className="py-2 px-3 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] cursor-pointer">
+                  <button key={idx} onClick={() => handleQuickClick(val)} disabled={success} className="py-3 px-5 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] cursor-pointer">
                     {val}KB
                   </button>
                 ))}
               </div>
               {success && (
-                <div className="text-[#4ade80] font-pixel text-xs mt-2 animate-pulse">🎉 Assets partitioned perfectly around pivot!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base mt-2 animate-pulse">🎉 Assets partitioned perfectly around pivot!</div>
               )}
             </div>
           )}
 
           {type === 'heapsort' && (
             <div className="w-full space-y-4 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">Heapsort Root Extraction</p>
-              <p className="text-[10px] text-[#8b9bb4]">Max-Heap built! Extract the largest remaining root element in order (89 → 67 → 45) to place at the end of sorted array!</p>
-              <div className="flex justify-center gap-3 pt-2 font-pixel text-xs">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Heapsort Root Extraction</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Max-Heap built! Extract the largest remaining root element in order (89 → 67 → 45) to place at the end of sorted array!</p>
+              <div className="flex justify-center gap-4 pt-2 font-pixel text-sm md:text-base">
                 {[89, 67, 45, 23, 12].map((val, idx) => (
-                  <button key={idx} onClick={() => handleHeapClick(val)} disabled={heapStep > idx || success} className="py-2 px-3 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] disabled:opacity-30 cursor-pointer">
+                  <button key={idx} onClick={() => handleHeapClick(val)} disabled={heapStep > idx || success} className="py-3 px-5 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] disabled:opacity-30 cursor-pointer">
                     {val}KB
                   </button>
                 ))}
               </div>
               {success && (
-                <div className="text-[#4ade80] font-pixel text-xs mt-2 animate-pulse">🎉 Max roots extracted and sorted perfectly!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base mt-2 animate-pulse">🎉 Max roots extracted and sorted perfectly!</div>
               )}
             </div>
           )}
 
           {type === 'mst' && (
             <div className="w-full space-y-3 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Minimum Spanning Tree'} (Lab Wiring)</p>
-              <p className="text-[10px] text-[#8b9bb4]">Select the cheapest 3 cables to link all workstations without cycles!</p>
-              <div className="space-y-2 pt-2">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Minimum Spanning Tree'} (Lab Wiring)</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Select the cheapest 3 cables to link all workstations without cycles!</p>
+              <div className="space-y-3 pt-2">
                 {edges.map((e) => {
                   const isSel = selectedEdges.includes(e.id);
                   return (
@@ -1029,7 +1120,7 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
                       key={e.id}
                       disabled={success || isSel}
                       onClick={() => handleMstClick(e.id)}
-                      className={`w-full py-2 px-4 border text-left font-pixel text-xs flex justify-between items-center transition-all ${isSel ? 'bg-[#27ae60] border-[#4ade80] text-white' : 'bg-[#2c2f44] border-[#3a495e] hover:border-[#f7d354] text-[#8b9bb4] hover:text-white cursor-pointer'}`}
+                      className={`w-full py-3 px-5 border text-left font-pixel text-sm flex justify-between items-center transition-all ${isSel ? 'bg-[#27ae60] border-[#4ade80] text-white' : 'bg-[#2c2f44] border-[#3a495e] hover:border-[#f7d354] text-[#8b9bb4] hover:text-white cursor-pointer'}`}
                     >
                       <span>{e.label}</span>
                       <span>{isSel ? '🔌 CONNECTED' : 'SELECT'}</span>
@@ -1038,23 +1129,23 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
                 })}
               </div>
               {success && (
-                <div className="text-[#4ade80] font-pixel text-xs pt-2 animate-pulse">🎉 Lab fully connected at minimum cost!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base pt-2 animate-pulse">🎉 Lab fully connected at minimum cost!</div>
               )}
             </div>
           )}
 
           {type === 'dp' && (
             <div className="w-full space-y-3 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Coin Collecting DP'}</p>
-              <p className="text-[10px] text-[#8b9bb4]">Move Right [▶] or Down [▼] to reach the bottom-right corner while collecting optimal loot!</p>
-              <div className="grid grid-cols-3 gap-2 max-w-[200px] mx-auto pt-2">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Coin Collecting DP'}</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Move Right [▶] or Down [▼] to reach the bottom-right corner while collecting optimal loot!</p>
+              <div className="grid grid-cols-3 gap-3 max-w-[240px] mx-auto pt-2">
                 {gridCoins.map((row, r) =>
                   row.map((val, c) => {
                     const isCurrent = pos.r === r && pos.c === c;
                     return (
                       <div
                         key={`${r}-${c}`}
-                        className={`h-12 border flex flex-col items-center justify-center font-pixel text-xs rounded-sm ${isCurrent ? 'bg-[#f7d354] text-black border-white animate-pulse shadow-md' : 'bg-[#1a1c2c] border-[#3a495e] text-white'}`}
+                        className={`h-16 border flex flex-col items-center justify-center font-pixel text-sm rounded-sm ${isCurrent ? 'bg-[#f7d354] text-black border-white animate-pulse shadow-md' : 'bg-[#1a1c2c] border-[#3a495e] text-white'}`}
                       >
                         {isCurrent ? '📍' : val > 0 ? `🪙${val}` : '—'}
                       </div>
@@ -1062,39 +1153,39 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
                   })
                 )}
               </div>
-              <div className="flex justify-center gap-4 pt-2">
+              <div className="flex justify-center gap-4 pt-4">
                 <button
                   disabled={pos.c >= 2 || success}
                   onClick={() => handleDpMove(0, 1)}
-                  className="btn-pixel-menu py-2 px-4 text-xs cursor-pointer disabled:opacity-30"
+                  className="btn-pixel-menu py-3 px-6 text-sm cursor-pointer disabled:opacity-30"
                 >
                   MOVE RIGHT ▶
                 </button>
                 <button
                   disabled={pos.r >= 2 || success}
                   onClick={() => handleDpMove(1, 0)}
-                  className="btn-pixel-menu py-2 px-4 text-xs cursor-pointer disabled:opacity-30"
+                  className="btn-pixel-menu py-3 px-6 text-sm cursor-pointer disabled:opacity-30"
                 >
                   MOVE DOWN ▼
                 </button>
               </div>
               {success && (
-                <div className="text-[#4ade80] font-pixel text-xs pt-1 animate-pulse">🎉 Reached Goal! Total Bounties: 🪙{coinsCollected}!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base pt-2 animate-pulse">🎉 Reached Goal! Total Bounties: 🪙{coinsCollected}!</div>
               )}
             </div>
           )}
 
           {type === 'backtracking' && (
             <div className="w-full space-y-4 text-center">
-              <p className="font-pixel text-xs text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Backtracking Logic Circuit'}</p>
-              <p className="text-[10px] text-[#8b9bb4]">Toggle the logic switches. If a constraint violation occurs, backtrack (undo) to find the working state!</p>
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Backtracking Logic Circuit'}</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Toggle the logic switches. If a constraint violation occurs, backtrack (undo) to find the working state!</p>
               <div className="flex justify-center gap-6 pt-4">
                 {switches.map((st, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSwitchToggle(idx)}
                     disabled={success}
-                    className={`w-16 h-16 border-2 font-pixel text-xs flex flex-col items-center justify-center transition-all cursor-pointer ${st ? 'bg-[#27ae60] border-white text-white shadow-[0_0_15px_#27ae60]' : 'bg-[#2c2f44] border-[#3a495e] text-[#8b9bb4]'}`}
+                    className={`w-20 h-20 border-2 font-pixel text-sm flex flex-col items-center justify-center transition-all cursor-pointer ${st ? 'bg-[#27ae60] border-white text-white shadow-[0_0_15px_#27ae60]' : 'bg-[#2c2f44] border-[#3a495e] text-[#8b9bb4]'}`}
                   >
                     <span>SW {idx + 1}</span>
                     <span>{st ? 'ON' : 'OFF'}</span>
@@ -1102,10 +1193,10 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
                 ))}
               </div>
               {violation && (
-                <div className="text-red-500 font-pixel text-xs animate-bounce">⚠️ CONSTRAINT VIOLATION! Short circuit detected! Backtrack!</div>
+                <div className="text-red-500 font-pixel text-sm animate-bounce mt-2">⚠️ CONSTRAINT VIOLATION! Short circuit detected! Backtrack!</div>
               )}
               {success && (
-                <div className="text-[#4ade80] font-pixel text-xs animate-pulse">🎉 Circuit configured perfectly! Degree secured!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base animate-pulse mt-2">🎉 Circuit configured perfectly! Degree secured!</div>
               )}
             </div>
           )}
@@ -1116,13 +1207,13 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
           <button
             disabled={!success}
             onClick={() => { audio.playAdvance(); onComplete(); }}
-            className={`w-full py-3 font-pixel text-xs uppercase text-center transition-all ${success ? 'btn-pixel-menu cursor-pointer animate-pulse' : 'bg-black/50 border-2 border-[#3a495e] text-[#8b9bb4] opacity-50 cursor-not-allowed'}`}
+            className={`w-full py-4 font-pixel text-sm md:text-base uppercase text-center transition-all ${success ? 'btn-pixel-menu cursor-pointer animate-pulse' : 'bg-black/50 border-2 border-[#3a495e] text-[#8b9bb4] opacity-50 cursor-not-allowed'}`}
           >
             {success ? 'ALGORITHM OPTIMIZED - CONTINUE ▶' : 'SOLVE MINIGAME TO PROCEED'}
           </button>
           <button
             onClick={() => { audio.playSelect(); onClose(); }}
-            className="px-4 border-2 border-[#3a495e] hover:border-white text-[#8b9bb4] hover:text-white font-pixel text-xs uppercase cursor-pointer"
+            className="px-6 border-2 border-[#3a495e] hover:border-white text-[#8b9bb4] hover:text-white font-pixel text-sm uppercase cursor-pointer"
           >
             SKIP
           </button>
@@ -1289,6 +1380,8 @@ export default function App() {
     const lbl = choice.label?.toLowerCase() || ''
 
     if (algo === "Euclid's Algorithm" || lbl.includes("euclid")) mgType = 'gcd'
+    else if (algo === "Consecutive Integer Check" || lbl.includes("consecutive")) mgType = 'consecutive_check'
+    else if (algo === "Middle School Procedure" || lbl.includes("middle school")) mgType = 'middle_school'
     else if (algo === "Sequential Search" || lbl.includes("sequential search")) mgType = 'binary_search'
     else if (algo === "Binary Search" || lbl.includes("binary search")) mgType = 'binary_search'
     else if (algo === "Interpolation Search" || lbl.includes("interpolation")) mgType = 'binary_search'
