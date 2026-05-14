@@ -28,6 +28,12 @@
               "label": "Suggest finding the GCD",
               "nextNode": "gcd_logic",
               "unlocksAlgorithm": null
+            },
+            {
+              "label": "Manually align pixels by eye",
+              "nextNode": "scene1_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
             }
           ]
         },
@@ -85,6 +91,12 @@
               "label": "Help him analyze the situation",
               "nextNode": "permutation_logic",
               "unlocksAlgorithm": null
+            },
+            {
+              "label": "Do tasks randomly without planning",
+              "nextNode": "scene1_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
             }
           ]
         },
@@ -353,6 +365,12 @@
               "nextNode": "selection_sort_node",
               "unlocksAlgorithm": "Selection Sort",
               "icon": "🖱️"
+            },
+            {
+              "label": "Manually inspect and arrange icons",
+              "nextNode": "selection_sort_node",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
             }
           ]
         },

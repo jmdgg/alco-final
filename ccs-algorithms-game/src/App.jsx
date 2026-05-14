@@ -678,6 +678,27 @@ function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress })
 /* ═══════════════════════════════════════════
    Main Game Screen
    ═══════════════════════════════════════════ */
+const OUT_OF_STAMINA_NODE = {
+  text: "🚨 STAMINA DEPLETED! 🚨\n\nYou selected too many inefficient algorithms with high time complexity! Your computational resources and mental stamina are completely drained.\n\nTake a deep breath, restart the chapter, and choose more optimal algorithms to complete your coursework!",
+  speaker: "System Monitor",
+  choices: [
+    {
+      label: "RESTART CHAPTER",
+      nextNode: "start",
+      unlocksAlgorithm: null,
+      restartChapter: true,
+      icon: "🔄"
+    },
+    {
+      label: "RETURN TO CHAPTER SELECT",
+      nextNode: "start",
+      unlocksAlgorithm: null,
+      returnToMenu: true,
+      icon: "◀️"
+    }
+  ]
+}
+
 export default function App() {
   const [screen, setScreen] = useState('title')
   const [prevScreen, setPrevScreen] = useState('title')
@@ -728,27 +749,9 @@ export default function App() {
   const [displayedText, setDisplayedText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [textIndex, setTextIndex] = useState(0)
+
   const chapter = gameData.chapters.find((c) => c.id === currentChapter)
-  const node = currentNode === 'out_of_stamina' ? {
-    text: "🚨 CPU OVERHEATED / STAMINA DEPLETED! 🚨\n\nYou selected too many inefficient algorithms with high time complexity! Your computational resources and mental stamina are completely drained.\n\nTake a deep breath, restart the chapter, and choose more optimal algorithms to complete your coursework!",
-    speaker: "System Monitor",
-    choices: [
-      {
-        label: "RESTART CHAPTER",
-        nextNode: "start",
-        unlocksAlgorithm: null,
-        restartChapter: true,
-        icon: "🔄"
-      },
-      {
-        label: "RETURN TO CHAPTER SELECT",
-        nextNode: "start",
-        unlocksAlgorithm: null,
-        returnToMenu: true,
-        icon: "◀️"
-      }
-    ]
-  } : chapter?.nodes?.[currentNode]
+  const node = currentNode === 'out_of_stamina' ? OUT_OF_STAMINA_NODE : chapter?.nodes?.[currentNode]
 
   useEffect(() => {
     if (screen === 'title') {
@@ -881,6 +884,9 @@ export default function App() {
       choice.label?.toLowerCase().includes('bubble sort') ||
       choice.label?.toLowerCase().includes('blind') ||
       choice.label?.toLowerCase().includes('greedi') ||
+      choice.label?.toLowerCase().includes('manuall') ||
+      choice.label?.toLowerCase().includes('inspect') ||
+      choice.label?.toLowerCase().includes('mesh') ||
       choice.label?.toLowerCase().includes('exhaust')
     ) {
       const nextStam = stamina - 40
