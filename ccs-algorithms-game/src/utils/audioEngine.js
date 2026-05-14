@@ -191,6 +191,65 @@ class AudioEngine {
     osc.stop(this.ctx.currentTime + 0.5);
   }
 
+  playGameOver() {
+    if (!this.enabled) return;
+    const now = this.ctx.currentTime + 0.1;
+    // Dramatic descending tritone / diminished chords with pitch bending
+    const notes = [
+      { f1: 370, f2: 350, d: 0.2 },
+      { f1: 311, f2: 290, d: 0.2 },
+      { f1: 247, f2: 220, d: 0.25 },
+      { f1: 185, f2: 130, d: 0.3 },
+      { f1: 130, f2: 55, d: 0.6 } // final dramatic pitch dive!
+    ];
+    
+    let timeOffset = 0;
+    notes.forEach((note) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(note.f1, now + timeOffset);
+      osc.frequency.exponentialRampToValueAtTime(note.f2, now + timeOffset + note.d);
+      
+      gain.gain.setValueAtTime(0, now + timeOffset);
+      gain.gain.linearRampToValueAtTime(0.3, now + timeOffset + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + timeOffset + note.d);
+      
+      osc.connect(gain);
+      gain.connect(this.masterGain);
+      
+      osc.start(now + timeOffset);
+      osc.stop(now + timeOffset + note.d);
+      timeOffset += note.d - 0.05; // slight dramatic overlap
+    });
+
+    // Massive filtered explosion sweep
+    const bufferSize = this.ctx.sampleRate * 1.2;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1500, now + 0.6);
+    filter.frequency.exponentialRampToValueAtTime(100, now + 1.8);
+
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0, now + 0.6);
+    noiseGain.gain.linearRampToValueAtTime(0.35, now + 0.65);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(this.masterGain);
+    noise.start(now + 0.6);
+  }
+
   // --- PROCEDURAL MUSIC SEQUENCER ---
 
   stopMusic() {
