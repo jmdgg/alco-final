@@ -676,6 +676,463 @@ function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress })
 }
 
 /* ═══════════════════════════════════════════
+   Interactive Algorithm Minigame Modal
+   ═══════════════════════════════════════════ */
+function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
+  const { type, choice } = minigameData
+  const [success, setSuccess] = useState(false)
+
+  // Specific state for each minigame
+  // 1. GCD
+  const [numA, setNumA] = useState(1920)
+  const [numB, setNumB] = useState(1080)
+
+  // 2. Binary Search
+  const [arr] = useState([12, 24, 35, 47, 58, 69, 72, 85])
+  const target = 58
+  const [low, setLow] = useState(0)
+  const [high, setHigh] = useState(7)
+  const [foundMid, setFoundMid] = useState(null)
+
+  // 3. Sorting (Selection, Bubble, Merge, Quick, Heap)
+  const [bars, setBars] = useState([45, 12, 89, 23, 67])
+  const [mergeStep, setMergeStep] = useState(0)
+  const [quickStep, setQuickStep] = useState(0)
+  const [heapStep, setHeapStep] = useState(0)
+
+  // 4. MST
+  const [selectedEdges, setSelectedEdges] = useState([])
+  const edges = [
+    { id: 'e1', label: 'Workstation A - B ($10)', cost: 10, nodes: ['A', 'B'] },
+    { id: 'e2', label: 'Workstation B - C ($15)', cost: 15, nodes: ['B', 'C'] },
+    { id: 'e3', label: 'Workstation A - C ($30)', cost: 30, nodes: ['A', 'C'] },
+    { id: 'e4', label: 'Workstation C - D ($20)', cost: 20, nodes: ['C', 'D'] }
+  ]
+
+  // 5. Coin DP (3x3 grid)
+  const [pos, setPos] = useState({ r: 0, c: 0 })
+  const [coinsCollected, setCoinsCollected] = useState(10)
+  const gridCoins = [
+    [10, 0, 25],
+    [0, 50, 0],
+    [15, 0, 100]
+  ]
+
+  // 6. Backtracking
+  const [switches, setSwitches] = useState([false, false, false])
+  const [violation, setViolation] = useState(false)
+
+  // Handlers for minigames
+  const handleGcdStep = () => {
+    audio.playSelect()
+    if (numB === 0) return
+    const rem = numA % numB
+    setNumA(numB)
+    setNumB(rem)
+    if (rem === 0) {
+      audio.playUnlock()
+      setSuccess(true)
+    }
+  }
+
+  const handleBinarySearchClick = (idx) => {
+    audio.playSelect()
+    const mid = Math.floor((low + high) / 2)
+    if (idx !== mid) {
+      audio.playPop() // incorrect mid
+      return
+    }
+    if (arr[mid] === target) {
+      audio.playUnlock()
+      setFoundMid(mid)
+      setSuccess(true)
+    } else if (arr[mid] < target) {
+      setLow(mid + 1)
+    } else {
+      setHigh(mid - 1)
+    }
+  }
+
+  const handleSortSwap = (idx) => {
+    audio.playSelect()
+    if (idx >= bars.length - 1) return
+    const nextBars = [...bars]
+    const temp = nextBars[idx]
+    nextBars[idx] = nextBars[idx + 1]
+    nextBars[idx + 1] = temp
+    setBars(nextBars)
+
+    // Check sorted
+    if (nextBars.every((val, i) => i === 0 || val >= nextBars[i - 1])) {
+      audio.playUnlock()
+      setSuccess(true)
+    }
+  }
+
+  const handleSelectionClick = (idx) => {
+    audio.playSelect()
+    const minVal = Math.min(...bars)
+    if (bars[idx] === minVal) {
+      audio.playUnlock()
+      setSuccess(true)
+    } else {
+      audio.playPop()
+    }
+  }
+
+  const handleMergeClick = (val) => {
+    audio.playSelect()
+    if (mergeStep === 0 && val === 12) { setMergeStep(1); }
+    else if (mergeStep === 1 && val === 23) { setMergeStep(2); }
+    else if (mergeStep === 2 && val === 45) { setMergeStep(3); }
+    else if (mergeStep === 3 && val === 67) { audio.playUnlock(); setSuccess(true); }
+    else { audio.playPop(); }
+  }
+
+  const handleQuickClick = (val) => {
+    audio.playSelect()
+    if (quickStep === 0 && val === 12) { setQuickStep(1); }
+    else if (quickStep === 1 && val === 23) { setQuickStep(2); }
+    else if (quickStep === 2 && (val === 67 || val === 89)) { audio.playUnlock(); setSuccess(true); }
+    else { audio.playPop(); }
+  }
+
+  const handleHeapClick = (val) => {
+    audio.playSelect()
+    if (heapStep === 0 && val === 89) { setHeapStep(1); }
+    else if (heapStep === 1 && val === 67) { setHeapStep(2); }
+    else if (heapStep === 2 && val === 45) { audio.playUnlock(); setSuccess(true); }
+    else { audio.playPop(); }
+  }
+
+  const handleMstClick = (id) => {
+    audio.playSelect()
+    if (selectedEdges.includes(id)) return
+    const nextEdges = [...selectedEdges, id]
+    setSelectedEdges(nextEdges)
+    if (nextEdges.length === 3) {
+      // 3 edges connect 4 nodes
+      audio.playUnlock()
+      setSuccess(true)
+    }
+  }
+
+  const handleDpMove = (dr, dc) => {
+    audio.playSelect()
+    const nr = pos.r + dr
+    const nc = pos.c + dc
+    if (nr < 3 && nc < 3) {
+      setPos({ r: nr, c: nc })
+      const collected = coinsCollected + gridCoins[nr][nc]
+      setCoinsCollected(collected)
+      if (nr === 2 && nc === 2) {
+        audio.playUnlock()
+        setSuccess(true)
+      }
+    }
+  }
+
+  const handleSwitchToggle = (idx) => {
+    audio.playSelect()
+    const nextSwitches = [...switches]
+    nextSwitches[idx] = !nextSwitches[idx]
+    setSwitches(nextSwitches)
+
+    // Configuration constraint: if switch 0 and switch 1 are both true without switch 2, short circuit!
+    if (nextSwitches[0] && nextSwitches[1] && !nextSwitches[2]) {
+      setViolation(true)
+      audio.playPop()
+    } else {
+      setViolation(false)
+      if (nextSwitches[0] && nextSwitches[1] && nextSwitches[2]) {
+        audio.playUnlock()
+        setSuccess(true)
+      }
+    }
+  }
+
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
+      <div className="bg-[#1a1c2c] border-4 border-[#f7d354] p-8 max-w-lg w-full shadow-[0_15px_35px_rgba(0,0,0,0.8)] animate-pop-in font-retro text-white relative">
+        {/* Header */}
+        <h2 className="font-pixel text-[#f7d354] text-center text-xs md:text-base mb-2 uppercase tracking-widest text-shadow-md flex items-center justify-center gap-2">
+          <span>🕹️</span> [ ALGORITHM MINIGAME ]
+        </h2>
+        <p className="font-retro text-[11px] text-[#f7d354] font-bold text-center mb-1">
+          {choice.label}
+        </p>
+        <p className="font-retro text-[10px] text-[#8b9bb4] text-center mb-6">
+          Execute the algorithm steps correctly to optimize computational performance!
+        </p>
+
+        {/* Content based on minigame type */}
+        <div className="my-6 min-h-[180px] flex flex-col items-center justify-center bg-[#10121c] border border-[#3a495e] p-6 rounded-sm">
+          {type === 'gcd' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">Euclid's GCD Algorithm</p>
+              <div className="flex justify-center items-center gap-6 font-pixel text-lg py-4 bg-[#1a1c2c] border border-[#3a495e] rounded-sm">
+                <div>A: <span className="text-[#4ade80]">{numA}</span></div>
+                <div>%</div>
+                <div>B: <span className="text-[#f7d354]">{numB}</span></div>
+              </div>
+              {!success ? (
+                <button
+                  onClick={handleGcdStep}
+                  className="btn-pixel-menu py-2 px-6 text-xs uppercase cursor-pointer"
+                >
+                  Step: A = B, B = A % B
+                </button>
+              ) : (
+                <div className="text-[#4ade80] font-pixel text-sm animate-pulse">🎉 GCD Found: {numA}! Perfectly aligned!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'binary_search' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Binary Search'} for Target: <span className="text-[#f7d354]">{target}</span></p>
+              <p className="text-[10px] text-[#8b9bb4]">Click the middle element (Index {Math.floor((low + high) / 2)}) of the current search bounds!</p>
+              <div className="grid grid-cols-4 gap-2 pt-2">
+                {arr.map((val, idx) => {
+                  const inBounds = idx >= low && idx <= high;
+                  return (
+                    <button
+                      key={idx}
+                      disabled={!inBounds || success}
+                      onClick={() => handleBinarySearchClick(idx)}
+                      className={`font-pixel text-xs py-3 border-2 text-center transition-all ${success && foundMid === idx ? 'bg-[#27ae60] border-white text-white animate-bounce' : inBounds ? 'bg-[#2c2f44] border-[#3a495e] hover:border-[#f7d354] text-white cursor-pointer' : 'bg-black/40 border-black/40 text-gray-700 opacity-30 line-through'}`}
+                    >
+                      {val}
+                    </button>
+                  )
+                })}
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-xs mt-4 animate-pulse">🎉 Target {target} located at O(log N) speed!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'bubble_sort' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">Bubble Sort Figma Icons</p>
+              <p className="text-[10px] text-[#8b9bb4]">Click a bar to swap it with the adjacent bar to its right until ascending!</p>
+              <div className="flex items-end justify-center gap-4 h-32 pt-4">
+                {bars.map((val, idx) => (
+                  <div key={idx} className="flex flex-col items-center gap-2">
+                    <div
+                      onClick={() => handleSortSwap(idx)}
+                      className={`w-10 bg-[#3b82f6] border-2 border-[#60a5fa] rounded-t-sm hover:bg-[#60a5fa] cursor-pointer transition-all ${success ? 'bg-[#27ae60] border-[#4ade80]' : ''}`}
+                      style={{ height: `${val}px` }}
+                    />
+                    <span className="font-pixel text-[10px]">{val}KB</span>
+                  </div>
+                ))}
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-xs animate-pulse">🎉 Assets bubble sorted perfectly!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'selection_sort' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">Selection Sort Figma Icons</p>
+              <p className="text-[10px] text-[#8b9bb4]">Click the smallest asset bar (12KB) to select and swap it to the front!</p>
+              <div className="flex items-end justify-center gap-4 h-32 pt-4">
+                {bars.map((val, idx) => (
+                  <div key={idx} className="flex flex-col items-center gap-2">
+                    <div
+                      onClick={() => handleSelectionClick(idx)}
+                      className={`w-10 bg-[#3b82f6] border-2 border-[#60a5fa] rounded-t-sm hover:bg-[#f7d354] cursor-pointer transition-all ${success ? 'bg-[#27ae60] border-[#4ade80]' : ''}`}
+                      style={{ height: `${val}px` }}
+                    />
+                    <span className="font-pixel text-[10px]">{val}KB</span>
+                  </div>
+                ))}
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-xs animate-pulse">🎉 Minimum asset selected and sorted!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'merge_sort' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">Merge Sort Sub-Arrays</p>
+              <p className="text-[10px] text-[#8b9bb4]">Merge sub-arrays [12, 45] and [23, 67] by clicking the smallest remaining element in order (12 → 23 → 45 → 67)!</p>
+              <div className="flex justify-center gap-8 pt-4 font-pixel text-xs">
+                <div className="p-3 bg-[#2c2f44] border rounded-sm">
+                  <p className="text-[#f7d354] mb-2">Left: [12, 45]</p>
+                  <div className="flex gap-2">
+                    <button onClick={() => handleMergeClick(12)} disabled={mergeStep > 0} className="p-2 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">12</button>
+                    <button onClick={() => handleMergeClick(45)} disabled={mergeStep > 2} className="p-2 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">45</button>
+                  </div>
+                </div>
+                <div className="p-3 bg-[#2c2f44] border rounded-sm">
+                  <p className="text-[#4ade80] mb-2">Right: [23, 67]</p>
+                  <div className="flex gap-2">
+                    <button onClick={() => handleMergeClick(23)} disabled={mergeStep > 1} className="p-2 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">23</button>
+                    <button onClick={() => handleMergeClick(67)} disabled={mergeStep > 3} className="p-2 bg-[#1a1c2c] border hover:border-white disabled:opacity-30 cursor-pointer">67</button>
+                  </div>
+                </div>
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-xs mt-2 animate-pulse">🎉 Sub-arrays merged perfectly at O(N log N)!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'quicksort' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">Quicksort Asset Partitioning</p>
+              <p className="text-[10px] text-[#8b9bb4]">Pivot is 45KB! Click elements smaller than 45 (12, 23) to move them to Left Partition, then greater (67, 89) to Right Partition!</p>
+              <div className="flex justify-center gap-3 pt-2 font-pixel text-xs">
+                {[12, 89, 23, 67].map((val, idx) => (
+                  <button key={idx} onClick={() => handleQuickClick(val)} disabled={success} className="py-2 px-3 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] cursor-pointer">
+                    {val}KB
+                  </button>
+                ))}
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-xs mt-2 animate-pulse">🎉 Assets partitioned perfectly around pivot!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'heapsort' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">Heapsort Root Extraction</p>
+              <p className="text-[10px] text-[#8b9bb4]">Max-Heap built! Extract the largest remaining root element in order (89 → 67 → 45) to place at the end of sorted array!</p>
+              <div className="flex justify-center gap-3 pt-2 font-pixel text-xs">
+                {[89, 67, 45, 23, 12].map((val, idx) => (
+                  <button key={idx} onClick={() => handleHeapClick(val)} disabled={heapStep > idx || success} className="py-2 px-3 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] disabled:opacity-30 cursor-pointer">
+                    {val}KB
+                  </button>
+                ))}
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-xs mt-2 animate-pulse">🎉 Max roots extracted and sorted perfectly!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'mst' && (
+            <div className="w-full space-y-3 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Minimum Spanning Tree'} (Lab Wiring)</p>
+              <p className="text-[10px] text-[#8b9bb4]">Select the cheapest 3 cables to link all workstations without cycles!</p>
+              <div className="space-y-2 pt-2">
+                {edges.map((e) => {
+                  const isSel = selectedEdges.includes(e.id);
+                  return (
+                    <button
+                      key={e.id}
+                      disabled={success || isSel}
+                      onClick={() => handleMstClick(e.id)}
+                      className={`w-full py-2 px-4 border text-left font-pixel text-xs flex justify-between items-center transition-all ${isSel ? 'bg-[#27ae60] border-[#4ade80] text-white' : 'bg-[#2c2f44] border-[#3a495e] hover:border-[#f7d354] text-[#8b9bb4] hover:text-white cursor-pointer'}`}
+                    >
+                      <span>{e.label}</span>
+                      <span>{isSel ? '🔌 CONNECTED' : 'SELECT'}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-xs pt-2 animate-pulse">🎉 Lab fully connected at minimum cost!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'dp' && (
+            <div className="w-full space-y-3 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Coin Collecting DP'}</p>
+              <p className="text-[10px] text-[#8b9bb4]">Move Right [▶] or Down [▼] to reach the bottom-right corner while collecting optimal loot!</p>
+              <div className="grid grid-cols-3 gap-2 max-w-[200px] mx-auto pt-2">
+                {gridCoins.map((row, r) =>
+                  row.map((val, c) => {
+                    const isCurrent = pos.r === r && pos.c === c;
+                    return (
+                      <div
+                        key={`${r}-${c}`}
+                        className={`h-12 border flex flex-col items-center justify-center font-pixel text-xs rounded-sm ${isCurrent ? 'bg-[#f7d354] text-black border-white animate-pulse shadow-md' : 'bg-[#1a1c2c] border-[#3a495e] text-white'}`}
+                      >
+                        {isCurrent ? '📍' : val > 0 ? `🪙${val}` : '—'}
+                      </div>
+                    )
+                  })
+                )}
+              </div>
+              <div className="flex justify-center gap-4 pt-2">
+                <button
+                  disabled={pos.c >= 2 || success}
+                  onClick={() => handleDpMove(0, 1)}
+                  className="btn-pixel-menu py-2 px-4 text-xs cursor-pointer disabled:opacity-30"
+                >
+                  MOVE RIGHT ▶
+                </button>
+                <button
+                  disabled={pos.r >= 2 || success}
+                  onClick={() => handleDpMove(1, 0)}
+                  className="btn-pixel-menu py-2 px-4 text-xs cursor-pointer disabled:opacity-30"
+                >
+                  MOVE DOWN ▼
+                </button>
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-xs pt-1 animate-pulse">🎉 Reached Goal! Total Bounties: 🪙{coinsCollected}!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'backtracking' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-xs text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Backtracking Logic Circuit'}</p>
+              <p className="text-[10px] text-[#8b9bb4]">Toggle the logic switches. If a constraint violation occurs, backtrack (undo) to find the working state!</p>
+              <div className="flex justify-center gap-6 pt-4">
+                {switches.map((st, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSwitchToggle(idx)}
+                    disabled={success}
+                    className={`w-16 h-16 border-2 font-pixel text-xs flex flex-col items-center justify-center transition-all cursor-pointer ${st ? 'bg-[#27ae60] border-white text-white shadow-[0_0_15px_#27ae60]' : 'bg-[#2c2f44] border-[#3a495e] text-[#8b9bb4]'}`}
+                  >
+                    <span>SW {idx + 1}</span>
+                    <span>{st ? 'ON' : 'OFF'}</span>
+                  </button>
+                ))}
+              </div>
+              {violation && (
+                <div className="text-red-500 font-pixel text-xs animate-bounce">⚠️ CONSTRAINT VIOLATION! Short circuit detected! Backtrack!</div>
+              )}
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-xs animate-pulse">🎉 Circuit configured perfectly! Degree secured!</div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Footer actions */}
+        <div className="flex gap-4">
+          <button
+            disabled={!success}
+            onClick={() => { audio.playAdvance(); onComplete(); }}
+            className={`w-full py-3 font-pixel text-xs uppercase text-center transition-all ${success ? 'btn-pixel-menu cursor-pointer animate-pulse' : 'bg-black/50 border-2 border-[#3a495e] text-[#8b9bb4] opacity-50 cursor-not-allowed'}`}
+          >
+            {success ? 'ALGORITHM OPTIMIZED - CONTINUE ▶' : 'SOLVE MINIGAME TO PROCEED'}
+          </button>
+          <button
+            onClick={() => { audio.playSelect(); onClose(); }}
+            className="px-4 border-2 border-[#3a495e] hover:border-white text-[#8b9bb4] hover:text-white font-pixel text-xs uppercase cursor-pointer"
+          >
+            SKIP
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════
    Main Game Screen
    ═══════════════════════════════════════════ */
 const OUT_OF_STAMINA_NODE = {
@@ -739,6 +1196,7 @@ export default function App() {
   const [currentChapter, setCurrentChapter] = useState(1)
   const [currentNode, setCurrentNode] = useState('start')
   const [stamina, setStamina] = useState(100)
+  const [activeMinigame, setActiveMinigame] = useState(null)
   const [unlockedAlgorithms, setUnlockedAlgorithms] = useState([])
   const [hoveredChoice, setHoveredChoice] = useState(null)
 
@@ -825,6 +1283,34 @@ export default function App() {
   function handleChoice(choice) {
     audio.playSelect()
 
+    // Check if minigame should trigger
+    let mgType = null
+    const algo = choice.unlocksAlgorithm || ''
+    const lbl = choice.label?.toLowerCase() || ''
+
+    if (algo === "Euclid's Algorithm" || lbl.includes("euclid")) mgType = 'gcd'
+    else if (algo === "Sequential Search" || lbl.includes("sequential search")) mgType = 'binary_search'
+    else if (algo === "Binary Search" || lbl.includes("binary search")) mgType = 'binary_search'
+    else if (algo === "Interpolation Search" || lbl.includes("interpolation")) mgType = 'binary_search'
+    else if (algo === "Selection Sort" || lbl.includes("selection sort")) mgType = 'selection_sort'
+    else if (algo === "Bubble Sort" || lbl.includes("bubble sort")) mgType = 'bubble_sort'
+    else if (algo === "Merge Sort" || lbl.includes("merge sort")) mgType = 'merge_sort'
+    else if (algo === "Quicksort" || lbl.includes("quicksort")) mgType = 'quicksort'
+    else if (algo === "Heapsort" || lbl.includes("heapsort")) mgType = 'heapsort'
+    else if (algo === "Prim's Algorithm" || algo === "Kruskal's Algorithm" || lbl.includes("prim's") || lbl.includes("kruskal's")) mgType = 'mst'
+    else if (algo === "Dijkstra's Algorithm" || lbl.includes("dijkstra")) mgType = 'mst'
+    else if (algo.includes("Coin") || lbl.includes("coin")) mgType = 'dp'
+    else if (algo === "Backtracking" || lbl.includes("backtracking")) mgType = 'backtracking'
+
+    if (mgType) {
+      setActiveMinigame({ type: mgType, choice })
+      return
+    }
+
+    processChoice(choice)
+  }
+
+  function processChoice(choice) {
     // Immediate reset to prevent flashing next-node choices
     setDisplayedText('')
     setTextIndex(0)
@@ -1152,6 +1638,22 @@ export default function App() {
             setUnlockedAlgorithms([])
             setCurrentChapter(1)
             setCurrentNode('start')
+          }}
+        />
+      )}
+
+      {activeMinigame && (
+        <AlgorithmMinigameModal
+          minigameData={activeMinigame}
+          onComplete={() => {
+            const ch = activeMinigame.choice
+            setActiveMinigame(null)
+            processChoice(ch)
+          }}
+          onClose={() => {
+            const ch = activeMinigame.choice
+            setActiveMinigame(null)
+            processChoice(ch)
           }}
         />
       )}
