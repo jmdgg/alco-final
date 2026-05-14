@@ -3262,7 +3262,7 @@ export default function App() {
   const node = currentNode === 'out_of_stamina' ? OUT_OF_STAMINA_NODE : chapter?.nodes?.[currentNode]
 
   useEffect(() => {
-    if (screen === 'title') {
+    if (screen === 'title' || screen === 'chapter_select') {
       audio.playTitleMusic()
     } else if (screen === 'game') {
       audio.playGameMusic()

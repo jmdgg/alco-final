@@ -10,23 +10,49 @@ class AudioEngine {
     this.enabled = false;
     this.masterVolumeSetting = 0.5; // Persistent volume setting (0 to 1)
     this.bgmVolumeSetting = 0.5;    // Persistent BGM volume setting (0 to 1)
+    
+    // New Audio Element for MP3 BGM
+    this.bgmAudio = null;
+    this.bgmSource = null;
+    this.bgmFileList = [
+      '/sfx/bgm_dialogue_1.mp3',
+      '/sfx/bgm_dialogue_2.mp3',
+      '/sfx/bgm_dialogue_3.mp3',
+      '/sfx/bgm_dialogue_4.mp3',
+      '/sfx/bgm_dialogue_5.mp3'
+    ];
+    this.currentBgmIndex = -1;
   }
 
   init() {
     if (this.ctx) return;
+    console.log("AudioEngine: Initializing...");
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     this.masterGain = this.ctx.createGain();
-    // Map master volume (0.0 to 1.0) to actual safe gain limit (0.0 to 0.4)
-    this.masterGain.gain.value = this.masterVolumeSetting * 0.4;
+    // Map master volume (0.0 to 1.0) to actual safe gain limit (0.0 to 0.7)
+    this.masterGain.gain.value = this.masterVolumeSetting * 0.7;
     this.masterGain.connect(this.ctx.destination);
     
     // Background Music specific gain
     this.bgmGain = this.ctx.createGain();
-    // Map relative BGM volume (0.0 to 1.0) to safe gain limit (0.0 to 0.3)
-    this.bgmGain.gain.value = this.bgmVolumeSetting * 0.3;
+    // Map relative BGM volume (0.0 to 1.0) to safe gain limit (0.0 to 0.6)
+    this.bgmGain.gain.value = this.bgmVolumeSetting * 0.6;
     this.bgmGain.connect(this.masterGain);
 
+    // Initialize HTML5 Audio for BGM files
+    this.bgmAudio = new Audio();
+    this.bgmSource = this.ctx.createMediaElementSource(this.bgmAudio);
+    this.bgmSource.connect(this.bgmGain);
+
+    this.bgmAudio.onended = () => {
+      console.log("AudioEngine: BGM ended, shuffling next...");
+      if (this.isPlayingMusic) {
+        this.playNextBgm();
+      }
+    };
+
     this.enabled = true;
+    console.log("AudioEngine: System Enabled.");
     
     // Sequencer state
     this.isPlayingMusic = false;
@@ -46,6 +72,7 @@ class AudioEngine {
 
   playHover() {
     if (!this.enabled) return;
+    if (this.ctx.state === 'suspended') this.ctx.resume();
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
@@ -65,6 +92,7 @@ class AudioEngine {
 
   playTypewriter() {
     if (!this.enabled) return;
+    if (this.ctx.state === 'suspended') this.ctx.resume();
     const noise = this.ctx.createBufferSource();
     const buffer = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.02, this.ctx.sampleRate);
     const data = buffer.getChannelData(0);
@@ -88,6 +116,7 @@ class AudioEngine {
 
   playPop() {
     if (!this.enabled) return;
+    if (this.ctx.state === 'suspended') this.ctx.resume();
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
@@ -107,6 +136,7 @@ class AudioEngine {
 
   playSelect() {
     if (!this.enabled) return;
+    if (this.ctx.state === 'suspended') this.ctx.resume();
     // Mechanical click: Sharp square wave + noise burst
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -255,23 +285,52 @@ class AudioEngine {
   stopMusic() {
     this.isPlayingMusic = false;
     if (this.musicTimer) clearTimeout(this.musicTimer);
+    if (this.bgmAudio) {
+      this.bgmAudio.pause();
+      this.bgmAudio.currentTime = 0;
+    }
   }
 
   playTitleMusic() {
     if (!this.enabled) return;
-    this.stopMusic();
-    this.currentTrack = {
-      tempo: 75,
-      waveform: 'triangle',
-      isShuffle: false,
-      notes: [48, 55, 60, 63, 67, 63, 60, 55, 50, 57, 62, 65, 69, 65, 62, 57] // C minor -> D minor arpeggio
-    };
-    this.startSequencer();
+    this.isPlayingMusic = true;
+    this.playNextBgm();
   }
 
   playGameMusic() {
     if (!this.enabled) return;
-    this.shuffleGameTrack();
+    this.isPlayingMusic = true;
+    this.playNextBgm();
+  }
+
+  playNextBgm() {
+    if (!this.isPlayingMusic) return;
+    
+    // Safety resume
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume().then(() => console.log("AudioEngine: Context Resumed"));
+    }
+
+    let nextIndex;
+    if (this.bgmFileList.length > 1) {
+      do {
+        nextIndex = Math.floor(Math.random() * this.bgmFileList.length);
+      } while (nextIndex === this.currentBgmIndex);
+    } else {
+      nextIndex = 0;
+    }
+
+    this.currentBgmIndex = nextIndex;
+    const nextFile = this.bgmFileList[this.currentBgmIndex];
+    console.log(`AudioEngine: Loading BGM [${this.currentBgmIndex}] ${nextFile}`);
+    
+    this.bgmAudio.src = nextFile;
+    // Removing load() to avoid redundant requests, src change triggers load automatically
+    this.bgmAudio.play()
+      .then(() => console.log(`AudioEngine: Playback started: ${nextFile}`))
+      .catch(e => {
+        console.warn("AudioEngine: Playback blocked. Browser requires a user click to start audio.", e);
+      });
   }
 
   shuffleGameTrack() {
@@ -377,14 +436,14 @@ class AudioEngine {
   setMasterVolume(val) {
     this.masterVolumeSetting = val;
     if (this.masterGain) {
-      this.masterGain.gain.value = val * 0.4;
+      this.masterGain.gain.value = val * 0.7;
     }
   }
 
   setBgmVolume(val) {
     this.bgmVolumeSetting = val;
     if (this.bgmGain) {
-      this.bgmGain.gain.value = val * 0.3;
+      this.bgmGain.gain.value = val * 0.6;
     }
   }
 }
