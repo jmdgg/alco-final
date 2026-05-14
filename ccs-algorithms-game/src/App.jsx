@@ -846,28 +846,42 @@ export default function App() {
     setCurrentNode(choice.nextNode)
   }
 
-  // Centralized Escape keybind supervisor
+  // Centralized keyboard shortcuts supervisor (Escape, S, J)
   useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key !== 'Escape') return
+    const handleKeydown = (e) => {
+      // Ignore if pressing modifier keys
+      if (e.ctrlKey || e.metaKey || e.altKey) return
 
-      e.preventDefault()
-      audio.playSelect()
-
-      if (showSettings) {
-        // If settings menu is open, always close it first
-        setShowSettings(false)
-      } else if (screen === 'journal') {
-        setScreen(prevScreen)
-      } else if (screen === 'chapter_select') {
-        setScreen('title')
-      } else {
-        // In Game or Title, toggle the config screen
-        setShowSettings(true)
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        audio.playSelect()
+        if (showSettings) {
+          setShowSettings(false)
+        } else if (screen === 'journal') {
+          setScreen(prevScreen)
+        } else if (screen === 'chapter_select') {
+          setScreen('title')
+        } else {
+          setShowSettings(true)
+        }
+      } else if (e.key.toLowerCase() === 's') {
+        e.preventDefault()
+        audio.playSelect()
+        setShowSettings((prev) => !prev)
+      } else if (e.key.toLowerCase() === 'j') {
+        e.preventDefault()
+        audio.playSelect()
+        if (showSettings) return // don't open journal if settings modal is active
+        if (screen === 'journal') {
+          setScreen(prevScreen)
+        } else {
+          setPrevScreen(screen)
+          setScreen('journal')
+        }
       }
     }
-    window.addEventListener('keydown', handleEsc)
-    return () => window.removeEventListener('keydown', handleEsc)
+    window.addEventListener('keydown', handleKeydown)
+    return () => window.removeEventListener('keydown', handleKeydown)
   }, [showSettings, screen, prevScreen])
 
   if (screen === 'title') {
