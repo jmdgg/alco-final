@@ -37,26 +37,37 @@
           "choices": [
             {
               "label": "Use Euclid's Algorithm (Remainders)",
-              "nextNode": "scene1_complete",
+              "nextNode": "scene1_complete_euclid",
               "unlocksAlgorithm": "Euclid's Algorithm",
               "icon": "➗"
             },
             {
               "label": "Use Consecutive Integer Check",
-              "nextNode": "scene1_complete",
+              "nextNode": "scene1_suboptimal",
               "unlocksAlgorithm": "Consecutive Integer Check",
               "icon": "🔢"
             },
             {
               "label": "Use Middle School Procedure (Prime Factors)",
-              "nextNode": "scene1_complete",
+              "nextNode": "scene1_suboptimal",
               "unlocksAlgorithm": "Middle School Procedure",
               "icon": "🌲"
             }
           ]
         },
-        "scene1_complete": {
-          "text": "The calculation works! The buttons fit perfectly into the 1920x1080 grid. \"Pixel perfect!\" Cassie exclaims. But wait, you hear a frantic knocking on the door. It's Inigo.",
+        "scene1_complete_euclid": {
+          "text": "Using remainders is blazing fast! The calculation works instantly, and the buttons fit perfectly into the 1920x1080 grid. \"Pixel perfect!\" Cassie exclaims. But wait, you hear a frantic knocking on the door. It's Inigo.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Check on Inigo",
+              "nextNode": "morning_panic",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "scene1_suboptimal": {
+          "text": "Dodo watches the screen compute. \"Hmm, checking every integer downwards or listing prime factor trees works, but this is taking longer than expected. I wonder if there's a faster way to do this using remainders... Still, we got the buttons to fit perfectly!\" Cassie cheers. But wait, you hear a frantic knocking on the door. It's Inigo.",
           "speaker": "Narrator",
           "choices": [
             {
@@ -115,6 +126,27 @@
               "label": "Use UniqueElements (Validation)",
               "nextNode": "unique_elements_node",
               "unlocksAlgorithm": "Unique Elements"
+            },
+            {
+              "label": "Use Nested Loop Comparison O(N^2)",
+              "nextNode": "unique_suboptimal",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "unique_suboptimal": {
+          "text": "Cassie runs the nested loop. \"Hmm, comparing every registration against every other user is taking longer than expected. My CPU usage is spiking. I wonder if there's a faster way to do this with a Set or frequency tracker... But hey, no duplicates!\" Just then, Mikaela bursts into the room. \"The Alco quiz results are out! Whoever got the highest score has to treat the class!\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use MaxElement (Iteration)",
+              "nextNode": "max_element_node",
+              "unlocksAlgorithm": "Max Element"
+            },
+            {
+              "label": "Sort entire array to find max",
+              "nextNode": "max_suboptimal",
+              "unlocksAlgorithm": null
             }
           ]
         },
@@ -126,6 +158,22 @@
               "label": "Use MaxElement (Iteration)",
               "nextNode": "max_element_node",
               "unlocksAlgorithm": "Max Element"
+            },
+            {
+              "label": "Sort entire array to find max",
+              "nextNode": "max_suboptimal",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "max_suboptimal": {
+          "text": "Dodo watches the sorting algorithm execute. \"Hmm, sorting the entire array just to find one top score is taking longer than expected. I wonder if there's a faster way by just iterating once O(N)... Wow, I got the highest score... goodbye allowance. Come on, let's head out. We need to catch a jeep at the terminal.\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Use Sequential Search (Linear Search)",
+              "nextNode": "sequential_search_node",
+              "unlocksAlgorithm": "Sequential Search"
             }
           ]
         },
@@ -153,6 +201,22 @@
               "label": "Use Interpolation Search (Improved Search)",
               "nextNode": "interpolation_search_node",
               "unlocksAlgorithm": "Interpolation Search"
+            },
+            {
+              "label": "Use Sequential Search (Page by Page)",
+              "nextNode": "suboptimal_karaoke_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "suboptimal_karaoke_node": {
+          "text": "Inigo flips through the massive songbook page by page. \"Hmm, this linear scan is taking way longer than expected! I wonder if there's a faster way to do this by halving the book... Finally found it!\" While Inigo sings his heart out, Cassie pulls out her phone to play an RPG. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Use BF String Matching (String Processing)",
+              "nextNode": "bf_string_node",
+              "unlocksAlgorithm": "BF String Matching"
             }
           ]
         },
@@ -205,50 +269,81 @@
     },
     {
       "id": 3,
-      "title": "THE LAB EXAM PANIC",
+      "title": "SORTING ALGORITHMS",
       "nodes": {
         "start": {
-          "text": "Professor Cruz paces the lab rows. \"You have 10 seconds to find the student record inside this massive, sorted database array. No linear searches allowed!\"",
-          "speaker": "Prof. Cruz",
+          "text": "Dodo is staring at Figma, groaning. \"Guys, my Figma asset panel is a complete disaster. I have all these cluttered UI icons, and I need to organize them by file size before I export. But doing it one by one feels like torture!\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Implement Binary Search",
-              "nextNode": "binarysearch_path",
-              "unlocksAlgorithm": "Binary Search",
-              "icon": "🔍"
-            },
-            {
-              "label": "Implement Linear Search",
-              "nextNode": "linearsearch_path",
-              "unlocksAlgorithm": null,
-              "icon": "❌"
+              "label": "Selection Sort (Simple Sort)",
+              "nextNode": "selection_sort_node",
+              "unlocksAlgorithm": "Selection Sort",
+              "icon": "🖱️"
             }
           ]
         },
-        "binarysearch_path": {
-          "text": "By halving the search space O(log N), you find the correct record index in exactly 3 steps. Prof. Cruz nods in quiet approval.\n\n\"Excellent logarithmic execution. Full points!\"",
-          "speaker": "Prof. Cruz",
+        "selection_sort_node": {
+          "text": "Dodo watches the icons swap. \"Hmm, comparing and selecting them one by one O(N^2) is taking longer than expected, but my Figma assets are finally organized perfectly!\" Cassie then calls everyone over. \"Hey, I'm compiling a massive list of user data for our student management system. Before we can test the search functions, we need to sort thousands of entries by ID!\"",
+          "speaker": "Cassie",
           "choices": [
             {
-              "label": "Finish Chapter 3",
+              "label": "Bubble Sort (Simple Sort)",
+              "nextNode": "bubble_sort_node",
+              "unlocksAlgorithm": "Bubble Sort",
+              "icon": "🫧"
+            }
+          ]
+        },
+        "bubble_sort_node": {
+          "text": "Cassie tries stepping through the list, comparing adjacent elements and swapping them. \"Ugh, O(N^2) is taking way too long for thousands of entries! My laptop fans are screaming!\" Mikaela chimes in, \"We need a stable divide-and-conquer approach to split the list into halves, sort them recursively, and merge them back together!\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Merge Sort (Stable Sort)",
+              "nextNode": "merge_sort_node",
+              "unlocksAlgorithm": "Merge Sort",
+              "icon": "🔀"
+            }
+          ]
+        },
+        "merge_sort_node": {
+          "text": "The merge sort compiles the list flawlessly and maintains stable ID ordering. Inigo looks at the code. \"That was smooth! But what if we want an in-place efficient partition method? Picking a pivot to divide the array into smaller and larger elements?\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Quicksort (Efficient Sort)",
+              "nextNode": "quicksort_node",
+              "unlocksAlgorithm": "Quicksort",
+              "icon": "⚡"
+            }
+          ]
+        },
+        "quicksort_node": {
+          "text": "Quicksort partitions the array around the pivot and sorts the management system entries at blazing O(N log N) speed! Dodo rubs his chin, \"What if memory space is strictly limited and we need a guaranteed priority queue approach? Like building a binary heap and extracting the max/min elements?\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Heapsort (Priority Sort)",
+              "nextNode": "heapsort_node",
+              "unlocksAlgorithm": "Heapsort",
+              "icon": "🌲"
+            }
+          ]
+        },
+        "heapsort_node": {
+          "text": "Building a binary heap allows you to extract elements in perfect priority order without using extra memory space! The student management system is now fully optimized and ready for deployment.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Complete Chapter 3",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
-        "linearsearch_path": {
-          "text": "Scanning item by item takes too long, and your time runs out. The buzzer sounds.\n\n\"Time limit exceeded! O(N) is unacceptable for sorted data.\"",
-          "speaker": "Prof. Cruz",
-          "choices": [
-            {
-              "label": "Retry exam",
-              "nextNode": "start",
-              "unlocksAlgorithm": null
-            }
-          ]
-        },
         "end_chapter": {
-          "text": "You passed the lab exam with flying colors. Logarithmic scaling is the ultimate grading cheat code.\n\n*Chapter 3 Completed.*",
+          "text": "From organizing Figma UI icons to sorting massive user databases with divide-and-conquer and heaps, your sorting algorithm mastery is unmatched!\n\n*Sorting Algorithms Chapter Completed.*",
           "speaker": "Narrator",
           "choices": [
             {
@@ -280,6 +375,23 @@
               "nextNode": "dfs_path",
               "unlocksAlgorithm": "DFS",
               "icon": "📍"
+            },
+            {
+              "label": "Random Probing Check",
+              "nextNode": "graph_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "graph_suboptimal": {
+          "text": "Randomly probing module dependencies causes redundant checks. \"Hmm, checking without a structure is taking longer than expected and we almost got stuck in cycles. I wonder if there's a systematic BFS or DFS way to do this... Still, we scraped through!\" The panelists give a cautious nod.",
+          "speaker": "Panel Chair",
+          "choices": [
+            {
+              "label": "Finish Chapter 4",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": null
             }
           ]
         },
@@ -353,7 +465,7 @@
           ]
         },
         "dfs_fail_path": {
-          "text": "The robot wanders down the deepest blind alley, getting stuck in loops. Time runs out.\n\n\"DFS gets trapped in cycles or takes non-optimal pathways here.\"",
+          "text": "The robot wanders down the deepest blind alley, getting stuck in loops and taking way longer than expected. Time runs out.\n\n\"Hmm, blind DFS gets trapped in cycles without distance heuristics. I wonder if there's a faster, optimal way like A* Search...\"",
           "speaker": "Anya",
           "choices": [
             {
@@ -411,7 +523,7 @@
           ]
         },
         "plaintext_path": {
-          "text": "Saving certificates in raw plaintext fails the security audit. The university delays graduation.\n\n\"Plaintext is vulnerable to spoofing and MITM manipulation!\"",
+          "text": "Saving certificates in raw plaintext fails the security audit immediately. \"Hmm, saving without cryptography leaves us vulnerable to tampering and takes longer to pass compliance audits. I wonder if there's a secure hashing and signing way to do this...\"",
           "speaker": "System",
           "choices": [
             {
@@ -456,31 +568,49 @@
       "icon": "🫧"
     },
     {
-      "id": "Bubble Sort",
-      "title": "BUBBLE SORT",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Bubble Sort related tasks and system optimizations.",
-      "pseudocode": "function bubblesort() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "⚡"
+      "id": "Selection Sort",
+      "title": "SELECTION SORT",
+      "category": "Sorting",
+      "definition": "Repeatedly finds the minimum element from the unsorted portion of a list and swaps it into its correct position.",
+      "useCase": "Drag and dropping unorganized and cluttered UI icons for your figma project by file size one by one.",
+      "pseudocode": "function selectionSort(arr):\n  for i = 0 to arr.length - 1:\n    minIdx = i\n    for j = i + 1 to arr.length:\n      if arr[j] < arr[minIdx]: minIdx = j\n    swap(arr[i], arr[minIdx])\n  return arr",
+      "icon": "🖱️"
     },
     {
-      "id": "Quick Sort",
-      "title": "QUICK SORT",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Quick Sort related tasks and system optimizations.",
-      "pseudocode": "function quicksort() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔄"
+      "id": "Bubble Sort",
+      "title": "BUBBLE SORT",
+      "category": "Sorting",
+      "definition": "Repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.",
+      "useCase": "Compiling a massive list of user data for a management system. Sorting thousands of entries by ID.",
+      "pseudocode": "function bubbleSort(arr):\n  n = arr.length\n  for i = 0 to n - 1:\n    for j = 0 to n - i - 2:\n      if arr[j] > arr[j + 1]:\n        swap(arr[j], arr[j + 1])\n  return arr",
+      "icon": "🫧"
     },
     {
       "id": "Merge Sort",
       "title": "MERGE SORT",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Merge Sort related tasks and system optimizations.",
-      "pseudocode": "function mergesort() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔍"
+      "category": "Sorting",
+      "definition": "A divide-and-conquer algorithm that splits a list into halves, sorts them recursively, and merges the sorted halves back together.",
+      "useCase": "Compiling a massive list of user data for a management system. Sorting thousands of entries by ID stably.",
+      "pseudocode": "function mergeSort(arr):\n  if arr.length <= 1: return arr\n  mid = arr.length / 2\n  left = mergeSort(arr.slice(0, mid))\n  right = mergeSort(arr.slice(mid))\n  return merge(left, right)",
+      "icon": "🔀"
+    },
+    {
+      "id": "Quicksort",
+      "title": "QUICKSORT",
+      "category": "Sorting",
+      "definition": "A divide-and-conquer algorithm that picks a \"pivot\" and partitions the array into elements smaller and larger than the pivot.",
+      "useCase": "Compiling a massive list of user data for a management system. Sorting thousands of entries by ID efficiently.",
+      "pseudocode": "function quickSort(arr, low, high):\n  if low < high:\n    pivotIdx = partition(arr, low, high)\n    quickSort(arr, low, pivotIdx - 1)\n    quickSort(arr, pivotIdx + 1, high)\n  return arr",
+      "icon": "⚡"
+    },
+    {
+      "id": "Heapsort",
+      "title": "HEAPSORT",
+      "category": "Sorting",
+      "definition": "A comparison-based sorting technique that builds a Binary Heap and repeatedly extracts the maximum/minimum element.",
+      "useCase": "Compiling a massive list of user data for a management system. Sorting thousands of entries by ID with priority heap.",
+      "pseudocode": "function heapSort(arr):\n  buildMaxHeap(arr)\n  for i = arr.length - 1 down to 1:\n    swap(arr[0], arr[i])\n    heapify(arr, 0, i)\n  return arr",
+      "icon": "🌲"
     },
     {
       "id": "Binary Search",

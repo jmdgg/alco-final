@@ -173,12 +173,12 @@ function JournalScreen({ onClose, unlockedAlgorithms }) {
           </h1>
           <div className="flex items-center gap-4">
             <span className="font-pixel text-retro-primary text-xs tracking-wider">
-              TOTAL COLLECTED: {unlockedAlgorithms.length} / 25
+              TOTAL COLLECTED: {unlockedAlgorithms.length} / {allAlgorithms.length}
             </span>
             <div className="flex-1 h-3 bg-retro-muted/30 border border-retro-muted/50 p-[1px]">
               <div
                 className="h-full bg-retro-primary transition-all"
-                style={{ width: `${(unlockedAlgorithms.length / 25) * 100}%` }}
+                style={{ width: `${(unlockedAlgorithms.length / Math.max(allAlgorithms.length, 1)) * 100}%` }}
               />
             </div>
           </div>
@@ -301,8 +301,8 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
           bg: "/bedroom-dev-bg.png"
         },
         {
-          desc: "Professor Cruz paces the lab exams. Retrieve specific student records within a 10-second limit using O(log N) query halving.",
-          focus: "🔍 Binary Search, ❌ Linear Scan",
+          desc: "Help Dodo organize cluttered Figma UI icons by file size, then assist Cassie, Mikaela, and Inigo in compiling and sorting a massive student management database using stable merge sort, quicksort, and heapsort.",
+          focus: "🖱️ Selection, 🫧 Bubble, 🔀 Merge, ⚡ Quick, 🌲 Heap",
           bg: "/bedroom-dev-bg.png"
         },
         {
@@ -451,7 +451,7 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
                       </div>
 
                       {/* Chapter Title */}
-                      <h3 className={`font-pixel uppercase tracking-tight mb-4 min-h-[60px] flex items-center transition-colors duration-300 ${isActive ? 'text-[#f7d354] text-2xl md:text-3xl' : 'text-retro-muted text-xl'
+                      <h3 className={`font-pixel uppercase tracking-tight mb-4 min-h-[60px] flex items-center break-words whitespace-normal leading-snug transition-colors duration-300 ${isActive ? 'text-[#f7d354] text-base md:text-lg' : 'text-retro-muted text-sm md:text-base'
                         }`}>
                         {chap.title}
                       </h3>
