@@ -42,6 +42,32 @@ function Atmosphere({ showCollage, crtEffect }) {
 function TitleScreen({ onStart, onOpenSettings, crtEffect }) {
   const [selected, setSelected] = useState(0)
   const [showAbout, setShowAbout] = useState(false)
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [particles, setParticles] = useState([])
+
+  // Generate random particles once
+  useEffect(() => {
+    const p = Array.from({ length: 15 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 5}s`,
+      duration: `${10 + Math.random() * 15}s`,
+      size: `${2 + Math.random() * 4}px`
+    }))
+    setParticles(p)
+  }, [])
+
+  // Parallax effect handler
+  useEffect(() => {
+    const handleMove = (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20
+      const y = (e.clientY / window.innerHeight - 0.5) * 20
+      setMousePos({ x, y })
+    }
+    window.addEventListener('mousemove', handleMove)
+    return () => window.removeEventListener('mousemove', handleMove)
+  }, [])
 
   const handleStart = useCallback(() => {
     audio.init()
@@ -89,9 +115,32 @@ function TitleScreen({ onStart, onOpenSettings, crtEffect }) {
       {/* Dark underlayer background to maintain rich contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111424] via-[#1a1c2c] to-[#2e1d3c]" />
 
+      {/* Digital Particles System */}
+      <div className="absolute inset-0 pointer-events-none">
+        {particles.map(p => (
+          <div
+            key={p.id}
+            className="absolute bg-[#73eff7] opacity-20"
+            style={{
+              left: p.left,
+              top: p.top,
+              width: p.size,
+              height: p.size,
+              animation: `particle-drift ${p.duration} linear infinite`,
+              animationDelay: p.delay,
+              boxShadow: '0 0 10px #73eff7'
+            }}
+          />
+        ))}
+      </div>
+
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90"
-        style={{ backgroundImage: 'url(/bedroom-dev-bg.png)', imageRendering: 'pixelated' }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-300 ease-out"
+        style={{
+          backgroundImage: 'url(/bedroom-dev-bg.png)',
+          imageRendering: 'pixelated',
+          transform: `scale(1.1) translate(${mousePos.x * 0.5}px, ${mousePos.y * 0.5}px)`
+        }}
       />
 
       {crtEffect && (
@@ -102,13 +151,35 @@ function TitleScreen({ onStart, onOpenSettings, crtEffect }) {
       )}
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full w-full">
-        <div className="mb-16 text-center bg-slate-950/65 backdrop-blur-[2px] border-y-4 border-[#3a495e] py-6 px-8 md:px-20 max-w-3xl w-full shadow-[0_10px_25px_rgba(0,0,0,0.6)] animate-pop-in">
-          <h1 className="font-pixel text-[#73eff7] text-3xl md:text-5xl leading-normal tracking-tighter pixel-text-outline-large">
-            CCS STUDENT:
+        {/* Animated Title Container */}
+        <div
+          className="mb-16 text-center bg-slate-950/75 backdrop-blur-[4px] border-y-4 border-[#3a495e] py-8 px-8 md:px-24 max-w-4xl w-full shadow-[0_15px_35px_rgba(0,0,0,0.8)] animate-pop-in relative"
+          style={{ transform: `translate(${mousePos.x * -0.8}px, ${mousePos.y * -0.8}px)` }}
+        >
+          {/* Tech Corner Accents */}
+          <div className="absolute -top-1 -left-1 w-8 h-8 border-t-4 border-l-4 border-[#73eff7] opacity-60" />
+          <div className="absolute -top-1 -right-1 w-8 h-8 border-t-4 border-r-4 border-[#73eff7] opacity-60" />
+          <div className="absolute -bottom-1 -left-1 w-8 h-8 border-b-4 border-l-4 border-[#73eff7] opacity-60" />
+          <div className="absolute -bottom-1 -right-1 w-8 h-8 border-b-4 border-r-4 border-[#73eff7] opacity-60" />
+
+          <h1 className="font-pixel text-[#73eff7] text-3xl md:text-6xl leading-normal tracking-tight pixel-text-outline-large relative group">
+            <span className="relative z-10 inline-block animate-[glitch-title_5s_infinite]">CCS STUDENT:</span>
+            <div className="absolute inset-0 text-red-500 opacity-0 group-hover:opacity-40 translate-x-1 animate-pulse pointer-events-none">CCS STUDENT:</div>
           </h1>
-          <p className="font-pixel text-[#f7d354] text-sm md:text-base mt-2 tracking-widest pixel-text-outline-small">
-            A DAY IN THE LIFE
-          </p>
+
+          <div className="flex items-center justify-center gap-4 mt-4">
+            <div className="h-[2px] w-12 bg-gradient-to-r from-transparent to-[#f7d354]" />
+            <p className="font-pixel text-[#f7d354] text-xs md:text-lg tracking-[0.25em] pixel-text-outline-small uppercase">
+              A Day In The Life
+            </p>
+            <div className="h-[2px] w-12 bg-gradient-to-l from-transparent to-[#f7d354]" />
+          </div>
+
+          <div className="mt-6 flex justify-center gap-2 opacity-50">
+            <div className="w-1 h-1 bg-[#73eff7] animate-pulse" />
+            <div className="w-1 h-1 bg-[#73eff7] animate-pulse delay-75" />
+            <div className="w-1 h-1 bg-[#73eff7] animate-pulse delay-150" />
+          </div>
         </div>
 
         <nav className="flex flex-col items-center gap-6">

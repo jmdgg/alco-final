@@ -110,6 +110,21 @@
     100% { transform: translateY(120vh); }
   }
 
+  @keyframes particle-drift {
+    0% { transform: translate(0, 0) scale(1); opacity: 0; }
+    20% { opacity: 0.4; }
+    80% { opacity: 0.4; }
+    100% { transform: translate(100px, -200px) scale(0.5); opacity: 0; }
+  }
+
+  @keyframes glitch-title {
+    0%, 90%, 100% { transform: skew(0deg); filter: hue-rotate(0deg); }
+    91% { transform: skew(5deg); filter: hue-rotate(90deg); }
+    93% { transform: skew(-5deg); filter: hue-rotate(180deg); }
+    95% { transform: skew(10deg) scaleY(1.2); filter: hue-rotate(270deg); }
+    97% { transform: skew(-10deg); filter: hue-rotate(360deg); }
+  }
+
   @keyframes sprite-bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-15px); }
