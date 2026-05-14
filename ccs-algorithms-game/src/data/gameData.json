@@ -7,73 +7,135 @@
   "chapters": [
     {
       "id": 1,
-      "title": "THE SERVER OUTAGE",
+      "title": "THE MATHEMATICAL FOUNDATIONS",
       "nodes": {
         "start": {
-          "text": "Anya looks at the flickering terminal. \"The response time is abysmal!\" she exclaims, nervously tapping her mechanical keyboard. \"The entire deployment is deadlocked. The pressure is suffocating.\"",
-          "speaker": "Anya",
+          "text": "Dodo is rubbing his eyes while Cassie clicks rapidly in Figma. \"D'yan na 'to pantay, Cass. If we use this grid, may 8-pixel gap sa dulo. It looks... messy. Pixel gore levels of messy.\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Implement Dijkstra's Algorithm",
-              "nextNode": "dijkstra_path",
-              "unlocksAlgorithm": "Dijkstra's Algorithm",
-              "icon": "+"
+              "label": "Continue looking for a fix",
+              "nextNode": "figma_crisis",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "figma_crisis": {
+          "text": "Cassie sighs, \"I know! We need the buttons to be perfectly square, zero leftover space in this 1920x1080 frame. Minimalist aesthetic nga 'di ba?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Suggest finding the GCD",
+              "nextNode": "gcd_logic",
+              "unlocksAlgorithm": null
             },
             {
-              "label": "Check the brute-force nested loops.",
-              "nextNode": "brute_force_path",
+              "label": "Manually align pixels by eye",
+              "nextNode": "scene1_suboptimal",
               "unlocksAlgorithm": null,
-              "icon": null
+              "icon": "❌"
+            }
+          ]
+        },
+        "gcd_logic": {
+          "text": "Dodo looks at the screen. \"So we need the largest number that divides both 1920 and 1080? A Greatest Common Divisor? How do we find it fast? My brain is at 2% battery.\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Use Euclid's Algorithm (Remainders)",
+              "nextNode": "scene1_complete_euclid",
+              "unlocksAlgorithm": "Euclid's Algorithm",
+              "icon": "➗"
             },
             {
-              "label": "Optimize with a Hash Map",
-              "nextNode": "hashmap_path",
-              "unlocksAlgorithm": "Hash Map",
-              "icon": "-"
-            }
-          ]
-        },
-        "dijkstra_path": {
-          "text": "You methodically map out the shortest path to the core services. The nodes begin to stabilize as traffic is routed away from the congestion. Anya sighs in relief.\n\n\"Efficient routing saved us. But wait, what's that spike in the database logs?\"",
-          "speaker": "System",
-          "choices": [
+              "label": "Use Consecutive Integer Check",
+              "nextNode": "scene1_suboptimal",
+              "unlocksAlgorithm": "Consecutive Integer Check",
+              "icon": "🔢"
+            },
             {
-              "label": "Investigate the database spike.",
-              "nextNode": "end_demo",
-              "unlocksAlgorithm": null
+              "label": "Use Middle School Procedure (Prime Factors)",
+              "nextNode": "scene1_suboptimal",
+              "unlocksAlgorithm": "Middle School Procedure",
+              "icon": "🌲"
             }
           ]
         },
-        "brute_force_path": {
-          "text": "You spend hours combing through every single loop. The code is a mess, and while you find a few redundancies, the system is still sluggish. Anya looks disappointed.\n\n\"We need a more algorithmic approach, not just more eyes on the code.\"",
-          "speaker": "Anya",
-          "choices": [
-            {
-              "label": "Try to optimize with a proper algorithm.",
-              "nextNode": "start",
-              "unlocksAlgorithm": null
-            }
-          ]
-        },
-        "hashmap_path": {
-          "text": "By replacing the linear scans with O(1) lookups, the bottleneck disappears instantly. The terminal stops flickering. Anya flashes a quick, tired smile.\n\n\"Linear time was killing us. Constant time is the way to go.\"",
-          "speaker": "Anya",
-          "choices": [
-            {
-              "label": "Move on to Chapter 2: The Debugging Marathon.",
-              "nextNode": "end_demo",
-              "unlocksAlgorithm": null
-            }
-          ]
-        },
-        "end_demo": {
-          "text": "The servers are stable for now, but the day is just beginning. In the distance, you can hear the faint hum of the server room air conditioning. Another challenge awaits tomorrow.\n\n*To be continued...*",
+        "scene1_complete_euclid": {
+          "text": "Using remainders is blazing fast! The calculation works instantly, and the buttons fit perfectly into the 1920x1080 grid. \"Pixel perfect!\" Cassie exclaims. But wait, you hear a frantic knocking on the door. It's Inigo.",
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RESTART STORY",
-              "nextNode": "start",
+              "label": "Check on Inigo",
+              "nextNode": "morning_panic",
               "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "scene1_suboptimal": {
+          "text": "Dodo watches the screen compute. \"Hmm, checking every integer downwards or listing prime factor trees works, but this is taking longer than expected. I wonder if there's a faster way to do this using remainders... Still, we got the buttons to fit perfectly!\" Cassie cheers. But wait, you hear a frantic knocking on the door. It's Inigo.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Check on Inigo",
+              "nextNode": "morning_panic",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "morning_panic": {
+          "text": "Inigo has one sock on and looks terrified. \"I'm dead! I have to feed the cat, wash dishes, pack my bag, and fix the bed in 15 minutes! Pero 'di ko alam anong uunahin!\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Help him analyze the situation",
+              "nextNode": "permutation_logic",
+              "unlocksAlgorithm": null
+            },
+            {
+              "label": "Do tasks randomly without planning",
+              "nextNode": "scene1_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "permutation_logic": {
+          "text": "Mikaela leans against the doorframe. \"Chill, Inigo. You're frozen by decision paralysis. Do you even realize how many possible sequences you're trying to simulate?\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Calculate Factorial combinations",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": "Factorial (Recursion)",
+              "icon": "❗"
+            }
+          ]
+        },
+        "end_chapter": {
+          "text": "Inigo finally picks a path and starts moving. 24 permutations down to one successful morning. \"Recursive thinking saved my life!\" he shouts while running out.\n\n*Mathematical Foundations Chapter Completed.*",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "CONTINUE TO NEXT CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -81,57 +143,210 @@
     },
     {
       "id": 2,
-      "title": "THE DEBUGGING MARATHON",
+      "title": "SEARCHING & PATTERN MATCHING",
       "nodes": {
         "start": {
-          "text": "A stack overflow is crashing your recursive solution. Leo is sighing over his lukewarm cup of coffee. \"We need to replace this sorting mechanism, but which approach fits best?\"",
-          "speaker": "Leo",
+          "text": "Cassie is staring intently at her laptop screen in VS Code. \"Guys, our database login system keeps accepting duplicate user registrations. It's messing up the backend!\"",
+          "speaker": "Cassie",
           "choices": [
             {
-              "label": "Implement Quick Sort",
-              "nextNode": "quicksort_path",
-              "unlocksAlgorithm": "Quick Sort",
-              "icon": "⚡"
+              "label": "Use UniqueElements (Validation)",
+              "nextNode": "unique_elements_node",
+              "unlocksAlgorithm": "Unique Elements"
             },
             {
-              "label": "Implement Bubble Sort",
-              "nextNode": "bubblesort_path",
-              "unlocksAlgorithm": "Bubble Sort",
-              "icon": "🫧"
+              "label": "Use Nested Loop Comparison O(N^2)",
+              "nextNode": "unique_suboptimal",
+              "unlocksAlgorithm": null
             }
           ]
         },
-        "quicksort_path": {
-          "text": "The O(N log N) recursive tree completes partition divisions in milliseconds. The stack overflow is resolved. Leo raises his coffee mug in victory!\n\n\"Brilliant. Efficient sorting saved our stack!\"",
-          "speaker": "Leo",
+        "unique_suboptimal": {
+          "text": "Cassie runs the nested loop. \"Hmm, comparing every registration against every other user is taking longer than expected. My CPU usage is spiking. I wonder if there's a faster way to do this with a Set or frequency tracker... But hey, no duplicates!\" Just then, Mikaela bursts into the room. \"The Alco quiz results are out! Whoever got the highest score has to treat the class!\"",
+          "speaker": "Cassie",
           "choices": [
             {
-              "label": "Finish Chapter 2",
+              "label": "Use MaxElement (Iteration)",
+              "nextNode": "max_element_node",
+              "unlocksAlgorithm": "Max Element"
+            },
+            {
+              "label": "Sort entire array to find max",
+              "nextNode": "max_suboptimal",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "unique_elements_node": {
+          "text": "\"Good call! By checking if all usernames in the collection are distinct, we prevented duplicates,\" Cassie smiles. Just then, Mikaela bursts into the room holding up her phone. \"The Alco quiz results are out! Whoever got the highest score has to treat the whole class to lunch!\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Use MaxElement (Iteration)",
+              "nextNode": "max_element_node",
+              "unlocksAlgorithm": "Max Element"
+            },
+            {
+              "label": "Sort entire array to find max",
+              "nextNode": "max_suboptimal",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "max_suboptimal": {
+          "text": "Dodo watches the sorting algorithm execute. \"Hmm, sorting the entire array just to find one top score is taking longer than expected. I wonder if there's a faster way by just iterating once O(N)... Wow, I got the highest score... goodbye allowance. Come on, let's head out to the karaoke lounge! We need to catch a jeepney at the terminal outside campus. Since the parked jeepneys arrive in random order, their destination signboards are completely unsorted! We'll have to inspect each signboard one by one until we find our route.\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Use Sequential Search (Inspect unsorted jeepneys)",
+              "nextNode": "sequential_search_node",
+              "unlocksAlgorithm": "Sequential Search"
+            }
+          ]
+        },
+        "max_element_node": {
+          "text": "\"By iterating through the array and maintaining a variable tracking the largest value, we found the top scorer!\" Dodo groans, \"Wow, I got the highest score... goodbye allowance. Come on, let's head out to the karaoke lounge! We need to catch a jeepney at the terminal outside campus. Since the parked jeepneys arrive in random order, their destination signboards are completely unsorted! We'll have to inspect each signboard one by one until we find our route.\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Use Sequential Search (Inspect unsorted jeepneys)",
+              "nextNode": "sequential_search_node",
+              "unlocksAlgorithm": "Sequential Search"
+            }
+          ]
+        },
+        "sequential_search_node": {
+          "text": "At the bustling jeepney terminal, you walk down the long line of parked jeepneys, scanning their signboards linearly from start to finish O(N). Because the jeeps are unsorted, examining each element sequentially is the only reliable method! You successfully spot the jeep heading to the karaoke lounge and hop on. Upon arriving, Inigo is flipping through a massive, sorted karaoke songbook looking for his favorite OPM song. \"There are thousands of songs here! How do we find it fast?\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Use Binary Search (Divide & Conquer)",
+              "nextNode": "binary_search_node",
+              "unlocksAlgorithm": "Binary Search"
+            },
+            {
+              "label": "Use Interpolation Search (Improved Search)",
+              "nextNode": "interpolation_search_node",
+              "unlocksAlgorithm": "Interpolation Search"
+            },
+            {
+              "label": "Use Sequential Search (Page by Page)",
+              "nextNode": "suboptimal_karaoke_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "suboptimal_karaoke_node": {
+          "text": "Inigo flips through the massive songbook page by page. \"Hmm, this linear scan is taking way longer than expected! I wonder if there's a faster way to do this by halving the book... Finally found it!\" Before he sings, Dodo pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Use Insertion Search (Sorted Insertion)",
+              "nextNode": "insertion_search_node",
+              "unlocksAlgorithm": "Insertion Search",
+              "icon": "🗂️"
+            },
+            {
+              "label": "Insert cards randomly",
+              "nextNode": "insertion_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "binary_search_node": {
+          "text": "By repeatedly dividing the sorted songbook interval in half O(log N), Inigo finds his OPM song efficiently! Before he sings, Dodo pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use Insertion Search (Sorted Insertion)",
+              "nextNode": "insertion_search_node",
+              "unlocksAlgorithm": "Insertion Search",
+              "icon": "🗂️"
+            },
+            {
+              "label": "Insert cards randomly",
+              "nextNode": "insertion_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "interpolation_search_node": {
+          "text": "Knowing the songbook is uniformly distributed alphabetically, you estimate the target position based on value. Instant match! Before Inigo sings, Dodo pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use Insertion Search (Sorted Insertion)",
+              "nextNode": "insertion_search_node",
+              "unlocksAlgorithm": "Insertion Search",
+              "icon": "🗂️"
+            },
+            {
+              "label": "Insert cards randomly",
+              "nextNode": "insertion_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "insertion_suboptimal": {
+          "text": "Dodo stuffs the flashcards in randomly. \"Hmm, inserting cards without locating the correct position is taking longer than expected when I try to find them later! I wonder if there's an insertion search method to maintain order... Stack sorted!\" Cassie then pulls out her phone to play an RPG. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Use BF String Matching (String Processing)",
+              "nextNode": "bf_string_node",
+              "unlocksAlgorithm": "BF String Matching"
+            }
+          ]
+        },
+        "insertion_search_node": {
+          "text": "By locating the correct position for each element within the sorted sub-list, Dodo keeps his ethics flashcards perfectly ordered! Cassie then pulls out her phone to play a multiplayer RPG game. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Use BF String Matching (String Processing)",
+              "nextNode": "bf_string_node",
+              "unlocksAlgorithm": "BF String Matching"
+            }
+          ]
+        },
+        "bf_string_node": {
+          "text": "Aligning the pattern at every possible position until a match is found, Cassie successfully locates and adds her friend to the RPG guild party!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Complete Chapter 2",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
-        "bubblesort_path": {
-          "text": "The O(N^2) iterations take excessive time and exhaust the stack on larger datasets. Anya looks worried.\n\n\"That's too slow. We need a more performant sorting algorithm.\"",
-          "speaker": "Anya",
-          "choices": [
-            {
-              "label": "Try again",
-              "nextNode": "start",
-              "unlocksAlgorithm": null
-            }
-          ]
-        },
         "end_chapter": {
-          "text": "You have resolved the recursion bottleneck. Leo can finally rest. But tomorrow's exams are already looming.\n\n*Chapter 2 Completed.*",
+          "text": "From debugging login validation to finding jeepneys and belting out OPM hits, your searching and pattern matching skills saved the day!\n\n*Searching & Pattern Matching Chapter Completed.*",
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RETURN TO MAIN MENU",
+              "label": "CONTINUE TO NEXT CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -139,57 +354,109 @@
     },
     {
       "id": 3,
-      "title": "THE LAB EXAM PANIC",
+      "title": "SORTING ALGORITHMS",
       "nodes": {
         "start": {
-          "text": "Professor Cruz paces the lab rows. \"You have 10 seconds to find the student record inside this massive, sorted database array. No linear searches allowed!\"",
-          "speaker": "Prof. Cruz",
+          "text": "Dodo is staring at Figma, groaning. \"Guys, my Figma asset panel is a complete disaster. I have all these cluttered UI icons, and I need to organize them by file size before I export. But doing it one by one feels like torture!\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Implement Binary Search",
-              "nextNode": "binarysearch_path",
-              "unlocksAlgorithm": "Binary Search",
-              "icon": "🔍"
+              "label": "Selection Sort (Simple Sort)",
+              "nextNode": "selection_sort_node",
+              "unlocksAlgorithm": "Selection Sort",
+              "icon": "🖱️"
             },
             {
-              "label": "Implement Linear Search",
-              "nextNode": "linearsearch_path",
+              "label": "Manually inspect and arrange icons",
+              "nextNode": "selection_sort_node",
               "unlocksAlgorithm": null,
               "icon": "❌"
             }
           ]
         },
-        "binarysearch_path": {
-          "text": "By halving the search space O(log N), you find the correct record index in exactly 3 steps. Prof. Cruz nods in quiet approval.\n\n\"Excellent logarithmic execution. Full points!\"",
-          "speaker": "Prof. Cruz",
+        "selection_sort_node": {
+          "text": "Dodo watches the icons swap. \"Hmm, comparing and selecting them one by one O(N^2) is taking longer than expected, but my Figma assets are finally organized perfectly!\" Cassie then calls everyone over. \"Hey, I'm compiling a massive list of user data for our student management system. Before we can test the search functions, we need to sort thousands of entries by ID!\"",
+          "speaker": "Cassie",
           "choices": [
             {
-              "label": "Finish Chapter 3",
+              "label": "Bubble Sort (Simple Sort)",
+              "nextNode": "bubble_sort_node",
+              "unlocksAlgorithm": "Bubble Sort",
+              "icon": "🫧"
+            }
+          ]
+        },
+        "bubble_sort_node": {
+          "text": "Cassie tries stepping through the list, comparing adjacent elements and swapping them. \"Ugh, O(N^2) is taking way too long for thousands of entries! My laptop fans are screaming!\" Mikaela chimes in, \"We need a stable divide-and-conquer approach to split the list into halves, sort them recursively, and merge them back together!\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Merge Sort (Stable Sort)",
+              "nextNode": "merge_sort_node",
+              "unlocksAlgorithm": "Merge Sort",
+              "icon": "🔀"
+            }
+          ]
+        },
+        "merge_sort_node": {
+          "text": "The merge sort compiles the list flawlessly and maintains stable ID ordering. Inigo looks at the code. \"That was smooth! But what if we want an in-place efficient partition method? Picking a pivot to divide the array into smaller and larger elements?\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Quicksort (Efficient Sort)",
+              "nextNode": "quicksort_node",
+              "unlocksAlgorithm": "Quicksort",
+              "icon": "⚡"
+            }
+          ]
+        },
+        "quicksort_node": {
+          "text": "Quicksort partitions the array around the pivot and sorts the management system entries at blazing O(N log N) speed! Dodo rubs his chin, \"What if memory space is strictly limited and we need a guaranteed priority queue approach? Like building a binary heap and extracting the max/min elements?\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Heapsort (Priority Sort)",
+              "nextNode": "heapsort_node",
+              "unlocksAlgorithm": "Heapsort",
+              "icon": "🌲"
+            }
+          ]
+        },
+        "heapsort_node": {
+          "text": "Building a binary heap allows you to extract elements in perfect priority order without using extra memory space! The student management system is now fully optimized and ready for deployment.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Complete Chapter 3",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
-        "linearsearch_path": {
-          "text": "Scanning item by item takes too long, and your time runs out. The buzzer sounds.\n\n\"Time limit exceeded! O(N) is unacceptable for sorted data.\"",
-          "speaker": "Prof. Cruz",
-          "choices": [
-            {
-              "label": "Retry exam",
-              "nextNode": "start",
-              "unlocksAlgorithm": null
-            }
-          ]
-        },
         "end_chapter": {
-          "text": "You passed the lab exam with flying colors. Logarithmic scaling is the ultimate grading cheat code.\n\n*Chapter 3 Completed.*",
+          "text": "From organizing Figma UI icons to sorting massive user databases with divide-and-conquer and heaps, your sorting algorithm mastery is unmatched!\n\n*Sorting Algorithms Chapter Completed.*",
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RETURN TO MAIN MENU",
+              "label": "CONTINUE TO NEXT CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -197,57 +464,186 @@
     },
     {
       "id": 4,
-      "title": "THE CAPSTONE DEFENSE",
+      "title": "GRAPH & NETWORK",
       "nodes": {
         "start": {
-          "text": "The panel members look stern. \"Your deployment map has dependencies in a massive graph. How will you systematically traverse every module to prove there are no cycles?\"",
-          "speaker": "Panel Chair",
+          "text": "Inigo bursts into the lounge, panting. \"Guys, I woke up late and need to get to the Computer Science building! I'm looking at a map of the campus walkways, noting that some paths are crowded with students (high weight) while others are clear (low weight). How do I find the absolute shortest path?\"",
+          "speaker": "Inigo",
           "choices": [
             {
-              "label": "Run BFS (Breadth-First)",
-              "nextNode": "bfs_path",
+              "label": "Use Dijkstra's (Greedy Shortest Path)",
+              "nextNode": "dijkstra_node",
+              "unlocksAlgorithm": "Dijkstra's Algorithm",
+              "icon": "📍"
+            },
+            {
+              "label": "Take random unweighted shortcut",
+              "nextNode": "dijkstra_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "dijkstra_suboptimal": {
+          "text": "Inigo dashes down a random path and gets stuck behind a massive crowd of freshmen. \"Hmm, taking a random shortcut without calculating edge weights is taking way longer than expected! I wonder if there's a greedy shortest-path algorithm to calculate this... Finally made it to the lounge!\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Join study group",
+              "nextNode": "lounge_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "dijkstra_node": {
+          "text": "By finding the shortest path from the starting node to all other nodes in the weighted graph with non-negative edge weights, Inigo arrives instantly! At the student lounge, Dodo and Cassie are untangling cables.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Help connect workstations",
+              "nextNode": "lounge_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "lounge_node": {
+          "text": "\"Help us connect several workstations in the lab using the minimum amount of wiring possible to save on costs, ensuring every desk is linked to the network without unnecessary loops!\" Dodo explains.",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Use Prim's (Greedy MST)",
+              "nextNode": "prims_node",
+              "unlocksAlgorithm": "Prim's Algorithm",
+              "icon": "🛡️"
+            },
+            {
+              "label": "Use Kruskal's (Greedy MST)",
+              "nextNode": "kruskals_node",
+              "unlocksAlgorithm": "Kruskal's Algorithm",
+              "icon": "🔗"
+            },
+            {
+              "label": "Connect every desk in mesh",
+              "nextNode": "mst_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "mst_suboptimal": {
+          "text": "Dodo starts plugging cables everywhere. \"Hmm, creating a complete mesh network is taking longer than expected and wasting so much expensive wiring! I wonder if there's a Minimum Spanning Tree algorithm to do this greedily... Still, the network is up!\" Cassie then opens her laptop to play an RPG game.",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Look at Cassie's screen",
+              "nextNode": "rpg_tree_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "prims_node": {
+          "text": "By starting from a single node and greedily adding the cheapest edge to a new vertex, you build a flawless Minimum Spanning Tree! Cassie then opens her laptop to play an RPG game.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Look at Cassie's screen",
+              "nextNode": "rpg_tree_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "kruskals_node": {
+          "text": "By sorting all edges by weight and adding the cheapest ones that do not form a cycle, you build a cost-effective Minimum Spanning Tree! Cassie then opens her laptop to play an RPG game.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Look at Cassie's screen",
+              "nextNode": "rpg_tree_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "rpg_tree_node": {
+          "text": "Cassie points to her screen. \"I'm trying to unlock a specific node in this character skill tree in my RPG game. How should I explore the graph?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use DFS (Graph Traversal)",
+              "nextNode": "dfs_node",
+              "unlocksAlgorithm": "DFS",
+              "icon": "📍"
+            },
+            {
+              "label": "Use BFS (Graph Traversal)",
+              "nextNode": "bfs_node",
               "unlocksAlgorithm": "BFS",
               "icon": "🌊"
             },
             {
-              "label": "Run DFS (Depth-First)",
-              "nextNode": "dfs_path",
-              "unlocksAlgorithm": "DFS",
-              "icon": "📍"
+              "label": "Click nodes randomly",
+              "nextNode": "tree_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
             }
           ]
         },
-        "bfs_path": {
-          "text": "Traversing layer-by-layer using a FIFO queue reveals all reachable system packages. The panelists look highly impressed.\n\n\"A clean, level-order traversal logic. Excellent defense!\"",
-          "speaker": "Panel Chair",
+        "tree_suboptimal": {
+          "text": "Cassie randomly clicks skill nodes. \"Hmm, clicking without a traversal strategy is taking longer than expected and wasting my skill points. I wonder if there's a systematic BFS or DFS way to explore this... Finally got the ultimate skill!\"",
+          "speaker": "Cassie",
           "choices": [
             {
-              "label": "Finish Chapter 4",
+              "label": "Complete Chapter 4",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
-        "dfs_path": {
-          "text": "Plunging deep along each branch using a LIFO stack traces the recursive cycle pathways perfectly. The panelists nod in approval.\n\n\"Excellent back-tracking cycle-detection logic. Outstanding defense!\"",
-          "speaker": "Panel Chair",
+        "dfs_node": {
+          "text": "Exploring the graph by visiting a node and recursively visiting all nodes along a single branch as deep as possible before backtracking unlocks the skill perfectly!",
+          "speaker": "Narrator",
           "choices": [
             {
-              "label": "Finish Chapter 4",
+              "label": "Complete Chapter 4",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "bfs_node": {
+          "text": "Exploring the graph layer by layer, visiting all neighbors of a node before moving to the next level of depth unlocks the skill flawlessly!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Complete Chapter 4",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
         "end_chapter": {
-          "text": "Your capstone system defense is complete. Anya and Leo celebrate your O(V + E) success in the hallways.\n\n*Chapter 4 Completed.*",
+          "text": "From navigating campus walkways to building minimum spanning networks and mastering RPG skill trees, your graph and network algorithms are legendary!\n\n*Graph & Network Chapter Completed.*",
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RETURN TO MAIN MENU",
+              "label": "CONTINUE TO NEXT CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -255,57 +651,192 @@
     },
     {
       "id": 5,
-      "title": "THE AI HACKATHON",
+      "title": "DYNAMIC PROGRAMMING & OPTIMIZATION",
       "nodes": {
         "start": {
-          "text": "The clock is ticking in the 24-hour hackathon. Your navigation robot needs to find the optimal path in a grid representing a dense maze. Which heuristic fits?",
-          "speaker": "Anya",
+          "text": "In the basement of the engineering wing, Dodo is standing in front of a vintage vending machine. \"I’ve just finished a project and have a handful of different coins. I need to provide the exact amount for a bag of chips using the smallest number of coins possible. How do we calculate the optimal coin breakdown?\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Implement A* Search",
-              "nextNode": "astar_path",
-              "unlocksAlgorithm": "A* Search",
-              "icon": "🧠"
+              "label": "Use Change Making (Optimization)",
+              "nextNode": "change_making_node",
+              "unlocksAlgorithm": "Change Making",
+              "icon": "🏧"
             },
             {
-              "label": "Implement DFS Search",
-              "nextNode": "dfs_fail_path",
+              "label": "Try coin combinations blindly",
+              "nextNode": "change_making_suboptimal",
               "unlocksAlgorithm": null,
               "icon": "❌"
             }
           ]
         },
-        "astar_path": {
-          "text": "Combining distance traveled g(n) and heuristic estimate h(n) leads the robot straight to the exit, bypassing all obstacles. The judges cheer!\n\n\"The optimal, shortest-path heuristic search in record time!\"",
-          "speaker": "Judges",
+        "change_making_suboptimal": {
+          "text": "Dodo starts stuffing random coins into the slot. \"Hmm, trying combinations blindly without dynamic programming is taking longer than expected, and the machine keeps spitting them back out! I wonder if there's an optimization algorithm to find the minimum coins... Finally got the chips!\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Finish Chapter 5",
+              "label": "Sit on the bench",
+              "nextNode": "bench_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "change_making_node": {
+          "text": "By finding the minimum number of coins of specific denominations needed to make the target total using dynamic programming, Dodo gets his chips instantly!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Sit on the bench",
+              "nextNode": "bench_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "bench_node": {
+          "text": "While sitting on a long bench nearby eating chips, Cassie notices someone dropped a line of coins. \"Look! But there's a security laser sensor that prevents us from picking up any two coins that are directly adjacent. How can we get the maximum total value?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use Coin Row (Dynamic Programming)",
+              "nextNode": "coin_row_node",
+              "unlocksAlgorithm": "Coin Row",
+              "icon": "🪙"
+            },
+            {
+              "label": "Grab the biggest coin greedily",
+              "nextNode": "coin_row_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "coin_row_suboptimal": {
+          "text": "Cassie grabs a single 10-peso coin and the laser alarm beeps! \"Hmm, grabbing greedily without checking non-adjacent subproblems is yielding way less money than expected! I wonder if there's a dynamic programming recurrence for this... At least we got 10 pesos!\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Play mobile game",
+              "nextNode": "mobile_game_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "coin_row_node": {
+          "text": "By solving the dynamic programming recurrence to find the maximum value of coins picked from a row without adjacent selections, you collect the ultimate bounty!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Play mobile game",
+              "nextNode": "mobile_game_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "mobile_game_node": {
+          "text": "Later in the student lounge, Mikaela is playing a quick grid-based mobile game. \"You must move a character from the top-left corner of a room to the bottom-right, grabbing as much loot as possible while moving only right or down. What's the optimal path?\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Use Coin Collecting (Grid DP)",
+              "nextNode": "coin_collecting_node",
+              "unlocksAlgorithm": "Coin Collecting",
+              "icon": "🕹️"
+            },
+            {
+              "label": "Move zigzag randomly",
+              "nextNode": "coin_collecting_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "coin_collecting_suboptimal": {
+          "text": "Mikaela moves her character zigzag across the room. \"Hmm, wandering without calculating grid subproblems is taking longer than expected and missing the best loot. I wonder if there's a dynamic programming table approach for this... Game over, but good run!\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Work on final project",
+              "nextNode": "huffman_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "coin_collecting_node": {
+          "text": "By building a dynamic programming grid table to collect the maximum coins while moving right or down, Mikaela sets a new high score!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Work on final project",
+              "nextNode": "huffman_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "huffman_node": {
+          "text": "It’s 11:00 PM and Inigo is stressing out. \"I am finalizing our massive capstone documentation file, but it needs to be compressed to fit the submission portal's strict 5MB limit! How can we compress it without losing data?\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Use Huffman Coding (Greedy Compression)",
+              "nextNode": "huffman_coding_node",
+              "unlocksAlgorithm": "Huffman Coding",
+              "icon": "🗜️"
+            },
+            {
+              "label": "Delete random paragraphs",
+              "nextNode": "huffman_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "huffman_suboptimal": {
+          "text": "Inigo starts deleting important paragraphs. \"Hmm, deleting text blindly is compromising our documentation quality and taking longer to re-edit! I wonder if there's a lossless greedy compression algorithm to assign shorter binary codes to frequent characters... Finally zipped it!\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Complete Chapter 5",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
-        "dfs_fail_path": {
-          "text": "The robot wanders down the deepest blind alley, getting stuck in loops. Time runs out.\n\n\"DFS gets trapped in cycles or takes non-optimal pathways here.\"",
-          "speaker": "Anya",
+        "huffman_coding_node": {
+          "text": "Using a greedy algorithm for lossless data compression that assigns shorter binary codes to more frequent characters, the file compresses to 4.8MB perfectly!",
+          "speaker": "Narrator",
           "choices": [
             {
-              "label": "Try heuristic search",
-              "nextNode": "start",
+              "label": "Complete Chapter 5",
+              "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
         "end_chapter": {
-          "text": "Your team took home 1st place in the hackathon. Heuristics lead to trophies.\n\n*Chapter 5 Completed.*",
+          "text": "From vending machines and bench bounties to grid game high scores and flawless file compression, your dynamic programming and optimization skills are elite!\n\n*Dynamic Programming & Optimization Chapter Completed.*",
           "speaker": "Narrator",
           "choices": [
             {
-              "label": "RETURN TO MAIN MENU",
+              "label": "CONTINUE TO NEXT CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -313,29 +844,69 @@
     },
     {
       "id": 6,
-      "title": "THE GRADUATION RITUAL",
+      "title": "STATE-SPACE SEARCH",
       "nodes": {
         "start": {
-          "text": "It is graduation day! AUF wants to issue secure digital certificates. How can we ensure they are both tamper-proof and signed?",
-          "speaker": "System",
+          "text": "It is the night before graduation, and Dodo is panicking in the computer lab. \"I am debugging a complex logic circuit for our final demonstration! I find myself trying a specific configuration, hitting a dead end where the logic fails. How should I navigate this?\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Use SHA-256 and RSA",
-              "nextNode": "crypto_path",
-              "unlocksAlgorithm": "RSA Encryption",
-              "icon": "🔗"
+              "label": "Use Backtracking (Exhaustive Search)",
+              "nextNode": "backtracking_node",
+              "unlocksAlgorithm": "Backtracking",
+              "icon": "🔂"
             },
             {
-              "label": "Save in plaintext",
-              "nextNode": "plaintext_path",
+              "label": "Keep pushing forward blindly",
+              "nextNode": "backtracking_suboptimal",
               "unlocksAlgorithm": null,
               "icon": "❌"
             }
           ]
         },
-        "crypto_path": {
-          "text": "Hashing with SHA-256 guarantees integrity, and signing with private RSA keys guarantees authenticity. The registry clicks 'ISSUE'.\n\n\"Your credentials are secure for life! Congratulations, graduate!\"",
-          "speaker": "System",
+        "backtracking_suboptimal": {
+          "text": "Dodo keeps adding wires blindly to the failing circuit. \"Hmm, pushing forward without stepping back to the last working state is causing a massive short circuit and taking longer than expected! I wonder if there's a systematic backtracking method to undo invalid partial solutions... Finally fixed the board!\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Pack tech pouch",
+              "nextNode": "pouch_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "backtracking_node": {
+          "text": "Using a systematic trial-and-error method that builds a solution incrementally and backtracks as soon as a partial solution violates constraints, Dodo isolates the working circuit perfectly!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Pack tech pouch",
+              "nextNode": "pouch_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "pouch_node": {
+          "text": "Now at midnight, Cassie is trying to pack her essentials into a small tech pouch for tomorrow’s presentation. \"I have so many chargers, adapters, and cables, but the pouch has a strict weight limit! How do I find the best combination without trying every single one?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use Branch and Bound (Pruned Search)",
+              "nextNode": "branch_bound_node",
+              "unlocksAlgorithm": "Branch and Bound",
+              "icon": "✂️"
+            },
+            {
+              "label": "Try combinations exhaustively",
+              "nextNode": "pouch_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "pouch_suboptimal": {
+          "text": "Cassie tries stuffing every single adapter combination into the pouch one by one. \"Hmm, trying combinations exhaustively without bounding is taking way longer than expected, and my pouch zipper almost broke! I wonder if there's a Branch and Bound technique to prune branches that exceed the weight limit early... Finally packed!\"",
+          "speaker": "Cassie",
           "choices": [
             {
               "label": "Graduate",
@@ -344,26 +915,41 @@
             }
           ]
         },
-        "plaintext_path": {
-          "text": "Saving certificates in raw plaintext fails the security audit. The university delays graduation.\n\n\"Plaintext is vulnerable to spoofing and MITM manipulation!\"",
-          "speaker": "System",
+        "branch_bound_node": {
+          "text": "Using an optimization technique that explores a state-space tree but uses bounds to prune branches that cannot yield a better solution than the current best, Cassie packs the optimal tech pouch effortlessly!",
+          "speaker": "Narrator",
           "choices": [
             {
-              "label": "Secure files",
-              "nextNode": "start",
+              "label": "Graduate",
+              "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
         "end_chapter": {
-          "text": "You march across the stage, degree in hand, as your mechanical keyboard clicks in the distance. The AUF journey is complete.\n\n*Chapter 6 Completed. You are the ultimate CCS student!*",
+          "text": "From backtracking logic circuits to bounding tech pouch combinations, your state-space search mastery has earned you your degree! The AUF journey is complete.\n\n*State-Space Search Chapter Completed. You are the ultimate CCS student!*",
           "speaker": "Narrator",
           "choices": [
+            {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
+            },
             {
               "label": "RESET STORY PROGRESS",
               "nextNode": "start",
               "unlocksAlgorithm": null,
-              "advanceChapter": true
+              "resetProgress": true,
+              "icon": "🔄"
             }
           ]
         }
@@ -372,229 +958,247 @@
   ],
   "algorithms": [
     {
-      "id": "Dijkstra's Algorithm",
-      "title": "DIJKSTRA'S SHORTEST PATH",
-      "category": "Graph Algorithms",
-      "definition": "An iterative algorithm that finds the shortest path between nodes in a weighted graph.",
-      "useCase": "Used primarily in network routing protocols and GPS navigation to calculate the fastest route.",
-      "pseudocode": "function dijkstra(graph, start)\n  distances = map()\n  distances[start] = 0\n  pq = priority_queue()\n  pq.push(start, 0)\n  while !pq.empty():\n    current = pq.pop()\n    for neighbor in graph[current]:\n      if update(distance):\n        pq.push(neighbor, new_dist)\n  return distances",
-      "icon": "📍"
+      "id": "Euclid's Algorithm",
+      "title": "EUCLID'S ALGORITHM",
+      "category": "Mathematical Algorithms",
+      "definition": "An efficient method for computing the greatest common divisor (GCD) of two numbers by repeatedly replacing the larger number with the remainder of its division by the smaller number.",
+      "useCase": "Used in Cryptography (RSA), simplifying fractions, and optimizing UI grid layouts.",
+      "pseudocode": "function gcd(a, b):\n  while b != 0:\n    a, b = b, a % b\n  return a",
+      "icon": "➗"
     },
     {
-      "id": "Hash Map",
-      "title": "HASH MAP",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Hash Map related tasks and system optimizations.",
-      "pseudocode": "function hashmap() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🫧"
+      "id": "Consecutive Integer Check",
+      "title": "CONSECUTIVE INTEGER CHECK",
+      "category": "Mathematical Algorithms",
+      "definition": "A brute-force method to find the GCD by checking all integers starting from the minimum of the two numbers downwards until a common divisor is found.",
+      "useCase": "Simple implementations where efficiency is not critical or for educational purposes.",
+      "pseudocode": "function gcd(a, b):\n  t = min(a, b)\n  while t > 0:\n    if a % t == 0 and b % t == 0: return t\n    t = t - 1",
+      "icon": "🔢"
     },
     {
-      "id": "Bubble Sort",
-      "title": "BUBBLE SORT",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Bubble Sort related tasks and system optimizations.",
-      "pseudocode": "function bubblesort() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "⚡"
+      "id": "Middle School Procedure",
+      "title": "MIDDLE SCHOOL PROCEDURE",
+      "category": "Mathematical Algorithms",
+      "definition": "Finding the GCD by identifying the prime factorization of both numbers and multiplying the common prime factors together.",
+      "useCase": "Manual calculations and teaching the fundamental theorem of arithmetic.",
+      "pseudocode": "function gcd(a, b):\n  factorsA = primeFactorization(a)\n  factorsB = primeFactorization(b)\n  common = intersection(factorsA, factorsB)\n  return product(common)",
+      "icon": "🌲"
     },
     {
-      "id": "Quick Sort",
-      "title": "QUICK SORT",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Quick Sort related tasks and system optimizations.",
-      "pseudocode": "function quicksort() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔄"
+      "id": "Factorial (Recursion)",
+      "title": "FACTORIAL (RECURSION)",
+      "category": "Mathematical Algorithms",
+      "definition": "Calculating the product of all positive integers up to n using a recursive function where f(n) = n * f(n-1).",
+      "useCase": "Calculating permutations, combinations, and understanding recursion.",
+      "pseudocode": "function factorial(n):\n  if n == 0 or n == 1: return 1\n  return n * factorial(n - 1)",
+      "icon": "❗"
     },
     {
-      "id": "Merge Sort",
-      "title": "MERGE SORT",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Merge Sort related tasks and system optimizations.",
-      "pseudocode": "function mergesort() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔍"
+      "id": "Sequential Search",
+      "title": "SEQUENTIAL SEARCH",
+      "category": "Searching & Pattern Matching",
+      "definition": "Scans a list linearly from start to finish to find a target value or determine its absence.",
+      "useCase": "Finding the correct jeep to take in a jeepney terminal.",
+      "pseudocode": "function sequentialSearch(arr, target):\n  for i = 0 to arr.length - 1:\n    if arr[i] == target: return i\n  return -1",
+      "icon": "🛺"
     },
     {
       "id": "Binary Search",
       "title": "BINARY SEARCH",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Binary Search related tasks and system optimizations.",
-      "pseudocode": "function binarysearch() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🌳"
+      "category": "Searching & Pattern Matching",
+      "definition": "Efficiently finds a target in a sorted array by repeatedly dividing the search interval in half.",
+      "useCase": "Finding your favorite OPM song in a karaoke songbook.",
+      "pseudocode": "function binarySearch(arr, target):\n  low = 0, high = arr.length - 1\n  while low <= high:\n    mid = (low + high) / 2\n    if arr[mid] == target: return mid\n    else if arr[mid] < target: low = mid + 1\n    else: high = mid - 1\n  return -1",
+      "icon": "📖"
+    },
+    {
+      "id": "Interpolation Search",
+      "title": "INTERPOLATION SEARCH",
+      "category": "Searching & Pattern Matching",
+      "definition": "An improvement on binary search for uniformly distributed sorted data that estimates the target's position based on its value.",
+      "useCase": "Finding your favorite OPM song in a karaoke songbook.",
+      "pseudocode": "function interpolationSearch(arr, target):\n  low = 0, high = arr.length - 1\n  while low <= high and target >= arr[low] and target <= arr[high]:\n    pos = low + ((target - arr[low]) * (high - low)) / (arr[high] - arr[low])\n    if arr[pos] == target: return pos\n    else if arr[pos] < target: low = pos + 1\n    else: high = pos - 1\n  return -1",
+      "icon": "🎯"
+    },
+    {
+      "id": "Insertion Search",
+      "title": "INSERTION SEARCH",
+      "category": "Searching & Pattern Matching",
+      "definition": "Locates the correct position for an element within a sorted sub-list to maintain order.",
+      "useCase": "Organizing your flashcards for your upcoming ethics enumeration quiz.",
+      "pseudocode": "function insertionSearch(arr, key):\n  i = arr.length - 1\n  while i >= 0 and arr[i] > key:\n    arr[i + 1] = arr[i]\n    i--\n  arr[i + 1] = key\n  return i + 1",
+      "icon": "🗂️"
+    },
+    {
+      "id": "Max Element",
+      "title": "MAX ELEMENT",
+      "category": "Searching & Pattern Matching",
+      "definition": "Iterates through an array while maintaining a variable that tracks the largest value encountered.",
+      "useCase": "Finding who got the highest score in the alco quiz who will treat the whole class.",
+      "pseudocode": "function maxElement(arr):\n  maxVal = arr[0]\n  for i = 1 to arr.length - 1:\n    if arr[i] > maxVal: maxVal = arr[i]\n  return maxVal",
+      "icon": "👑"
+    },
+    {
+      "id": "Unique Elements",
+      "title": "UNIQUE ELEMENTS",
+      "category": "Searching & Pattern Matching",
+      "definition": "Checks if all elements in a collection are distinct by comparing each pair or using a frequency tracker.",
+      "useCase": "Used in unique username login systems for the database system in VS code.",
+      "pseudocode": "function uniqueElements(arr):\n  seen = new Set()\n  for item in arr:\n    if seen.has(item): return false\n    seen.add(item)\n  return true",
+      "icon": "🛡️"
+    },
+    {
+      "id": "BF String Matching",
+      "title": "BF STRING MATCHING",
+      "category": "Searching & Pattern Matching",
+      "definition": "Checks for a pattern within a text by aligning it at every possible position until a match is found.",
+      "useCase": "Finding your friend to add him in the rpg game (Brute Force).",
+      "pseudocode": "function bfStringMatch(text, pattern):\n  n = text.length, m = pattern.length\n  for i = 0 to n - m:\n    j = 0\n    while j < m and text[i + j] == pattern[j]: j++\n    if j == m: return i\n  return -1",
+      "icon": "⚔️"
+    },
+    {
+      "id": "Selection Sort",
+      "title": "SELECTION SORT",
+      "category": "Sorting",
+      "definition": "Repeatedly finds the minimum element from the unsorted portion of a list and swaps it into its correct position.",
+      "useCase": "Drag and dropping unorganized and cluttered UI icons for your figma project by file size one by one.",
+      "pseudocode": "function selectionSort(arr):\n  for i = 0 to arr.length - 1:\n    minIdx = i\n    for j = i + 1 to arr.length:\n      if arr[j] < arr[minIdx]: minIdx = j\n    swap(arr[i], arr[minIdx])\n  return arr",
+      "icon": "🖱️"
+    },
+    {
+      "id": "Bubble Sort",
+      "title": "BUBBLE SORT",
+      "category": "Sorting",
+      "definition": "Repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.",
+      "useCase": "Compiling a massive list of user data for a management system. Sorting thousands of entries by ID.",
+      "pseudocode": "function bubbleSort(arr):\n  n = arr.length\n  for i = 0 to n - 1:\n    for j = 0 to n - i - 2:\n      if arr[j] > arr[j + 1]:\n        swap(arr[j], arr[j + 1])\n  return arr",
+      "icon": "🫧"
+    },
+    {
+      "id": "Merge Sort",
+      "title": "MERGE SORT",
+      "category": "Sorting",
+      "definition": "A divide-and-conquer algorithm that splits a list into halves, sorts them recursively, and merges the sorted halves back together.",
+      "useCase": "Compiling a massive list of user data for a management system. Sorting thousands of entries by ID stably.",
+      "pseudocode": "function mergeSort(arr):\n  if arr.length <= 1: return arr\n  mid = arr.length / 2\n  left = mergeSort(arr.slice(0, mid))\n  right = mergeSort(arr.slice(mid))\n  return merge(left, right)",
+      "icon": "🔀"
+    },
+    {
+      "id": "Quicksort",
+      "title": "QUICKSORT",
+      "category": "Sorting",
+      "definition": "A divide-and-conquer algorithm that picks a \"pivot\" and partitions the array into elements smaller and larger than the pivot.",
+      "useCase": "Compiling a massive list of user data for a management system. Sorting thousands of entries by ID efficiently.",
+      "pseudocode": "function quickSort(arr, low, high):\n  if low < high:\n    pivotIdx = partition(arr, low, high)\n    quickSort(arr, low, pivotIdx - 1)\n    quickSort(arr, pivotIdx + 1, high)\n  return arr",
+      "icon": "⚡"
+    },
+    {
+      "id": "Heapsort",
+      "title": "HEAPSORT",
+      "category": "Sorting",
+      "definition": "A comparison-based sorting technique that builds a Binary Heap and repeatedly extracts the maximum/minimum element.",
+      "useCase": "Compiling a massive list of user data for a management system. Sorting thousands of entries by ID with priority heap.",
+      "pseudocode": "function heapSort(arr):\n  buildMaxHeap(arr)\n  for i = arr.length - 1 down to 1:\n    swap(arr[0], arr[i])\n    heapify(arr, 0, i)\n  return arr",
+      "icon": "🌲"
     },
     {
       "id": "DFS",
-      "title": "DFS",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in DFS related tasks and system optimizations.",
-      "pseudocode": "function dfs() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🌊"
+      "title": "DFS (DEPTH-FIRST SEARCH)",
+      "category": "Graph & Network",
+      "definition": "Explores a graph by visiting a node and then recursively visiting all nodes along a single branch as deep as possible before backtracking.",
+      "useCase": "Unlocking a specific node in a character skill tree in an rpg game.",
+      "pseudocode": "function dfs(graph, start, visited = new Set()):\n  visited.add(start)\n  for neighbor in graph[start]:\n    if !visited.has(neighbor):\n      dfs(graph, neighbor, visited)\n  return visited",
+      "icon": "📍"
     },
     {
       "id": "BFS",
-      "title": "BFS",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in BFS related tasks and system optimizations.",
-      "pseudocode": "function bfs() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "⭐"
-    },
-    {
-      "id": "A* Search",
-      "title": "A* SEARCH",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in A* Search related tasks and system optimizations.",
-      "pseudocode": "function asearch() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🧠"
-    },
-    {
-      "id": "Dynamic Programming",
-      "title": "DYNAMIC PROGRAMMING",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Dynamic Programming related tasks and system optimizations.",
-      "pseudocode": "function dynamicprogramming() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🧩"
-    },
-    {
-      "id": "Kruskal's Algorithm",
-      "title": "KRUSKAL'S ALGORITHM",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Kruskal's Algorithm related tasks and system optimizations.",
-      "pseudocode": "function kruskalsalgorithm() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔗"
+      "title": "BFS (BREADTH-FIRST SEARCH)",
+      "category": "Graph & Network",
+      "definition": "Explores a graph layer by layer, visiting all neighbors of a node before moving to the next level of depth.",
+      "useCase": "Unlocking a specific node in a character skill tree in an rpg game.",
+      "pseudocode": "function bfs(graph, start):\n  visited = new Set([start])\n  queue = [start]\n  while queue.length > 0:\n    node = queue.shift()\n    for neighbor in graph[node]:\n      if !visited.has(neighbor):\n        visited.add(neighbor)\n        queue.push(neighbor)\n  return visited",
+      "icon": "🌊"
     },
     {
       "id": "Prim's Algorithm",
       "title": "PRIM'S ALGORITHM",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Prim's Algorithm related tasks and system optimizations.",
-      "pseudocode": "function primsalgorithm() {\n  // Implementation pending\n  return true;\n}",
+      "category": "Graph & Network",
+      "definition": "A greedy algorithm that builds a Minimum Spanning Tree (MST) by starting from a single node and adding the cheapest edge to a new vertex.",
+      "useCase": "Connecting several lab workstations using the minimum amount of wiring possible to save on costs without loops.",
+      "pseudocode": "function primMST(graph):\n  mst = [], visited = new Set([0])\n  pq = new PriorityQueue()\n  pq.pushAll(graph.edgesFrom(0))\n  while visited.size < graph.numVertices:\n    edge = pq.popCheapest()\n    if !visited.has(edge.to):\n      visited.add(edge.to)\n      mst.push(edge)\n      pq.pushAll(graph.edgesFrom(edge.to))\n  return mst",
       "icon": "🛡️"
     },
     {
-      "id": "Floyd-Warshall",
-      "title": "FLOYD-WARSHALL",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Floyd-Warshall related tasks and system optimizations.",
-      "pseudocode": "function floydwarshall() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🗝️"
-    },
-    {
-      "id": "Bellman-Ford",
-      "title": "BELLMAN-FORD",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Bellman-Ford related tasks and system optimizations.",
-      "pseudocode": "function bellmanford() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🫧"
-    },
-    {
-      "id": "Topological Sort",
-      "title": "TOPOLOGICAL SORT",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Topological Sort related tasks and system optimizations.",
-      "pseudocode": "function topologicalsort() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "⚡"
-    },
-    {
-      "id": "AVL Tree",
-      "title": "AVL TREE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in AVL Tree related tasks and system optimizations.",
-      "pseudocode": "function avltree() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔄"
-    },
-    {
-      "id": "Red-Black Tree",
-      "title": "RED-BLACK TREE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Red-Black Tree related tasks and system optimizations.",
-      "pseudocode": "function redblacktree() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔍"
-    },
-    {
-      "id": "Trie",
-      "title": "TRIE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Trie related tasks and system optimizations.",
-      "pseudocode": "function trie() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🌳"
-    },
-    {
-      "id": "Segment Tree",
-      "title": "SEGMENT TREE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Segment Tree related tasks and system optimizations.",
-      "pseudocode": "function segmenttree() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🌊"
-    },
-    {
-      "id": "Fenwick Tree",
-      "title": "FENWICK TREE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Fenwick Tree related tasks and system optimizations.",
-      "pseudocode": "function fenwicktree() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "⭐"
-    },
-    {
-      "id": "Knapsack Problem",
-      "title": "KNAPSACK PROBLEM",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Knapsack Problem related tasks and system optimizations.",
-      "pseudocode": "function knapsackproblem() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🧠"
-    },
-    {
-      "id": "Traveling Salesperson",
-      "title": "TRAVELING SALESPERSON",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Traveling Salesperson related tasks and system optimizations.",
-      "pseudocode": "function travelingsalesperson() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🧩"
-    },
-    {
-      "id": "RSA Encryption",
-      "title": "RSA ENCRYPTION",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in RSA Encryption related tasks and system optimizations.",
-      "pseudocode": "function rsaencryption() {\n  // Implementation pending\n  return true;\n}",
+      "id": "Kruskal's Algorithm",
+      "title": "KRUSKAL'S ALGORITHM",
+      "category": "Graph & Network",
+      "definition": "A greedy algorithm that builds an MST by sorting all edges by weight and adding the cheapest ones that do not form a cycle.",
+      "useCase": "Connecting several lab workstations using the minimum amount of wiring possible to save on costs without loops.",
+      "pseudocode": "function kruskalMST(edges, numVertices):\n  mst = [], ds = new DisjointSet(numVertices)\n  edges.sort((a, b) => a.weight - b.weight)\n  for edge in edges:\n    if ds.find(edge.u) != ds.find(edge.v):\n      ds.union(edge.u, edge.v)\n      mst.push(edge)\n  return mst",
       "icon": "🔗"
     },
     {
-      "id": "SHA-256",
-      "title": "SHA-256",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in SHA-256 related tasks and system optimizations.",
-      "pseudocode": "function sha() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🛡️"
+      "id": "Dijkstra's Algorithm",
+      "title": "DIJKSTRA'S SHORTEST PATH",
+      "category": "Graph & Network",
+      "definition": "Finds the shortest path from a starting node to all other nodes in a weighted graph with non-negative edge weights.",
+      "useCase": "Finding the quickest campus walkway path to get to the Computer Science building when waking up late.",
+      "pseudocode": "function dijkstra(graph, start):\n  dist = map(), pq = new PriorityQueue()\n  for node in graph: dist[node] = Infinity\n  dist[start] = 0, pq.push(start, 0)\n  while !pq.isEmpty():\n    curr = pq.pop()\n    for neighbor, weight in graph[curr]:\n      newDist = dist[curr] + weight\n      if newDist < dist[neighbor]:\n        dist[neighbor] = newDist\n        pq.push(neighbor, newDist)\n  return dist",
+      "icon": "📍"
     },
     {
-      "id": "PageRank",
-      "title": "PAGERANK",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in PageRank related tasks and system optimizations.",
-      "pseudocode": "function pagerank() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🗝️"
+      "id": "Coin Row",
+      "title": "COIN ROW",
+      "category": "Dynamic Programming & Optimization",
+      "definition": "A dynamic programming problem to find the maximum value of coins picked from a row, provided no two adjacent coins are chosen.",
+      "useCase": "Collecting dropped coins along a long bench protected by security laser sensors preventing adjacent pickups.",
+      "pseudocode": "function coinRow(coins):\n  n = coins.length\n  if n == 0: return 0\n  if n == 1: return coins[0]\n  dp = new Array(n + 1)\n  dp[0] = 0, dp[1] = coins[0]\n  for i = 2 to n:\n    dp[i] = max(coins[i-1] + dp[i-2], dp[i-1])\n  return dp[n]",
+      "icon": "🪙"
+    },
+    {
+      "id": "Change Making",
+      "title": "CHANGE MAKING",
+      "category": "Dynamic Programming & Optimization",
+      "definition": "Finds the minimum number of coins (of specific denominations) needed to make a target total.",
+      "useCase": "Providing exact change for a bag of chips at a vintage vending machine using minimal coins.",
+      "pseudocode": "function minChange(coins, amount):\n  dp = new Array(amount + 1).fill(Infinity)\n  dp[0] = 0\n  for i = 1 to amount:\n    for coin in coins:\n      if i - coin >= 0:\n        dp[i] = min(dp[i], dp[i - coin] + 1)\n  return dp[amount]",
+      "icon": "🏧"
+    },
+    {
+      "id": "Coin Collecting",
+      "title": "COIN COLLECTING (GRID)",
+      "category": "Dynamic Programming & Optimization",
+      "definition": "A dynamic programming task to find the path in a grid that collects the maximum number of coins while moving only right or down.",
+      "useCase": "Moving a character from one corner of a room to the other in a grid-based mobile game grabbing maximum loot.",
+      "pseudocode": "function coinCollecting(grid):\n  rows = grid.length, cols = grid[0].length\n  dp = new Array(rows).fill(0).map(() => new Array(cols).fill(0))\n  dp[0][0] = grid[0][0]\n  for i = 1 to rows - 1: dp[i][0] = dp[i-1][0] + grid[i][0]\n  for j = 1 to cols - 1: dp[0][j] = dp[0][j-1] + grid[0][j]\n  for i = 1 to rows - 1:\n    for j = 1 to cols - 1:\n      dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + grid[i][j]\n  return dp[rows-1][cols-1]",
+      "icon": "🕹️"
+    },
+    {
+      "id": "Huffman Coding",
+      "title": "HUFFMAN CODING",
+      "category": "Dynamic Programming & Optimization",
+      "definition": "A greedy algorithm used for lossless data compression that assigns shorter binary codes to more frequent characters.",
+      "useCase": "Compressing a massive documentation file at 11:00 PM to fit a portal's 5MB limit.",
+      "pseudocode": "function buildHuffmanTree(freqMap):\n  pq = new PriorityQueue()\n  for char, freq in freqMap: pq.push(new Node(char, freq))\n  while pq.size > 1:\n    left = pq.pop(), right = pq.pop()\n    parent = new Node(null, left.freq + right.freq, left, right)\n    pq.push(parent)\n  return pq.pop()",
+      "icon": "🗜️"
+    },
+    {
+      "id": "Backtracking",
+      "title": "BACKTRACKING",
+      "category": "State-Space Search",
+      "definition": "A systematic trial-and-error method that builds a solution incrementally and backtracks as soon as a partial solution violates constraints.",
+      "useCase": "Debugging a complex logic circuit; stepping back to the last working state when hitting a dead end.",
+      "pseudocode": "function backtrack(state):\n  if isGoal(state): return state\n  for option in getOptions(state):\n    if isValid(option):\n      apply(option)\n      res = backtrack(state)\n      if res: return res\n      undo(option)\n  return null",
+      "icon": "🔂"
+    },
+    {
+      "id": "Branch and Bound",
+      "title": "BRANCH AND BOUND",
+      "category": "State-Space Search",
+      "definition": "An optimization technique that explores a state-space tree but uses bounds to prune branches that cannot yield a better solution than the current best.",
+      "useCase": "Packing tech pouch essentials for tomorrow's presentation, discarding heavy cable combinations early.",
+      "pseudocode": "function branchAndBound(root):\n  best = Infinity, pq = new PriorityQueue()\n  pq.push(root)\n  while !pq.isEmpty():\n    node = pq.pop()\n    if node.bound < best:\n      if node.isLeaf: best = min(best, node.cost)\n      else pq.pushAll(node.children())\n  return best",
+      "icon": "✂️"
     }
   ]
 }
