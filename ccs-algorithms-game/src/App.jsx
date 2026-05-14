@@ -821,6 +821,11 @@ export default function App() {
       setScreen('chapter_select')
       return
     }
+    if (choice.restartChapter) {
+      audio.playAdvance()
+      setCurrentNode('start')
+      return
+    }
     if (choice.resetProgress) {
       audio.playAdvance()
       setUnlockedAlgorithms([])

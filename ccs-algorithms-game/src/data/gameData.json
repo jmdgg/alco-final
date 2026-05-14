@@ -112,6 +112,13 @@
               "icon": "▶️"
             },
             {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
+            {
               "label": "RETURN TO CHAPTER SELECT",
               "nextNode": "start",
               "unlocksAlgorithm": null,
@@ -316,6 +323,13 @@
               "icon": "▶️"
             },
             {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
+            {
               "label": "RETURN TO CHAPTER SELECT",
               "nextNode": "start",
               "unlocksAlgorithm": null,
@@ -411,6 +425,13 @@
               "unlocksAlgorithm": null,
               "advanceChapter": true,
               "icon": "▶️"
+            },
+            {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
             },
             {
               "label": "RETURN TO CHAPTER SELECT",
@@ -591,6 +612,13 @@
               "unlocksAlgorithm": null,
               "advanceChapter": true,
               "icon": "▶️"
+            },
+            {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
             },
             {
               "label": "RETURN TO CHAPTER SELECT",
@@ -779,6 +807,13 @@
               "icon": "▶️"
             },
             {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
+            {
               "label": "RETURN TO CHAPTER SELECT",
               "nextNode": "start",
               "unlocksAlgorithm": null,
@@ -877,6 +912,13 @@
           "text": "From backtracking logic circuits to bounding tech pouch combinations, your state-space search mastery has earned you your degree! The AUF journey is complete.\n\n*State-Space Search Chapter Completed. You are the ultimate CCS student!*",
           "speaker": "Narrator",
           "choices": [
+            {
+              "label": "RESTART CHAPTER",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "restartChapter": true,
+              "icon": "🔄"
+            },
             {
               "label": "RETURN TO CHAPTER SELECT",
               "nextNode": "start",
