@@ -691,6 +691,32 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
   const [consecT, setConsecT] = useState(150) // checking GCD(1920, 1080) starting at 150
   const [consecError, setConsecError] = useState(null)
   const [selectedPrimes, setSelectedPrimes] = useState([])
+  const [factStep, setFactStep] = useState(0)
+
+  // Chapter 2 additions
+  const [uniqueStep, setUniqueStep] = useState(0)
+  const [uniqueError, setUniqueError] = useState(null)
+  const uniqueQueue = useMemo(() => [
+    { user: 'dodo_ccs', dup: false },
+    { user: 'cassie_dev', dup: false },
+    { user: 'dodo_ccs', dup: true },
+    { user: 'inigo_2026', dup: false },
+    { user: 'cassie_dev', dup: true }
+  ], [])
+
+  const [maxStep, setMaxStep] = useState(0)
+  const [currentMax, setCurrentMax] = useState(85)
+  const [maxError, setMaxError] = useState(null)
+  const maxScores = useMemo(() => [85, 92, 78, 96, 88], [])
+
+  const [seqStep, setSeqStep] = useState(0)
+  const seqJeeps = useMemo(() => [
+    '1. Cubao / Katipunan',
+    '2. SM North / Trinoma',
+    '3. Karaoke Lounge / Alco Diner',
+    '4. Ayala / Makati',
+    '5. Fairview / Commonwealth'
+  ], [])
 
   // 2. Binary Search
   const [arr] = useState([12, 24, 35, 47, 58, 69, 72, 85])
@@ -698,6 +724,11 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
   const [low, setLow] = useState(0)
   const [high, setHigh] = useState(7)
   const [foundMid, setFoundMid] = useState(null)
+
+  // 2b. Interpolation Search
+  const interpArr = useMemo(() => [10, 20, 30, 40, 50, 60, 70, 80], [])
+  const interpTarget = 60
+  const [interpPos, setInterpPos] = useState(null)
 
   // 3. Sorting (Selection, Bubble, Merge, Quick, Heap)
   const [bars, setBars] = useState([45, 12, 89, 23, 67])
@@ -775,6 +806,65 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
     }
   }
 
+  const handleFactStep = () => {
+    audio.playSelect()
+    if (factStep < 3) {
+      setFactStep(factStep + 1)
+      if (factStep + 1 === 3) {
+        audio.playUnlock()
+        setSuccess(true)
+      }
+    }
+  }
+
+  const handleUniqueChoice = (isDup) => {
+    audio.playSelect()
+    const current = uniqueQueue[uniqueStep]
+    if (current.dup === isDup) {
+      setUniqueError(null)
+      if (uniqueStep + 1 === uniqueQueue.length) {
+        audio.playUnlock()
+        setSuccess(true)
+      } else {
+        setUniqueStep(uniqueStep + 1)
+      }
+    } else {
+      audio.playPop()
+      setUniqueError(isDup ? `User '${current.user}' is new! Do not reject them!` : `User '${current.user}' already exists! Duplicate error!`)
+    }
+  }
+
+  const handleMaxChoice = (update) => {
+    audio.playSelect()
+    const nextScore = maxScores[maxStep + 1]
+    const shouldUpdate = nextScore > currentMax
+
+    if (update === shouldUpdate) {
+      setMaxError(null)
+      if (shouldUpdate) setCurrentMax(nextScore)
+      if (maxStep + 1 === maxScores.length - 1) {
+        audio.playUnlock()
+        setSuccess(true)
+      } else {
+        setMaxStep(maxStep + 1)
+      }
+    } else {
+      audio.playPop()
+      setMaxError(update ? `${nextScore} is not higher than ${currentMax}! Do not update!` : `${nextScore} is higher than ${currentMax}! You must update max!`)
+    }
+  }
+
+  const handleSeqChoice = () => {
+    audio.playSelect()
+    if (seqStep < 2) {
+      setSeqStep(seqStep + 1)
+      if (seqStep + 1 === 2) {
+        audio.playUnlock()
+        setSuccess(true)
+      }
+    }
+  }
+
   const handleBinarySearchClick = (idx) => {
     audio.playSelect()
     const mid = Math.floor((low + high) / 2)
@@ -790,6 +880,20 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
       setLow(mid + 1)
     } else {
       setHigh(mid - 1)
+    }
+  }
+
+  const handleInterpClick = (idx) => {
+    audio.playSelect()
+    const estimatedPos = 5 // pos = 0 + Math.floor(((60 - 10) * 7) / 70) = 5
+    if (idx !== estimatedPos) {
+      audio.playPop() // incorrect estimated pos
+      return
+    }
+    if (interpArr[estimatedPos] === interpTarget) {
+      audio.playUnlock()
+      setInterpPos(estimatedPos)
+      setSuccess(true)
     }
   }
 
@@ -979,6 +1083,96 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
             </div>
           )}
 
+          {type === 'factorial' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Factorial Recursion Tree</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Inigo has 4 morning tasks. Calculate total permutations fact(4) by expanding the recursive calls until the base case fact(1) = 1!</p>
+              <div className="bg-[#1a1c2c] border border-[#3a495e] p-4 rounded-sm font-pixel text-sm md:text-base space-y-2">
+                <div className="text-[#f7d354]">fact(4) = 4 × fact(3)</div>
+                {factStep >= 1 && <div className="text-[#4ade80]">fact(3) = 3 × fact(2)</div>}
+                {factStep >= 2 && <div className="text-[#60a5fa]">fact(2) = 2 × fact(1)</div>}
+                {factStep >= 3 && <div className="text-[#f7d354] pt-2 border-t border-[#3a495e]">Result: 4 × 3 × 2 × 1 = 24 combinations!</div>}
+              </div>
+              {!success ? (
+                <button onClick={handleFactStep} className="btn-pixel-menu py-3 px-6 text-xs md:text-sm cursor-pointer">
+                  EXPAND RECURSIVE CALL 🔄
+                </button>
+              ) : (
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base animate-pulse pt-2">🎉 Recursion resolved perfectly! 24 permutations calculated!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'unique_elements' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">UniqueElements User Validation</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Cassie needs to prevent duplicate registrations. Inspect incoming username: click ACCEPT for new users, and REJECT for duplicate registrations!</p>
+              <div className="flex justify-center items-center gap-6 font-pixel text-xl py-4 bg-[#1a1c2c] border border-[#3a495e] rounded-sm">
+                <div>User Queue [{uniqueStep + 1}/{uniqueQueue.length}]: <span className="text-[#f7d354]">{uniqueQueue[uniqueStep]?.user}</span></div>
+              </div>
+              <div className="flex justify-center gap-4 pt-2 font-pixel">
+                <button onClick={() => handleUniqueChoice(false)} disabled={success} className="btn-pixel-menu py-3 px-8 text-sm md:text-base cursor-pointer">
+                  ACCEPT (UNIQUE) ✅
+                </button>
+                <button onClick={() => handleUniqueChoice(true)} disabled={success} className="py-3 px-8 bg-[#2c2f44] border border-[#3a495e] hover:border-red-400 text-sm md:text-base hover:text-red-400 cursor-pointer">
+                  REJECT (DUPLICATE) ❌
+                </button>
+              </div>
+              {uniqueError && !success && (
+                <div className="text-red-400 font-pixel text-xs md:text-sm animate-bounce bg-red-950/40 p-3 border border-red-800 rounded-sm">
+                  ⚠️ {uniqueError}
+                </div>
+              )}
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base pt-2 animate-pulse">🎉 All incoming registrations validated perfectly! No duplicates!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'max_element' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">MaxElement Quiz High Score</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Iterate through Alco quiz scores [85, 92, 78, 96, 88]. Keep track of current Max O(N). Update max if the next score is strictly greater!</p>
+              <div className="flex justify-center items-center gap-8 font-pixel text-xl py-4 bg-[#1a1c2c] border border-[#3a495e] rounded-sm">
+                <div>Current Max: <span className="text-[#4ade80]">{currentMax}</span></div>
+                <div>Next Score: <span className="text-[#f7d354]">{maxScores[maxStep + 1]}</span></div>
+              </div>
+              <div className="flex justify-center gap-4 pt-2 font-pixel">
+                <button onClick={() => handleMaxChoice(true)} disabled={success} className="btn-pixel-menu py-3 px-8 text-sm md:text-base cursor-pointer">
+                  UPDATE MAX ⬆️
+                </button>
+                <button onClick={() => handleMaxChoice(false)} disabled={success} className="py-3 px-8 bg-[#2c2f44] border border-[#3a495e] hover:border-white text-sm md:text-base cursor-pointer">
+                  KEEP CURRENT ⏸️
+                </button>
+              </div>
+              {maxError && !success && (
+                <div className="text-red-400 font-pixel text-xs md:text-sm animate-bounce bg-red-950/40 p-3 border border-red-800 rounded-sm">
+                  ⚠️ {maxError}
+                </div>
+              )}
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base pt-2 animate-pulse">🎉 Highest score 96 located in O(N) single pass! Goodbye Dodo's allowance!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'sequential_search' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Sequential Search (Parked Jeepneys)</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">The parked jeepneys arrived in random order. Inspect their route signboards linearly from start to finish until you find 'Karaoke Lounge / Alco Diner'!</p>
+              <div className="flex justify-center items-center gap-6 font-pixel text-lg py-4 bg-[#1a1c2c] border border-[#3a495e] rounded-sm">
+                <div>Jeepney Signboard [{seqStep + 1}/5]: <span className="text-[#f7d354]">{seqJeeps[seqStep]}</span></div>
+              </div>
+              {!success ? (
+                <button onClick={handleSeqChoice} className="btn-pixel-menu py-3 px-8 text-sm md:text-base cursor-pointer">
+                  INSPECT NEXT JEEPNEY 🚙
+                </button>
+              ) : (
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base animate-pulse pt-2">🎉 Destination located at Index 2! Hop on the jeepney to the karaoke spot!</div>
+              )}
+            </div>
+          )}
+
           {type === 'binary_search' && (
             <div className="w-full space-y-4 text-center">
               <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Binary Search'} for Target: <span className="text-[#f7d354]">{target}</span></p>
@@ -1000,6 +1194,35 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
               </div>
               {success && (
                 <div className="text-[#4ade80] font-pixel text-sm md:text-base mt-4 animate-pulse">🎉 Target {target} located at O(log N) speed!</div>
+              )}
+            </div>
+          )}
+
+          {type === 'interpolation_search' && (
+            <div className="w-full space-y-4 text-center">
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Interpolation Search'} for Target: <span className="text-[#f7d354]">{interpTarget}</span></p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">
+                Formula: <code className="bg-black/40 px-2 py-0.5 rounded text-[#73eff7]">pos = low + floor(((target - arr[low]) * (high - low)) / (arr[high] - arr[low]))</code><br />
+                Plugging in: <code className="bg-black/40 px-2 py-0.5 rounded text-[#4ade80]">0 + floor(((60 - 10) * 7) / 70) = Index 5</code>.<br />
+                Click estimated Index 5 (Song Code 60) to instantly match Inigo's OPM song!
+              </p>
+              <div className="grid grid-cols-4 gap-3 pt-2">
+                {interpArr.map((val, idx) => {
+                  return (
+                    <button
+                      key={idx}
+                      disabled={success}
+                      onClick={() => handleInterpClick(idx)}
+                      className={`font-pixel text-sm md:text-base py-3 border-2 text-center transition-all ${success && interpPos === idx ? 'bg-[#27ae60] border-white text-white animate-bounce shadow-lg' : 'bg-[#2c2f44] border-[#3a495e] hover:border-[#f7d354] text-white cursor-pointer'}`}
+                    >
+                      <span className="block text-[10px] text-[#8b9bb4] mb-1">Index {idx}</span>
+                      <span>{val}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              {success && (
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base mt-4 animate-pulse">🎉 Target {interpTarget} located instantly using value estimation!</div>
               )}
             </div>
           )}
@@ -1382,9 +1605,12 @@ export default function App() {
     if (algo === "Euclid's Algorithm" || lbl.includes("euclid")) mgType = 'gcd'
     else if (algo === "Consecutive Integer Check" || lbl.includes("consecutive")) mgType = 'consecutive_check'
     else if (algo === "Middle School Procedure" || lbl.includes("middle school")) mgType = 'middle_school'
-    else if (algo === "Sequential Search" || lbl.includes("sequential search")) mgType = 'binary_search'
+    else if (algo === "Factorial (Recursion)" || lbl.includes("factorial")) mgType = 'factorial'
+    else if (algo === "Unique Elements" || lbl.includes("unique")) mgType = 'unique_elements'
+    else if (algo === "Max Element" || lbl.includes("max element")) mgType = 'max_element'
+    else if (algo === "Sequential Search" || lbl.includes("sequential search")) mgType = 'sequential_search'
     else if (algo === "Binary Search" || lbl.includes("binary search")) mgType = 'binary_search'
-    else if (algo === "Interpolation Search" || lbl.includes("interpolation")) mgType = 'binary_search'
+    else if (algo === "Interpolation Search" || lbl.includes("interpolation")) mgType = 'interpolation_search'
     else if (algo === "Selection Sort" || lbl.includes("selection sort")) mgType = 'selection_sort'
     else if (algo === "Bubble Sort" || lbl.includes("bubble sort")) mgType = 'bubble_sort'
     else if (algo === "Merge Sort" || lbl.includes("merge sort")) mgType = 'merge_sort'

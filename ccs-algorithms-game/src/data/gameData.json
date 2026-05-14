@@ -194,29 +194,29 @@
           ]
         },
         "max_suboptimal": {
-          "text": "Dodo watches the sorting algorithm execute. \"Hmm, sorting the entire array just to find one top score is taking longer than expected. I wonder if there's a faster way by just iterating once O(N)... Wow, I got the highest score... goodbye allowance. Come on, let's head out. We need to catch a jeep at the terminal.\"",
+          "text": "Dodo watches the sorting algorithm execute. \"Hmm, sorting the entire array just to find one top score is taking longer than expected. I wonder if there's a faster way by just iterating once O(N)... Wow, I got the highest score... goodbye allowance. Come on, let's head out to the karaoke lounge! We need to catch a jeepney at the terminal outside campus. Since the parked jeepneys arrive in random order, their destination signboards are completely unsorted! We'll have to inspect each signboard one by one until we find our route.\"",
           "speaker": "Dodo",
           "choices": [
             {
-              "label": "Use Sequential Search (Linear Search)",
+              "label": "Use Sequential Search (Inspect unsorted jeepneys)",
               "nextNode": "sequential_search_node",
               "unlocksAlgorithm": "Sequential Search"
             }
           ]
         },
         "max_element_node": {
-          "text": "\"By iterating through the array and maintaining a variable tracking the largest value, we found the top scorer!\" Dodo groans, \"Wow, I got the highest score... goodbye allowance. Come on, let's head out. We need to catch a jeep at the terminal.\"",
+          "text": "\"By iterating through the array and maintaining a variable tracking the largest value, we found the top scorer!\" Dodo groans, \"Wow, I got the highest score... goodbye allowance. Come on, let's head out to the karaoke lounge! We need to catch a jeepney at the terminal outside campus. Since the parked jeepneys arrive in random order, their destination signboards are completely unsorted! We'll have to inspect each signboard one by one until we find our route.\"",
           "speaker": "Dodo",
           "choices": [
             {
-              "label": "Use Sequential Search (Linear Search)",
+              "label": "Use Sequential Search (Inspect unsorted jeepneys)",
               "nextNode": "sequential_search_node",
               "unlocksAlgorithm": "Sequential Search"
             }
           ]
         },
         "sequential_search_node": {
-          "text": "At the bustling jeepney terminal, you scan linearly from start to finish to find the correct jeep route. You board successfully and arrive at the karaoke spot! Inigo is flipping through a massive, sorted karaoke songbook looking for his favorite OPM song. \"There are thousands of songs here! How do we find it fast?\"",
+          "text": "At the bustling jeepney terminal, you walk down the long line of parked jeepneys, scanning their signboards linearly from start to finish O(N). Because the jeeps are unsorted, examining each element sequentially is the only reliable method! You successfully spot the jeep heading to the karaoke lounge and hop on. Upon arriving, Inigo is flipping through a massive, sorted karaoke songbook looking for his favorite OPM song. \"There are thousands of songs here! How do we find it fast?\"",
           "speaker": "Inigo",
           "choices": [
             {
