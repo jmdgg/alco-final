@@ -708,29 +708,69 @@
     },
     {
       "id": 6,
-      "title": "THE GRADUATION RITUAL",
+      "title": "STATE-SPACE SEARCH",
       "nodes": {
         "start": {
-          "text": "It is graduation day! AUF wants to issue secure digital certificates. How can we ensure they are both tamper-proof and signed?",
-          "speaker": "System",
+          "text": "It is the night before graduation, and Dodo is panicking in the computer lab. \"I am debugging a complex logic circuit for our final demonstration! I find myself trying a specific configuration, hitting a dead end where the logic fails. How should I navigate this?\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Use SHA-256 and RSA",
-              "nextNode": "crypto_path",
-              "unlocksAlgorithm": "RSA Encryption",
-              "icon": "🔗"
+              "label": "Use Backtracking (Exhaustive Search)",
+              "nextNode": "backtracking_node",
+              "unlocksAlgorithm": "Backtracking",
+              "icon": "🔂"
             },
             {
-              "label": "Save in plaintext",
-              "nextNode": "plaintext_path",
+              "label": "Keep pushing forward blindly",
+              "nextNode": "backtracking_suboptimal",
               "unlocksAlgorithm": null,
               "icon": "❌"
             }
           ]
         },
-        "crypto_path": {
-          "text": "Hashing with SHA-256 guarantees integrity, and signing with private RSA keys guarantees authenticity. The registry clicks 'ISSUE'.\n\n\"Your credentials are secure for life! Congratulations, graduate!\"",
-          "speaker": "System",
+        "backtracking_suboptimal": {
+          "text": "Dodo keeps adding wires blindly to the failing circuit. \"Hmm, pushing forward without stepping back to the last working state is causing a massive short circuit and taking longer than expected! I wonder if there's a systematic backtracking method to undo invalid partial solutions... Finally fixed the board!\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Pack tech pouch",
+              "nextNode": "pouch_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "backtracking_node": {
+          "text": "Using a systematic trial-and-error method that builds a solution incrementally and backtracks as soon as a partial solution violates constraints, Dodo isolates the working circuit perfectly!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Pack tech pouch",
+              "nextNode": "pouch_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "pouch_node": {
+          "text": "Now at midnight, Cassie is trying to pack her essentials into a small tech pouch for tomorrow’s presentation. \"I have so many chargers, adapters, and cables, but the pouch has a strict weight limit! How do I find the best combination without trying every single one?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use Branch and Bound (Pruned Search)",
+              "nextNode": "branch_bound_node",
+              "unlocksAlgorithm": "Branch and Bound",
+              "icon": "✂️"
+            },
+            {
+              "label": "Try combinations exhaustively",
+              "nextNode": "pouch_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "pouch_suboptimal": {
+          "text": "Cassie tries stuffing every single adapter combination into the pouch one by one. \"Hmm, trying combinations exhaustively without bounding is taking way longer than expected, and my pouch zipper almost broke! I wonder if there's a Branch and Bound technique to prune branches that exceed the weight limit early... Finally packed!\"",
+          "speaker": "Cassie",
           "choices": [
             {
               "label": "Graduate",
@@ -739,19 +779,19 @@
             }
           ]
         },
-        "plaintext_path": {
-          "text": "Saving certificates in raw plaintext fails the security audit immediately. \"Hmm, saving without cryptography leaves us vulnerable to tampering and takes longer to pass compliance audits. I wonder if there's a secure hashing and signing way to do this...\"",
-          "speaker": "System",
+        "branch_bound_node": {
+          "text": "Using an optimization technique that explores a state-space tree but uses bounds to prune branches that cannot yield a better solution than the current best, Cassie packs the optimal tech pouch effortlessly!",
+          "speaker": "Narrator",
           "choices": [
             {
-              "label": "Secure files",
-              "nextNode": "start",
+              "label": "Graduate",
+              "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
         "end_chapter": {
-          "text": "You march across the stage, degree in hand, as your mechanical keyboard clicks in the distance. The AUF journey is complete.\n\n*Chapter 6 Completed. You are the ultimate CCS student!*",
+          "text": "From backtracking logic circuits to bounding tech pouch combinations, your state-space search mastery has earned you your degree! The AUF journey is complete.\n\n*State-Space Search Chapter Completed. You are the ultimate CCS student!*",
           "speaker": "Narrator",
           "choices": [
             {
@@ -956,22 +996,22 @@
       "icon": "🗜️"
     },
     {
-      "id": "Topological Sort",
-      "title": "TOPOLOGICAL SORT",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Topological Sort related tasks and system optimizations.",
-      "pseudocode": "function topologicalsort() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "⚡"
+      "id": "Backtracking",
+      "title": "BACKTRACKING",
+      "category": "State-Space Search",
+      "definition": "A systematic trial-and-error method that builds a solution incrementally and backtracks as soon as a partial solution violates constraints.",
+      "useCase": "Debugging a complex logic circuit; stepping back to the last working state when hitting a dead end.",
+      "pseudocode": "function backtrack(state):\n  if isGoal(state): return state\n  for option in getOptions(state):\n    if isValid(option):\n      apply(option)\n      res = backtrack(state)\n      if res: return res\n      undo(option)\n  return null",
+      "icon": "🔂"
     },
     {
-      "id": "AVL Tree",
-      "title": "AVL TREE",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in AVL Tree related tasks and system optimizations.",
-      "pseudocode": "function avltree() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🔄"
+      "id": "Branch and Bound",
+      "title": "BRANCH AND BOUND",
+      "category": "State-Space Search",
+      "definition": "An optimization technique that explores a state-space tree but uses bounds to prune branches that cannot yield a better solution than the current best.",
+      "useCase": "Packing tech pouch essentials for tomorrow's presentation, discarding heavy cable combinations early.",
+      "pseudocode": "function branchAndBound(root):\n  best = Infinity, pq = new PriorityQueue()\n  pq.push(root)\n  while !pq.isEmpty():\n    node = pq.pop()\n    if node.bound < best:\n      if node.isLeaf: best = min(best, node.cost)\n      else pq.pushAll(node.children())\n  return best",
+      "icon": "✂️"
     },
     {
       "id": "Red-Black Tree",

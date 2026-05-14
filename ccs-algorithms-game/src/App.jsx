@@ -316,8 +316,8 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
           bg: "/bedroom-dev-bg.png"
         },
         {
-          desc: "The final graduation ceremony is here! Secure digital diplomas using high-integrity cryptographic checksum hashes and RSA key bindings.",
-          focus: "🔗 RSA & SHA-256 Signing",
+          desc: "Debug intricate logic circuits incrementally with Backtracking exhaustive search, and pack presentation essentials optimally using Branch and Bound pruning techniques before graduation.",
+          focus: "🔂 Backtracking, ✂️ Branch & Bound",
           bg: "/bedroom-dev-bg.png"
         }
       ]
