@@ -260,13 +260,14 @@
   /* Journal UI */
   .journal-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 16px;
     padding: 16px;
   }
 
   .journal-slot {
-    aspect-ratio: 1;
+    min-height: 120px;
+    padding: 10px;
     border: 2px solid var(--color-retro-muted);
     background: rgba(255, 255, 255, 0.5);
     display: flex;

@@ -148,6 +148,755 @@ function TitleScreen({ onStart, onOpenSettings, crtEffect }) {
 }
 
 /* ═══════════════════════════════════════════
+   Visual Diagram Renderer (Live Animations)
+   ═══════════════════════════════════════════ */
+function VisualDiagramRenderer({ algoId }) {
+  const [step, setStep] = useState(0)
+
+  useEffect(() => {
+    setStep(0)
+    const timer = setInterval(() => {
+      setStep((prev) => (prev + 1) % 5)
+    }, 1400)
+    return () => clearInterval(timer)
+  }, [algoId])
+
+  if (algoId === "Euclid's Algorithm") {
+    const steps = [
+      "GCD(1920, 1080)",
+      "1920 % 1080 = 840",
+      "GCD(1080, 840)",
+      "1080 % 840 = 240",
+      "GCD(240, 120) = 120 🎉"
+    ]
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs text-yellow-300 space-y-3">
+        <div className="text-[#73eff7] animate-pulse">➗ EUCLID REMAINDER STEP {step + 1}/5</div>
+        <div className="bg-black/60 px-6 py-3 border-2 border-[#f7d354] rounded text-sm font-bold shadow-lg">
+          {steps[step]}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Factorial (Recursion)") {
+    const steps = [
+      "fact(4)",
+      "4 * fact(3)",
+      "4 * 3 * fact(2)",
+      "4 * 3 * 2 * fact(1)",
+      "4 * 3 * 2 * 1 = 24 ❗"
+    ]
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs text-[#4ade80] space-y-3">
+        <div className="text-white animate-pulse">❗ RECURSIVE STACK UNWINDING</div>
+        <div className="bg-black/60 px-6 py-3 border-2 border-green-500 rounded text-sm font-bold shadow-lg">
+          {steps[step]}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Max Element") {
+    const scores = [85, 92, 78, 96, 88]
+    const curMax = step === 0 ? 85 : step === 1 ? 92 : step === 2 ? 92 : step === 3 ? 96 : 96
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">👑 Max Element: Tracking High Score</div>
+        <div className="flex gap-2 justify-center w-full">
+          {scores.map((score, i) => (
+            <div key={i} className={`p-3 border-2 rounded text-xs transition-all duration-300 font-bold ${score === curMax && i <= step ? 'bg-yellow-500 border-white text-black shadow-[0_0_20px_#eab308] scale-125' : i === step ? 'bg-blue-600 border-white text-white scale-110' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              {score}
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-[#8b9bb4] italic font-retro">Active max: {curMax} | Inspecting index {step}</div>
+      </div>
+    )
+  }
+
+  if (algoId === "Unique Elements") {
+    const queue = ['dodo_ccs', 'cassie_dev', 'dodo_ccs (⚠️)', 'inigo_2026']
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">🛡️ Unique Elements: Set Checking</div>
+        <div className="flex gap-2 justify-center w-full">
+          {queue.map((user, i) => (
+            <div key={i} className={`p-3 border-2 rounded text-[10px] transition-all duration-300 font-bold ${i === step && user.includes('⚠️') ? 'bg-red-500 border-white text-white shadow-[0_0_20px_#ef4444] animate-bounce scale-110' : i === step ? 'bg-[#4ade80] border-white text-black shadow-[0_0_20px_#4ade80] scale-110' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              {user}
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-[#8b9bb4] italic font-retro">{step === 2 ? 'Duplicate username detected!' : 'Adding username to seen Set'}</div>
+      </div>
+    )
+  }
+
+  if (algoId === "Consecutive Integer Check") {
+    const checkNum = 1080 - step * 120
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs text-yellow-300 space-y-3">
+        <div className="text-[#f7d354] uppercase animate-pulse">🔢 Consecutive Integer GCD Brute Force</div>
+        <div className="bg-black/60 px-6 py-3 border-2 border-[#3a495e] rounded text-sm font-bold shadow-lg">
+          t = {checkNum} {checkNum === 120 ? '✅ (Divides both 1920 & 1080!)' : '❌ (Fails divisibility)'}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Middle School Procedure") {
+    const primesA = "1920 = 2⁷ × 3 × 5"
+    const primesB = "1080 = 2³ × 3³ × 5"
+    const gcdRes = "Common = 2³ × 3 × 5 = 120"
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs text-[#73eff7] space-y-2">
+        <div className="text-[#73eff7] uppercase animate-pulse">🌲 Prime Factorization Intersection</div>
+        <div className="bg-black/60 p-3 border border-[#3a495e] rounded text-[11px] font-bold text-center space-y-1 w-full max-w-xs">
+          <div className="text-gray-300">{primesA}</div>
+          <div className="text-gray-300">{primesB}</div>
+          <div className="text-green-400 pt-1 border-t border-[#3a495e]">{gcdRes}</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Sequential Search") {
+    const jeeps = ['Cubao', 'SM North', 'Alco Diner', 'Ayala', 'Fairview']
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🛺 Sequential Search: Scanning Terminal...</div>
+        <div className="flex gap-2 justify-center w-full">
+          {jeeps.map((route, i) => (
+            <div key={i} className={`p-3 border-2 rounded text-xs transition-all duration-300 font-bold ${i === step ? 'bg-[#4ade80] border-white text-black shadow-[0_0_20px_#4ade80] scale-125' : i < step ? 'bg-[#3a495e]/40 border-gray-600 text-gray-500 opacity-50' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              {route}
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-[#8b9bb4] italic font-retro">Target: "Alco Diner" | Checking index {step}</div>
+      </div>
+    )
+  }
+
+  if (algoId === "Insertion Search") {
+    const cards = step === 0 ? [10, 30, 40, '📥 25'] : step === 1 ? [10, 30, '📥 25', 40] : step === 2 ? [10, '📥 25', 30, 40] : [10, 25, 30, 40]
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🗂️ Insertion Search: Flashcard Deck</div>
+        <div className="flex gap-3 justify-center w-full">
+          {cards.map((val, i) => (
+            <div key={i} className={`p-4 border-2 rounded text-xs transition-all duration-300 font-bold ${String(val).includes('📥') ? 'bg-[#f7d354] border-white text-black shadow-[0_0_20px_#f7d354] scale-125' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              {val}
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-[#8b9bb4] italic font-retro">Inserting card 25 into sorted order</div>
+      </div>
+    )
+  }
+
+  if (algoId === "BF String Matching") {
+    const text = "ALCO_GAME"
+    const pat = "GAME"
+    const shift = step > 4 ? 4 : step
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4 font-mono">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">⚔️ BF String Matching: Sliding Window</div>
+        <div className="space-y-2 text-center text-sm tracking-widest bg-black/60 p-4 border border-[#3a495e] rounded">
+          <div className="text-white font-bold">{text}</div>
+          <div className="text-[#73eff7] transition-all duration-300" style={{ transform: `translateX(${shift * 12}px)` }}>
+            {pat} {shift === 4 && '✅'}
+          </div>
+        </div>
+        <div className="text-[10px] text-[#8b9bb4] italic font-retro">Shift = {shift} {shift === 4 ? '(Exact Pattern Match!)' : '(Mismatch)'}</div>
+      </div>
+    )
+  }
+
+  if (algoId === "Interpolation Search") {
+    const arr = [10, 20, 30, 40, 50, 60, 70, 80]
+    const target = 70
+    const estPos = step === 0 ? 3 : step === 1 ? 5 : 6 // probing directly to index 6
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🎯 Interpolation Search: Probing Target</div>
+        <div className="flex gap-2 justify-center w-full">
+          {arr.map((num, i) => (
+            <div key={i} className={`p-3 border-2 rounded text-xs transition-all duration-300 font-bold ${i === estPos && num === target ? 'bg-[#4ade80] border-white text-black shadow-[0_0_20px_#4ade80] scale-125' : i === estPos ? 'bg-[#73eff7] border-white text-black scale-110' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              {num}
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-[#8b9bb4] italic font-retro">
+          Target: 70 | Probed Pos: {estPos} {estPos === 6 ? '✅ (Match found!)' : '(Interpolating...)'}
+        </div>
+        <div className="bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded text-[9px] text-[#73eff7] font-mono">
+          pos = low + [(target - arr[low]) * (high - low)] / (arr[high] - arr[low])
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId?.includes("Search")) {
+    const arr = [12, 24, 35, 47, 58, 69, 72, 85]
+    const midIdx = step === 0 ? 3 : step === 1 ? 5 : 4 // narrowing to 58
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🔍 {algoId} in progress...</div>
+        <div className="flex gap-2.5 justify-center w-full">
+          {arr.map((num, i) => (
+            <div key={i} className={`p-3 border-2 rounded text-xs transition-all duration-300 font-bold ${i === midIdx ? 'bg-[#4ade80] border-white text-black shadow-[0_0_20px_#4ade80] scale-125' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              {num}
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-[#8b9bb4] italic font-retro">Target: 58 | Pointer at index {midIdx}</div>
+      </div>
+    )
+  }
+
+  if (algoId === "Merge Sort") {
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4 font-mono">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🔀 Merge Sort: Divide & Conquer</div>
+        {step < 2 ? (
+          <div className="space-y-2 text-center">
+            <div className="text-[10px] text-[#8b9bb4]">Step 1: Divide into Subarrays</div>
+            <div className="flex gap-6 justify-center">
+              <div className="bg-[#1a1c2c] p-2 border-2 border-[#3a495e] rounded flex gap-1.5">
+                <span className="p-1.5 bg-black text-white rounded">38</span>
+                <span className="p-1.5 bg-black text-white rounded">27</span>
+              </div>
+              <div className="bg-[#1a1c2c] p-2 border-2 border-[#3a495e] rounded flex gap-1.5">
+                <span className="p-1.5 bg-black text-white rounded">43</span>
+                <span className="p-1.5 bg-black text-white rounded">3</span>
+              </div>
+            </div>
+          </div>
+        ) : step < 4 ? (
+          <div className="space-y-2 text-center">
+            <div className="text-[10px] text-[#f7d354]">Step 2: Recursive Sort Subarrays</div>
+            <div className="flex gap-6 justify-center">
+              <div className="bg-yellow-950/40 p-2 border-2 border-[#f7d354] rounded flex gap-1.5">
+                <span className="p-1.5 bg-[#2c2f44] text-[#f7d354] rounded font-bold">27</span>
+                <span className="p-1.5 bg-[#2c2f44] text-[#f7d354] rounded font-bold">38</span>
+              </div>
+              <div className="bg-yellow-950/40 p-2 border-2 border-[#f7d354] rounded flex gap-1.5">
+                <span className="p-1.5 bg-[#2c2f44] text-[#f7d354] rounded font-bold">3</span>
+                <span className="p-1.5 bg-[#2c2f44] text-[#f7d354] rounded font-bold">43</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-2 text-center">
+            <div className="text-[10px] text-[#4ade80]">Step 3: Stably Merge Halves</div>
+            <div className="bg-green-950/40 p-3 border-2 border-[#4ade80] rounded flex gap-2 justify-center shadow-[0_0_20px_rgba(74,222,128,0.2)]">
+              <span className="p-1.5 bg-[#4ade80] text-black font-bold rounded">3</span>
+              <span className="p-1.5 bg-[#4ade80] text-black font-bold rounded">27</span>
+              <span className="p-1.5 bg-[#4ade80] text-black font-bold rounded">38</span>
+              <span className="p-1.5 bg-[#4ade80] text-black font-bold rounded">43</span>
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  if (algoId === "Quicksort") {
+    const leftArr = step === 0 ? [] : step === 1 ? [33, 15] : step === 2 ? [33, 15] : step === 3 ? [33, 15, 19] : [33, 15, 19]
+    const rightArr = step === 0 ? [] : step === 1 ? [] : step === 2 ? [62] : step === 3 ? [62] : [62, 85]
+    const status = step === 0 ? "Selecting Pivot = 42" : step === 1 ? "Inspecting 33 & 15 (< 42) → Left" : step === 2 ? "Inspecting 62 (> 42) → Right" : step === 3 ? "Inspecting 19 (< 42) → Left" : "Partition complete! [Left] + 42 + [Right]"
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4 font-mono">
+        <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">⚡ Quicksort: Pivot Partitioning</div>
+        <div className="space-y-3 text-center w-full max-w-sm">
+          <div className="flex justify-center items-center gap-2 text-[10px]">
+            <span className="px-3 py-1 bg-black border border-[#3a495e] text-[#8b9bb4] rounded">Array: [33, 15, 62, 19, 85, 42]</span>
+            <span className="px-3 py-1 bg-[#f7d354] text-black font-bold rounded shadow-md">Pivot: 42</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4 pt-1">
+            <div className="bg-blue-950/40 p-2.5 border-2 border-[#73eff7] rounded text-center shadow-inner h-16 flex flex-col justify-center">
+              <div className="text-[9px] text-[#73eff7] mb-1 font-bold">Left (&lt; 42)</div>
+              <div className="flex gap-1 justify-center text-xs">
+                {leftArr.map((n, i) => <span key={i} className="p-1 bg-[#4ade80] text-black rounded font-bold animate-pop-in">{n}</span>)}
+              </div>
+            </div>
+            <div className="bg-red-950/40 p-2.5 border-2 border-red-500 rounded text-center shadow-inner h-16 flex flex-col justify-center">
+              <div className="text-[9px] text-red-400 mb-1 font-bold">Right (&gt; 42)</div>
+              <div className="flex gap-1 justify-center text-xs">
+                {rightArr.map((n, i) => <span key={i} className="p-1 bg-red-500 text-white rounded font-bold animate-pop-in">{n}</span>)}
+              </div>
+            </div>
+          </div>
+          <div className="text-[10px] text-[#f7d354] font-retro bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded animate-pulse">
+            {status}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Heapsort") {
+    const rootVal = step === 0 ? 96 : step === 1 ? 96 : step === 2 ? 72 : step === 3 ? 85 : 85
+    const leftVal = step < 3 ? 85 : 72
+    const sortedArr = step === 0 ? [] : step < 4 ? [96] : [85, 96]
+    const status = step === 0 ? "Max-Heap Built [96, 85, 72]" : step === 1 ? "📥 Extracting Max Root (96)" : step === 2 ? "🔄 Leaf 72 moved to root (⚠️ Violation)" : step === 3 ? "⚡ Heapify: Swapping 85 & 72" : "📥 Extracting Max Root (85)"
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-3 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🌲 Heapsort: Max-Heap Extraction</div>
+        <div className="flex flex-col items-center gap-1.5 my-1">
+          {/* Max Heap Tree representation */}
+          <div className={`w-11 h-11 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-all duration-500 shadow-md ${step === 1 || step === 4 ? 'bg-[#4ade80] border-white text-black scale-125 shadow-[0_0_20px_#4ade80]' : step === 2 ? 'bg-red-500 border-white text-white animate-bounce' : 'bg-[#f7d354] border-white text-black'}`}>
+            {rootVal}
+          </div>
+          <div className="flex gap-12 items-center">
+            <div className={`w-9 h-9 rounded-full border-2 flex items-center justify-center font-bold transition-all duration-300 ${step === 3 ? 'bg-[#f7d354] border-white text-black scale-110' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              {leftVal}
+            </div>
+            {step < 2 && (
+              <div className="w-9 h-9 rounded-full bg-[#1a1c2c] border-2 border-[#3a495e] flex items-center justify-center text-[#8b9bb4] font-bold">
+                72
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex items-center gap-2 bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded text-[10px]">
+          <span className="text-[#73eff7]">Sorted:</span>
+          <div className="flex gap-1">
+            {sortedArr.map((n, i) => <span key={i} className="px-1.5 py-0.5 bg-[#4ade80] text-black rounded font-bold animate-pop-in">{n}</span>)}
+          </div>
+        </div>
+        <div className="text-[10px] text-[#f7d354] font-retro italic">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId?.includes("Sort")) {
+    const bars = step === 0 ? [40, 10, 30, 20] : step === 1 ? [10, 40, 30, 20] : step === 2 ? [10, 30, 40, 20] : step === 3 ? [10, 20, 30, 40] : [10, 20, 30, 40]
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-8">
+        <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">🔄 {algoId} live sorting</div>
+        <div className="flex items-end gap-3 h-24 bg-black/50 p-4 border-2 border-[#3a495e] rounded w-64 justify-center shadow-inner">
+          {bars.map((h, i) => (
+            <div key={i} style={{ height: `${h}%` }} className="w-8 bg-[#f7d354] border-2 border-white transition-all duration-500 flex items-center justify-center text-[10px] text-black font-bold shadow-md">
+              {h}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "DFS" || algoId === "BFS") {
+    const isDFS = algoId === "DFS"
+    const activeNodes = isDFS
+      ? (step === 0 ? ['A'] : step === 1 ? ['A', 'B'] : step === 2 ? ['A', 'B', 'D'] : step === 3 ? ['A', 'B', 'D', 'C'] : ['A', 'B', 'D', 'C', 'E'])
+      : (step === 0 ? ['A'] : step === 1 ? ['A', 'B'] : step === 2 ? ['A', 'B', 'C'] : step === 3 ? ['A', 'B', 'C', 'D'] : ['A', 'B', 'C', 'D', 'E'])
+
+    const status = isDFS
+      ? (step === 0 ? "📍 Start at Root (A)" : step === 1 ? "📍 Dive deep Left to (B)" : step === 2 ? "📍 Dive deepest to leaf (D)" : step === 3 ? "↩️ Backtrack up, visit Right (C)" : "📍 Dive to leaf (E). DFS Complete!")
+      : (step === 0 ? "🌊 Layer 0: Start at Root (A)" : step === 1 ? "🌊 Layer 1: Visit Left neighbor (B)" : step === 2 ? "🌊 Layer 1: Visit Right neighbor (C)" : step === 3 ? "🌊 Layer 2: Visit child (D)" : "🌊 Layer 2: Visit child (E). BFS Complete!")
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🕸️ {algoId}: Graph Traversal</div>
+        <div className="flex flex-col items-center gap-3 relative my-1 w-64 h-[144px]">
+          {/* Connecting SVG Edges */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+            {/* A -> B */}
+            <line x1="128" y1="20" x2="76" y2="72" stroke={activeNodes.includes('B') ? "#4ade80" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+            {/* A -> C */}
+            <line x1="128" y1="20" x2="180" y2="72" stroke={activeNodes.includes('C') ? "#4ade80" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+            {/* B -> D */}
+            <line x1="76" y1="72" x2="76" y2="124" stroke={activeNodes.includes('D') ? "#4ade80" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+            {/* C -> E */}
+            <line x1="180" y1="72" x2="180" y2="124" stroke={activeNodes.includes('E') ? "#4ade80" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+          </svg>
+
+          {/* Layer 0: Root */}
+          <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md relative z-10 ${activeNodes.includes('A') ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+            A
+          </div>
+          {/* Layer 1: B & C */}
+          <div className="flex gap-16 items-center relative z-10">
+            <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md ${activeNodes.includes('B') ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              B
+            </div>
+            <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md ${activeNodes.includes('C') ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              C
+            </div>
+          </div>
+          {/* Layer 2: D & E */}
+          <div className="flex gap-16 items-center relative z-10">
+            <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md ${activeNodes.includes('D') ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              D
+            </div>
+            <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md ${activeNodes.includes('E') ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              E
+            </div>
+          </div>
+        </div>
+        <div className="bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded text-[10px] text-[#73eff7] font-retro italic">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Prim's Algorithm") {
+    const activeNodes = step === 0 ? ['A'] : step === 1 ? ['A', 'B'] : step === 2 ? ['A', 'B'] : step === 3 ? ['A', 'B', 'D'] : ['A', 'B', 'D', 'C']
+    const activeEdges = step === 0 ? [] : step < 3 ? ['AB'] : step === 3 ? ['AB', 'BD'] : ['AB', 'BD', 'CD']
+    const status = step === 0 ? "📍 Start Workstation A. PQ: [A-B($10), A-C($20)]" : step === 1 ? "⚡ Greedily pick cheapest A-B ($10)" : step === 2 ? "🔍 PQ updated: [B-D($15), A-C($20)]" : step === 3 ? "⚡ Greedily pick cheapest B-D ($15)" : "🎉 MST Complete! Added D-C ($5). Total: $30";
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🛡️ Prim's Greedy Workstation Cabling</div>
+        <div className="relative w-64 h-40 my-2">
+          {/* Connecting SVG Edges */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+            <line x1="128" y1="30" x2="48" y2="80" stroke={activeEdges.includes('AB') ? "#4ade80" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+            <line x1="128" y1="30" x2="208" y2="80" stroke="#3a495e" strokeWidth="4" className="transition-all duration-500" />
+            <line x1="48" y1="80" x2="128" y2="130" stroke={activeEdges.includes('BD') ? "#4ade80" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+            <line x1="208" y1="80" x2="128" y2="130" stroke={activeEdges.includes('CD') ? "#4ade80" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+          </svg>
+
+          {/* Edge Cost Labels */}
+          <span className="absolute top-8 left-16 text-[9px] bg-black px-1 text-[#f7d354] rounded border border-gray-700">$10</span>
+          <span className="absolute top-8 right-16 text-[9px] bg-black px-1 text-gray-500 rounded border border-gray-700">$20</span>
+          <span className="absolute bottom-8 left-16 text-[9px] bg-black px-1 text-[#f7d354] rounded border border-gray-700">$15</span>
+          <span className="absolute bottom-8 right-16 text-[9px] bg-black px-1 text-[#f7d354] rounded border border-gray-700">$5</span>
+
+          {/* Diamond Nodes */}
+          <div className={`absolute top-2 left-[108px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeNodes.includes('A') ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>A</div>
+          <div className={`absolute top-[60px] left-[28px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeNodes.includes('B') ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>B</div>
+          <div className={`absolute top-[60px] left-[188px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeNodes.includes('C') ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>C</div>
+          <div className={`absolute top-[110px] left-[108px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeNodes.includes('D') ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>D</div>
+        </div>
+        <div className="bg-black/60 px-4 py-2 border border-[#3a495e] rounded text-[10px] text-[#f7d354] font-retro italic text-center w-full max-w-md">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Kruskal's Algorithm") {
+    const activeEdges = step === 0 ? [] : step === 1 ? ['CD'] : step === 2 ? ['CD', 'AB'] : ['CD', 'AB', 'BD']
+    const status = step === 0 ? "📋 Sorted Edges: [D-C($5), A-B($10), B-D($15), A-C($20)]" : step === 1 ? "🔗 Adding cheapest D-C ($5) to MST" : step === 2 ? "🔗 Adding A-B ($10) to MST" : step === 3 ? "🔗 Adding B-D ($15). MST Complete ($30)!" : "⚠️ Inspecting A-C ($20): Cycle detected! Discarding.";
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">🔗 Kruskal's MST Edge Sorting</div>
+        <div className="relative w-64 h-40 my-2">
+          {/* Connecting SVG Edges */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+            <line x1="128" y1="30" x2="48" y2="80" stroke={activeEdges.includes('AB') ? "#73eff7" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+            <line x1="128" y1="30" x2="208" y2="80" stroke={step === 4 ? "#ef4444" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+            <line x1="48" y1="80" x2="128" y2="130" stroke={activeEdges.includes('BD') ? "#73eff7" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+            <line x1="208" y1="80" x2="128" y2="130" stroke={activeEdges.includes('CD') ? "#73eff7" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+          </svg>
+
+          {/* Edge Cost Labels */}
+          <span className="absolute top-8 left-16 text-[9px] bg-black px-1 text-[#73eff7] rounded border border-gray-700">$10</span>
+          <span className="absolute top-8 right-16 text-[9px] bg-black px-1 text-gray-500 rounded border border-gray-700">$20</span>
+          <span className="absolute bottom-8 left-16 text-[9px] bg-black px-1 text-[#73eff7] rounded border border-gray-700">$15</span>
+          <span className="absolute bottom-8 right-16 text-[9px] bg-black px-1 text-[#73eff7] rounded border border-gray-700">$5</span>
+
+          {/* Diamond Nodes */}
+          <div className={`absolute top-2 left-[108px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeEdges.includes('AB') ? 'bg-[#73eff7] border-white text-black scale-110 shadow-[0_0_15px_#73eff7]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>A</div>
+          <div className={`absolute top-[60px] left-[28px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeEdges.includes('AB') || activeEdges.includes('BD') ? 'bg-[#73eff7] border-white text-black scale-110 shadow-[0_0_15px_#73eff7]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>B</div>
+          <div className={`absolute top-[60px] left-[188px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeEdges.includes('CD') ? 'bg-[#73eff7] border-white text-black scale-110 shadow-[0_0_15px_#73eff7]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>C</div>
+          <div className={`absolute top-[110px] left-[108px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeEdges.includes('CD') || activeEdges.includes('BD') ? 'bg-[#73eff7] border-white text-black scale-110 shadow-[0_0_15px_#73eff7]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>D</div>
+        </div>
+        <div className="bg-black/60 px-4 py-2 border border-[#3a495e] rounded text-[10px] text-[#73eff7] font-retro italic text-center w-full max-w-md">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId?.includes("Algorithm")) {
+    const activeNodes = step === 0 ? ['A'] : step === 1 ? ['A', 'C'] : step === 2 ? ['A', 'C', 'B'] : ['A', 'C', 'D']
+    const activeEdges = step < 1 ? [] : step < 3 ? ['AC'] : ['AC', 'CD']
+    const status = step === 0 ? "📍 Start at A. Distances: B(5m), C(2m), D(∞)" : step === 1 ? "⚡ Visit closest C(2m). Update D: 2+3 = 5m" : step === 2 ? "⚡ Visit B(5m). Path B→D (5+4=9m) is suboptimal." : "🎉 Visit D(5m). Optimal shortest path locked: A→C→D!";
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">📍 Dijkstra's Shortest Walkway</div>
+        <div className="relative w-64 h-40 my-2">
+          {/* Connecting SVG Edges */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+            <line x1="128" y1="30" x2="48" y2="80" stroke="#3a495e" strokeWidth="4" className="transition-all duration-500" />
+            <line x1="128" y1="30" x2="208" y2="80" stroke={activeEdges.includes('AC') ? "#73eff7" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+            <line x1="48" y1="80" x2="128" y2="130" stroke="#3a495e" strokeWidth="4" className="transition-all duration-500" />
+            <line x1="208" y1="80" x2="128" y2="130" stroke={activeEdges.includes('CD') ? "#73eff7" : "#3a495e"} strokeWidth="4" className="transition-all duration-500" />
+          </svg>
+
+          {/* Edge Cost Labels */}
+          <span className="absolute top-8 left-16 text-[9px] bg-black px-1 text-gray-500 rounded border border-gray-700">5m</span>
+          <span className="absolute top-8 right-16 text-[9px] bg-black px-1 text-[#73eff7] rounded border border-gray-700">2m</span>
+          <span className="absolute bottom-8 left-16 text-[9px] bg-black px-1 text-gray-500 rounded border border-gray-700">4m</span>
+          <span className="absolute bottom-8 right-16 text-[9px] bg-black px-1 text-[#73eff7] rounded border border-gray-700">3m</span>
+
+          {/* Diamond Nodes */}
+          <div className={`absolute top-2 left-[108px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeNodes.includes('A') ? 'bg-[#73eff7] border-white text-black scale-110 shadow-[0_0_15px_#73eff7]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>A</div>
+          <div className={`absolute top-[60px] left-[28px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeNodes.includes('B') ? 'bg-blue-500 border-white text-white scale-110' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>B</div>
+          <div className={`absolute top-[60px] left-[188px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeNodes.includes('C') ? 'bg-[#73eff7] border-white text-black scale-110 shadow-[0_0_15px_#73eff7]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>C</div>
+          <div className={`absolute top-[110px] left-[108px] w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md z-10 ${activeNodes.includes('D') ? 'bg-[#73eff7] border-white text-black scale-110 shadow-[0_0_15px_#73eff7]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>D</div>
+        </div>
+        <div className="bg-black/60 px-4 py-2 border border-[#3a495e] rounded text-[10px] text-[#73eff7] font-retro italic text-center w-full max-w-md">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Coin Row") {
+    const coins = [12, 18, 14, 22]
+    const pickedIdx = step === 0 ? [] : step === 1 ? [0] : step === 2 ? [1] : step === 3 ? [0, 2] : [1, 3]
+    const activeSum = step === 0 ? 0 : step === 1 ? 12 : step === 2 ? 18 : step === 3 ? 26 : 40
+    const status = step === 0 ? "📍 Shift list scan. dp[0] = 0" : step === 1 ? "🪙 Pick 12¢ shift. dp[1] = 12" : step === 2 ? "⚠️ Inspect 18¢. Rule prevents consecutive shifts! max(18, 12) = 18" : step === 3 ? "🪙 Pick 14¢ + 12¢ = 26¢ (vs 18¢)" : "🎉 Pick 22¢ + 18¢ = 40¢. Optimal Bonus Achieved!";
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🪙 Coin Row: Non-Adjacent Shift Selection</div>
+        <div className="flex items-center gap-4 bg-[#1a1c2c] p-4 border-2 border-[#3a495e] rounded shadow-inner">
+          {coins.map((coin, i) => {
+            const isPicked = pickedIdx.includes(i)
+            return (
+              <div key={i} className="flex flex-col items-center gap-2">
+                <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-md ${isPicked ? 'bg-[#f7d354] border-white text-black scale-110 shadow-[0_0_15px_#f7d354]' : 'bg-[#2c2f44] border-gray-600 text-gray-400 opacity-50'}`}>
+                  {coin}¢
+                </div>
+                {i > 0 && <span className="text-[8px] text-yellow-500 tracking-tighter">🔒 SKIP NEXT</span>}
+              </div>
+            )
+          })}
+        </div>
+        <div className="flex items-center gap-3 bg-black/60 px-6 py-2 border border-[#f7d354] rounded">
+          <span className="text-[#f7d354]">Current DP Max Bonus:</span>
+          <span className="text-lg text-[#4ade80] font-bold">{activeSum}¢</span>
+        </div>
+        <div className="bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded text-[10px] text-[#f7d354] font-retro italic text-center w-full max-w-md">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Change Making") {
+    const inserted = step === 0 ? [] : step === 1 ? ["25¢"] : step === 2 ? ["25¢", "10¢"] : step === 3 ? ["25¢", "10¢", "1¢"] : ["25¢", "10¢", "1¢", "1¢"]
+    const total = step === 0 ? 0 : step === 1 ? 25 : step === 2 ? 35 : step === 3 ? 36 : 37
+    const status = step === 0 ? "📍 Target: 37¢. dp[0] = 0" : step === 1 ? "🪙 Insert 25¢. Remainder: 12¢" : step === 2 ? "🪙 Insert 10¢. Remainder: 2¢" : step === 3 ? "🪙 Insert 1¢. Remainder: 1¢" : "🎉 Insert 1¢. Minimum 4 Coins Dispensed!";
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">🏧 Change Making: Minimum Coins DP</div>
+        <div className="flex flex-col items-center gap-2 bg-[#1a1c2c] p-4 border-2 border-[#3a495e] rounded w-64 shadow-inner">
+          <div className="text-[10px] text-[#8b9bb4]">Coins Slot (Target: 37¢)</div>
+          <div className="flex gap-2 min-h-[32px] items-center justify-center">
+            {inserted.map((coin, i) => (
+              <span key={i} className="px-2 py-1 bg-[#4ade80] text-black font-bold rounded shadow-md animate-pop-in">{coin}</span>
+            ))}
+          </div>
+          <div className="flex items-center gap-2 pt-2 border-t border-[#3a495e] w-full justify-between text-xs">
+            <span className="text-gray-400">Total Inserted:</span>
+            <span className="text-white font-bold">{total}¢</span>
+          </div>
+        </div>
+        <div className="bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded text-[10px] text-[#73eff7] font-retro italic text-center w-full max-w-md">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Coin Collecting") {
+    const path = step === 0 ? ["(0,0)=5¢"] : step === 1 ? ["(0,0)", "(0,1)=15¢"] : step === 2 ? ["(0,0)", "(0,1)", "(1,1)=35¢"] : step === 3 ? ["(0,0)", "(0,1)", "(1,1)", "(1,2)=50¢"] : ["(0,0)", "(0,1)", "(1,1)", "(1,2)", "(2,2)=75¢"]
+    const status = step === 0 ? "📍 Start top-left (0,0): 5¢" : step === 1 ? "➡️ Move Right (0,1): 5+10 = 15¢" : step === 2 ? "⬇️ Move Down (1,1): 15+20 = 35¢" : step === 3 ? "➡️ Move Right (1,2): 35+15 = 50¢" : "🎉 Move Down (2,2): 50+25 = 75¢. Maximum Path Loot!";
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4 font-mono">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">🕹️ Coin Collecting: Grid DP Traversal</div>
+        <div className="grid grid-cols-3 gap-2 bg-black/60 p-3 border-2 border-[#3a495e] rounded shadow-inner">
+          <div className={`p-3 border text-center font-bold rounded transition-all ${step >= 0 ? 'bg-[#f7d354] text-black' : 'text-gray-500 border-gray-700'}`}>5¢</div>
+          <div className={`p-3 border text-center font-bold rounded transition-all ${step >= 1 ? 'bg-[#f7d354] text-black' : 'text-gray-500 border-gray-700'}`}>10¢</div>
+          <div className="p-3 border border-gray-700 text-gray-600 text-center">0¢</div>
+
+          <div className="p-3 border border-gray-700 text-gray-600 text-center">0¢</div>
+          <div className={`p-3 border text-center font-bold rounded transition-all ${step >= 2 ? 'bg-[#f7d354] text-black' : 'text-gray-500 border-gray-700'}`}>20¢</div>
+          <div className={`p-3 border text-center font-bold rounded transition-all ${step >= 3 ? 'bg-[#f7d354] text-black' : 'text-gray-500 border-gray-700'}`}>15¢</div>
+
+          <div className="p-3 border border-gray-700 text-gray-600 text-center">0¢</div>
+          <div className="p-3 border border-gray-700 text-gray-600 text-center">0¢</div>
+          <div className={`p-3 border text-center font-bold rounded transition-all ${step >= 4 ? 'bg-[#4ade80] text-black shadow-[0_0_15px_#4ade80]' : 'text-gray-500 border-gray-700'}`}>25¢</div>
+        </div>
+        <div className="bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded text-[10px] text-[#f7d354] font-retro italic text-center w-full max-w-md">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Huffman Coding") {
+    const status = step === 0 ? "🍃 Leaves: [A:5, B:9, C:12, D:13]" : step === 1 ? "⚡ Merge lowest A:5 & B:9 → N1(14)" : step === 2 ? "🌲 Updated PQ: [C:12, D:13, N1(14)]" : step === 3 ? "⚡ Merge C:12 & D:13 → N2(25)" : "🎉 Merge N1(14) & N2(25) → Root 39. Huffman Tree Complete!";
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4 font-mono">
+        <div className="text-[#4ade80] uppercase tracking-wider animate-pulse">🗜️ Huffman Coding: Priority Tree Merging</div>
+        <div className="flex flex-col items-center gap-3 bg-[#1a1c2c] p-4 border-2 border-[#3a495e] rounded w-64 shadow-inner">
+          <div className="flex gap-4 items-center justify-center">
+            <div className={`p-2 border rounded text-xs font-bold ${step >= 4 ? 'bg-[#4ade80] text-black shadow-[0_0_15px_#4ade80]' : 'bg-[#2c2f44] text-gray-400'}`}>Root: 39</div>
+          </div>
+          <div className="flex gap-12 items-center justify-center pt-2 border-t border-[#3a495e] w-full">
+            <div className={`p-1.5 border rounded text-[10px] font-bold ${step >= 1 ? 'bg-yellow-500 text-black' : 'bg-[#2c2f44] text-gray-400'}`}>N1: 14</div>
+            <div className={`p-1.5 border rounded text-[10px] font-bold ${step >= 3 ? 'bg-yellow-500 text-black' : 'bg-[#2c2f44] text-gray-400'}`}>N2: 25</div>
+          </div>
+          <div className="flex gap-3 items-center justify-center pt-2 border-t border-[#3a495e] w-full text-[9px]">
+            <span className="p-1 bg-black text-[#4ade80] rounded">A:5</span>
+            <span className="p-1 bg-black text-[#4ade80] rounded">B:9</span>
+            <span className="p-1 bg-black text-[#73eff7] rounded">C:12</span>
+            <span className="p-1 bg-black text-[#73eff7] rounded">D:13</span>
+          </div>
+        </div>
+        <div className="bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded text-[10px] text-[#4ade80] font-retro italic text-center w-full max-w-md">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Backtracking") {
+    const activeNodes = step === 0 ? ['Root', 'A'] : step === 1 ? ['Root', 'A', 'A1'] : step === 2 ? ['Root', 'A'] : step === 3 ? ['Root', 'A', 'A2'] : ['Root', 'A', 'A2', 'Goal']
+    const status = step === 0 ? "📍 Explore Option A. State valid." : step === 1 ? "⚠️ Explore A1: Constraint Violation Detected!" : step === 2 ? "↩️ Backtrack! Prune A1, return to A." : step === 3 ? "⚡ Explore sibling A2. State valid." : "🎉 Solution Reached via A2!";
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">🔂 Backtracking: Trial & Error Pruning</div>
+        <div className="relative w-64 h-40 my-2 flex flex-col items-center justify-between">
+          <div className="w-16 py-1 bg-[#73eff7] text-black font-bold text-center rounded text-[10px] shadow-md z-10">Root</div>
+          
+          <div className="flex w-full justify-around z-10">
+            <div className={`w-14 py-1 border rounded text-center text-[10px] ${activeNodes.includes('A') ? 'bg-[#4ade80] text-black font-bold shadow-[0_0_10px_#4ade80]' : 'bg-[#1a1c2c] text-gray-500 border-gray-700'}`}>Option A</div>
+          </div>
+
+          <div className="flex w-full justify-around z-10 text-[9px]">
+            <div className={`w-14 py-1 border rounded text-center ${step === 1 ? 'bg-red-500 text-white font-bold animate-shake shadow-[0_0_15px_#ef4444]' : step > 1 ? 'bg-[#1a1c2c] text-gray-700 border-red-900 line-through opacity-40' : 'bg-[#1a1c2c] text-gray-600 border-gray-800'}`}>A1 (Invalid)</div>
+            <div className={`w-14 py-1 border rounded text-center ${activeNodes.includes('A2') ? 'bg-[#4ade80] text-black font-bold shadow-[0_0_10px_#4ade80]' : 'bg-[#1a1c2c] text-gray-600 border-gray-800'}`}>A2 (Valid)</div>
+          </div>
+        </div>
+        <div className="bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded text-[10px] text-[#73eff7] font-retro italic text-center w-full max-w-md">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Branch and Bound") {
+    const status = step === 0 ? "📍 Root state. Known Best Cost = $150" : step === 1 ? "⚡ Inspect Pouch A (Lower bound $120 < $150). Promising!" : step === 2 ? "⚠️ Inspect Pouch B (Lower bound $180 > $150)." : step === 3 ? "✂️ Prune entire Pouch B subtree immediately!" : "🎉 Optimal tech pack locked at $120!";
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4 font-mono">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">✂️ Branch and Bound: Tree Pruning</div>
+        <div className="flex flex-col items-center gap-4 bg-[#1a1c2c] p-4 border-2 border-[#3a495e] rounded w-64 shadow-inner">
+          <div className="flex justify-between w-full px-2 text-[10px]">
+            <span className="text-gray-400">Global Best Known:</span>
+            <span className="text-[#f7d354] font-bold">{step >= 4 ? "$120" : "$150"}</span>
+          </div>
+          <div className="flex gap-4 items-center justify-around w-full pt-2 border-t border-[#3a495e]">
+            <div className={`flex flex-col items-center p-2 border rounded ${step >= 1 ? 'bg-[#4ade80] text-black font-bold shadow-[0_0_15px_#4ade80]' : 'bg-[#2c2f44] text-gray-500 border-gray-700'}`}>
+              <span>Pouch A</span>
+              <span className="text-[9px] opacity-80">Bound: $120</span>
+            </div>
+
+            <div className={`flex flex-col items-center p-2 border rounded ${step === 2 ? 'bg-yellow-500 text-black font-bold animate-pulse' : step >= 3 ? 'bg-red-950 text-red-500 border-red-700 opacity-40 line-through' : 'bg-[#2c2f44] text-gray-500 border-gray-700'}`}>
+              <span>Pouch B</span>
+              <span className="text-[9px] opacity-80">Bound: $180</span>
+            </div>
+          </div>
+        </div>
+        <div className="bg-black/60 px-4 py-1.5 border border-[#3a495e] rounded text-[10px] text-[#f7d354] font-retro italic text-center w-full max-w-md">
+          {status}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-3">
+      <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">⚡ {algoId} Execution</div>
+      <div className="w-48 h-6 bg-black/60 border-2 border-[#3a495e] rounded overflow-hidden p-1 shadow-inner">
+        <div className="h-full bg-[#73eff7] transition-all duration-500 shadow-[0_0_15px_#73eff7]" style={{ width: `${(step + 1) * 20}%` }}></div>
+      </div>
+      <div className="text-[10px] text-[#8b9bb4]">Computing Step {step + 1}/5...</div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════
+   Algo Pixel Icon Helper
+   ═══════════════════════════════════════════ */
+function AlgoPixelIcon({ algoId }) {
+  if (algoId?.includes("Search") || algoId?.includes("Match") || algoId?.includes("Element") || algoId?.includes("Sequential")) {
+    return (
+      <svg viewBox="0 0 16 16" className="w-8 h-8 fill-current text-[#73eff7]">
+        <rect x="2" y="10" width="4" height="2" />
+        <rect x="4" y="8" width="4" height="2" />
+        <rect x="6" y="4" width="6" height="6" fill="none" stroke="#73eff7" strokeWidth="2" />
+        <rect x="8" y="6" width="2" height="2" fill="#4ade80" />
+      </svg>
+    )
+  }
+  if (algoId?.includes("Sort")) {
+    return (
+      <svg viewBox="0 0 16 16" className="w-8 h-8 fill-current text-[#f7d354]">
+        <rect x="2" y="10" width="3" height="4" />
+        <rect x="6" y="6" width="3" height="8" />
+        <rect x="10" y="2" width="3" height="12" fill="#4ade80" />
+      </svg>
+    )
+  }
+  if (algoId === "DFS" || algoId === "BFS" || algoId?.includes("Prim") || algoId?.includes("Kruskal") || algoId?.includes("Dijkstra")) {
+    return (
+      <svg viewBox="0 0 16 16" className="w-8 h-8 fill-current text-[#4ade80]">
+        <rect x="6" y="2" width="4" height="4" />
+        <rect x="2" y="10" width="4" height="4" />
+        <rect x="10" y="10" width="4" height="4" />
+        <path d="M8 6 L4 10 M8 6 L12 10" stroke="#3a495e" strokeWidth="2" />
+      </svg>
+    )
+  }
+  if (algoId?.includes("Coin") || algoId?.includes("Change") || algoId?.includes("Huffman")) {
+    return (
+      <svg viewBox="0 0 16 16" className="w-8 h-8 fill-current text-yellow-400">
+        <rect x="4" y="4" width="8" height="8" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x="6" y="6" width="4" height="4" fill="#f7d354" />
+        <rect x="7" y="5" width="2" height="1" fill="#fff" />
+      </svg>
+    )
+  }
+  if (algoId?.includes("Backtracking") || algoId?.includes("Branch")) {
+    return (
+      <svg viewBox="0 0 16 16" className="w-8 h-8 fill-current text-[#ef4444]">
+        <rect x="7" y="12" width="2" height="4" fill="#8b9bb4" />
+        <rect x="4" y="6" width="8" height="6" fill="none" stroke="#ef4444" strokeWidth="2" />
+        <path d="M2 2 L14 14 M14 2 L2 14" stroke="#ef4444" strokeWidth="1.5" />
+      </svg>
+    )
+  }
+  return (
+    <svg viewBox="0 0 16 16" className="w-8 h-8 fill-current text-[#73eff7]">
+      <rect x="2" y="2" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" />
+      <rect x="5" y="5" width="6" height="6" fill="#f7d354" />
+      <rect x="0" y="6" width="2" height="4" />
+      <rect x="14" y="6" width="2" height="4" />
+      <rect x="6" y="0" width="4" height="2" />
+      <rect x="6" y="14" width="4" height="2" />
+    </svg>
+  )
+}
+
+/* ═══════════════════════════════════════════
    Journal Screen
    ═══════════════════════════════════════════ */
 function JournalScreen({ onClose, unlockedAlgorithms }) {
@@ -200,12 +949,23 @@ function JournalScreen({ onClose, unlockedAlgorithms }) {
                     audio.playHover() // Or an error sound if implemented
                   }
                 }}
-                className={`journal-slot ${isUnlocked ? 'unlocked' : 'locked'} ${isSelected ? 'selected' : ''}`}
+                className={`journal-slot flex flex-col items-center justify-center p-2 transition-all duration-300 relative group ${isUnlocked ? 'unlocked cursor-pointer hover:scale-105' : 'locked opacity-40 cursor-not-allowed'} ${isSelected ? 'selected ring-4 ring-[#73eff7] bg-white/10 scale-105 shadow-[0_0_20px_rgba(115,239,247,0.4)]' : ''}`}
               >
                 {isUnlocked ? (
-                  <span className="text-3xl filter drop-shadow-md">{algo.icon}</span>
+                  <>
+                    <div className="w-10 h-10 bg-[#111424] border-2 border-[#3a495e] flex items-center justify-center rounded shadow-[2px_2px_0px_rgba(0,0,0,0.8)] transform transition-transform group-hover:rotate-6 my-1">
+                      <div className="w-6 h-6 flex items-center justify-center">
+                        <AlgoPixelIcon algoId={algo.id} />
+                      </div>
+                    </div>
+                    <span className="font-pixel text-[8px] md:text-[9px] text-center text-[#111424] font-black mt-1 uppercase tracking-tighter leading-tight w-full px-0.5 overflow-visible whitespace-normal">
+                      {algo.title}
+                    </span>
+                  </>
                 ) : (
-                  <span className="font-pixel text-retro-muted text-xl opacity-50 text-center">?</span>
+                  <div className="w-10 h-10 bg-black/40 border border-retro-muted flex items-center justify-center rounded">
+                    <span className="font-pixel text-retro-muted text-lg opacity-50 text-center">?</span>
+                  </div>
                 )}
               </div>
             )
@@ -224,39 +984,35 @@ function JournalScreen({ onClose, unlockedAlgorithms }) {
 
         {selectedAlgo && unlockedAlgorithms.includes(selectedAlgo.id) ? (
           <div className="mt-12 space-y-8 animate-pop-in">
-            <div>
-              <h2 className="font-pixel text-retro-text text-2xl mb-2">{selectedAlgo.title}</h2>
-              <span className="inline-block px-3 py-1 bg-retro-gold/20 text-retro-gold font-pixel text-[10px] border border-retro-gold shadow-[2px_2px_0_rgba(212,175,55,0.2)]">
-                UNLOCKED: ACHIEVEMENT
-              </span>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-[#111424] border-2 border-[#3a495e] flex items-center justify-center rounded shadow-md">
+                <AlgoPixelIcon algoId={selectedAlgo.id} />
+              </div>
+              <div>
+                <h2 className="font-pixel text-[#111424] font-black text-xl md:text-2xl mb-1">{selectedAlgo.title}</h2>
+                <span className="inline-block px-3 py-1 bg-retro-gold/20 text-retro-gold font-pixel text-[10px] border border-retro-gold shadow-[2px_2px_0_rgba(212,175,55,0.2)]">
+                  UNLOCKED: ACHIEVEMENT
+                </span>
+              </div>
             </div>
 
-            <div className="space-y-4">
-              <p className="text-xl md:text-2xl text-retro-text leading-relaxed">
-                <span className="font-bold opacity-70 block mb-1 font-pixel text-xs">Definition:</span>
+            <div className="space-y-4 text-[#111424]">
+              <p className="text-base md:text-lg font-semibold leading-relaxed">
+                <span className="font-black block mb-1 font-pixel text-xs text-[#111424]">Definition:</span>
                 {selectedAlgo.definition}
               </p>
-              <p className="text-xl md:text-2xl text-retro-text leading-relaxed">
-                <span className="font-bold opacity-70 block mb-1 font-pixel text-xs">Key Use Case:</span>
+              <p className="text-base md:text-lg font-semibold leading-relaxed">
+                <span className="font-black block mb-1 font-pixel text-xs text-[#111424]">Key Use Case:</span>
                 {selectedAlgo.useCase}
               </p>
             </div>
 
-            {/* Visual Explanation Mock */}
-            <div className="w-full h-48 bg-retro-bg/50 border-2 border-retro-muted flex flex-col items-center justify-center relative overflow-hidden shadow-inner">
-              <span className="font-pixel text-retro-muted opacity-50 text-xs absolute top-2 left-2">VISUAL_DIAGRAM_RENDERER</span>
-              {selectedAlgo.id === "Dijkstra's Algorithm" ? (
-                <div className="absolute inset-0 flex items-center justify-center opacity-80">
-                  <div className="flex gap-16 relative">
-                    <div className="w-12 h-12 border-2 border-retro-primary rounded-full flex items-center justify-center shadow-[0_0_15px_#27ae60] z-10 bg-white">A</div>
-                    <div className="w-12 h-12 border-2 border-retro-muted rounded-full flex items-center justify-center z-10 bg-white">B</div>
-                    {/* Connection line */}
-                    <div className="absolute top-1/2 left-6 right-6 h-1 bg-retro-primary -translate-y-1/2 shadow-[0_0_10px_#27ae60] z-0"></div>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-4xl filter grayscale opacity-50">{selectedAlgo.icon}</div>
-              )}
+            {/* Visual Explanation Animation */}
+            <div className="w-full min-h-[260px] py-8 px-4 bg-[#111424] border-4 border-[#3a495e] flex flex-col items-center justify-center relative shadow-inner rounded">
+              <span className="font-pixel text-[#8b9bb4] opacity-50 text-[10px] absolute top-2 left-2 tracking-widest uppercase">VISUAL_DIAGRAM_RENDERER</span>
+              <div className="w-full flex items-center justify-center z-10 pt-4 pb-2">
+                <VisualDiagramRenderer algoId={selectedAlgo.id} />
+              </div>
             </div>
 
             {/* Pseudocode */}
