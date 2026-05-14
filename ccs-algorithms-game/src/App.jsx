@@ -306,13 +306,13 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
           bg: "/bedroom-dev-bg.png"
         },
         {
-          desc: "Trace complex system dependencies in a package module graph. Traverse and back-track cycles before presenting to the capstone committee.",
-          focus: "🌊 BFS, 📍 DFS Traversals",
+          desc: "Help Inigo find the shortest campus walkway route using Dijkstra's, assist Dodo and Cassie in wiring lab workstations efficiently with Prim's and Kruskal's MSTs, then explore Cassie's RPG character skill tree using BFS and DFS traversals.",
+          focus: "📍 Dijkstra, 🛡️ Prim, 🔗 Kruskal, 🌊 BFS, 📍 DFS",
           bg: "/bedroom-dev-bg.png"
         },
         {
-          desc: "The 24-hour hackathon clock is running down. Build a heuristic-based maze-solver to guide an autonomous rover to safety.",
-          focus: "🧠 A* Search, ❌ Blind DFS Loops",
+          desc: "Calculate optimal coin combinations at vending machines with Change Making, collect dropped bench bounties using Coin Row DP, set grid game high scores with Coin Collecting, and compress documentation files losslessly using Huffman Coding.",
+          focus: "🏧 Change, 🪙 Coin Row, 🕹️ Coin Collect, 🗜️ Huffman",
           bg: "/bedroom-dev-bg.png"
         },
         {

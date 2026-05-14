@@ -358,67 +358,164 @@
     },
     {
       "id": 4,
-      "title": "THE CAPSTONE DEFENSE",
+      "title": "GRAPH & NETWORK",
       "nodes": {
         "start": {
-          "text": "The panel members look stern. \"Your deployment map has dependencies in a massive graph. How will you systematically traverse every module to prove there are no cycles?\"",
-          "speaker": "Panel Chair",
+          "text": "Inigo bursts into the lounge, panting. \"Guys, I woke up late and need to get to the Computer Science building! I'm looking at a map of the campus walkways, noting that some paths are crowded with students (high weight) while others are clear (low weight). How do I find the absolute shortest path?\"",
+          "speaker": "Inigo",
           "choices": [
             {
-              "label": "Run BFS (Breadth-First)",
-              "nextNode": "bfs_path",
-              "unlocksAlgorithm": "BFS",
-              "icon": "🌊"
-            },
-            {
-              "label": "Run DFS (Depth-First)",
-              "nextNode": "dfs_path",
-              "unlocksAlgorithm": "DFS",
+              "label": "Use Dijkstra's (Greedy Shortest Path)",
+              "nextNode": "dijkstra_node",
+              "unlocksAlgorithm": "Dijkstra's Algorithm",
               "icon": "📍"
             },
             {
-              "label": "Random Probing Check",
-              "nextNode": "graph_suboptimal",
+              "label": "Take random unweighted shortcut",
+              "nextNode": "dijkstra_suboptimal",
               "unlocksAlgorithm": null,
               "icon": "❌"
             }
           ]
         },
-        "graph_suboptimal": {
-          "text": "Randomly probing module dependencies causes redundant checks. \"Hmm, checking without a structure is taking longer than expected and we almost got stuck in cycles. I wonder if there's a systematic BFS or DFS way to do this... Still, we scraped through!\" The panelists give a cautious nod.",
-          "speaker": "Panel Chair",
+        "dijkstra_suboptimal": {
+          "text": "Inigo dashes down a random path and gets stuck behind a massive crowd of freshmen. \"Hmm, taking a random shortcut without calculating edge weights is taking way longer than expected! I wonder if there's a greedy shortest-path algorithm to calculate this... Finally made it to the lounge!\"",
+          "speaker": "Inigo",
           "choices": [
             {
-              "label": "Finish Chapter 4",
+              "label": "Join study group",
+              "nextNode": "lounge_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "dijkstra_node": {
+          "text": "By finding the shortest path from the starting node to all other nodes in the weighted graph with non-negative edge weights, Inigo arrives instantly! At the student lounge, Dodo and Cassie are untangling cables.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Help connect workstations",
+              "nextNode": "lounge_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "lounge_node": {
+          "text": "\"Help us connect several workstations in the lab using the minimum amount of wiring possible to save on costs, ensuring every desk is linked to the network without unnecessary loops!\" Dodo explains.",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Use Prim's (Greedy MST)",
+              "nextNode": "prims_node",
+              "unlocksAlgorithm": "Prim's Algorithm",
+              "icon": "🛡️"
+            },
+            {
+              "label": "Use Kruskal's (Greedy MST)",
+              "nextNode": "kruskals_node",
+              "unlocksAlgorithm": "Kruskal's Algorithm",
+              "icon": "🔗"
+            },
+            {
+              "label": "Connect every desk in mesh",
+              "nextNode": "mst_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "mst_suboptimal": {
+          "text": "Dodo starts plugging cables everywhere. \"Hmm, creating a complete mesh network is taking longer than expected and wasting so much expensive wiring! I wonder if there's a Minimum Spanning Tree algorithm to do this greedily... Still, the network is up!\" Cassie then opens her laptop to play an RPG game.",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Look at Cassie's screen",
+              "nextNode": "rpg_tree_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "prims_node": {
+          "text": "By starting from a single node and greedily adding the cheapest edge to a new vertex, you build a flawless Minimum Spanning Tree! Cassie then opens her laptop to play an RPG game.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Look at Cassie's screen",
+              "nextNode": "rpg_tree_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "kruskals_node": {
+          "text": "By sorting all edges by weight and adding the cheapest ones that do not form a cycle, you build a cost-effective Minimum Spanning Tree! Cassie then opens her laptop to play an RPG game.",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Look at Cassie's screen",
+              "nextNode": "rpg_tree_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "rpg_tree_node": {
+          "text": "Cassie points to her screen. \"I'm trying to unlock a specific node in this character skill tree in my RPG game. How should I explore the graph?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use DFS (Graph Traversal)",
+              "nextNode": "dfs_node",
+              "unlocksAlgorithm": "DFS",
+              "icon": "📍"
+            },
+            {
+              "label": "Use BFS (Graph Traversal)",
+              "nextNode": "bfs_node",
+              "unlocksAlgorithm": "BFS",
+              "icon": "🌊"
+            },
+            {
+              "label": "Click nodes randomly",
+              "nextNode": "tree_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "tree_suboptimal": {
+          "text": "Cassie randomly clicks skill nodes. \"Hmm, clicking without a traversal strategy is taking longer than expected and wasting my skill points. I wonder if there's a systematic BFS or DFS way to explore this... Finally got the ultimate skill!\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Complete Chapter 4",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
-        "bfs_path": {
-          "text": "Traversing layer-by-layer using a FIFO queue reveals all reachable system packages. The panelists look highly impressed.\n\n\"A clean, level-order traversal logic. Excellent defense!\"",
-          "speaker": "Panel Chair",
+        "dfs_node": {
+          "text": "Exploring the graph by visiting a node and recursively visiting all nodes along a single branch as deep as possible before backtracking unlocks the skill perfectly!",
+          "speaker": "Narrator",
           "choices": [
             {
-              "label": "Finish Chapter 4",
+              "label": "Complete Chapter 4",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
-        "dfs_path": {
-          "text": "Plunging deep along each branch using a LIFO stack traces the recursive cycle pathways perfectly. The panelists nod in approval.\n\n\"Excellent back-tracking cycle-detection logic. Outstanding defense!\"",
-          "speaker": "Panel Chair",
+        "bfs_node": {
+          "text": "Exploring the graph layer by layer, visiting all neighbors of a node before moving to the next level of depth unlocks the skill flawlessly!",
+          "speaker": "Narrator",
           "choices": [
             {
-              "label": "Finish Chapter 4",
+              "label": "Complete Chapter 4",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
         "end_chapter": {
-          "text": "Your capstone system defense is complete. Anya and Leo celebrate your O(V + E) success in the hallways.\n\n*Chapter 4 Completed.*",
+          "text": "From navigating campus walkways to building minimum spanning networks and mastering RPG skill trees, your graph and network algorithms are legendary!\n\n*Graph & Network Chapter Completed.*",
           "speaker": "Narrator",
           "choices": [
             {
@@ -433,50 +530,170 @@
     },
     {
       "id": 5,
-      "title": "THE AI HACKATHON",
+      "title": "DYNAMIC PROGRAMMING & OPTIMIZATION",
       "nodes": {
         "start": {
-          "text": "The clock is ticking in the 24-hour hackathon. Your navigation robot needs to find the optimal path in a grid representing a dense maze. Which heuristic fits?",
-          "speaker": "Anya",
+          "text": "In the basement of the engineering wing, Dodo is standing in front of a vintage vending machine. \"I’ve just finished a project and have a handful of different coins. I need to provide the exact amount for a bag of chips using the smallest number of coins possible. How do we calculate the optimal coin breakdown?\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Implement A* Search",
-              "nextNode": "astar_path",
-              "unlocksAlgorithm": "A* Search",
-              "icon": "🧠"
+              "label": "Use Change Making (Optimization)",
+              "nextNode": "change_making_node",
+              "unlocksAlgorithm": "Change Making",
+              "icon": "🏧"
             },
             {
-              "label": "Implement DFS Search",
-              "nextNode": "dfs_fail_path",
+              "label": "Try coin combinations blindly",
+              "nextNode": "change_making_suboptimal",
               "unlocksAlgorithm": null,
               "icon": "❌"
             }
           ]
         },
-        "astar_path": {
-          "text": "Combining distance traveled g(n) and heuristic estimate h(n) leads the robot straight to the exit, bypassing all obstacles. The judges cheer!\n\n\"The optimal, shortest-path heuristic search in record time!\"",
-          "speaker": "Judges",
+        "change_making_suboptimal": {
+          "text": "Dodo starts stuffing random coins into the slot. \"Hmm, trying combinations blindly without dynamic programming is taking longer than expected, and the machine keeps spitting them back out! I wonder if there's an optimization algorithm to find the minimum coins... Finally got the chips!\"",
+          "speaker": "Dodo",
           "choices": [
             {
-              "label": "Finish Chapter 5",
+              "label": "Sit on the bench",
+              "nextNode": "bench_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "change_making_node": {
+          "text": "By finding the minimum number of coins of specific denominations needed to make the target total using dynamic programming, Dodo gets his chips instantly!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Sit on the bench",
+              "nextNode": "bench_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "bench_node": {
+          "text": "While sitting on a long bench nearby eating chips, Cassie notices someone dropped a line of coins. \"Look! But there's a security laser sensor that prevents us from picking up any two coins that are directly adjacent. How can we get the maximum total value?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Use Coin Row (Dynamic Programming)",
+              "nextNode": "coin_row_node",
+              "unlocksAlgorithm": "Coin Row",
+              "icon": "🪙"
+            },
+            {
+              "label": "Grab the biggest coin greedily",
+              "nextNode": "coin_row_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "coin_row_suboptimal": {
+          "text": "Cassie grabs a single 10-peso coin and the laser alarm beeps! \"Hmm, grabbing greedily without checking non-adjacent subproblems is yielding way less money than expected! I wonder if there's a dynamic programming recurrence for this... At least we got 10 pesos!\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Play mobile game",
+              "nextNode": "mobile_game_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "coin_row_node": {
+          "text": "By solving the dynamic programming recurrence to find the maximum value of coins picked from a row without adjacent selections, you collect the ultimate bounty!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Play mobile game",
+              "nextNode": "mobile_game_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "mobile_game_node": {
+          "text": "Later in the student lounge, Mikaela is playing a quick grid-based mobile game. \"You must move a character from the top-left corner of a room to the bottom-right, grabbing as much loot as possible while moving only right or down. What's the optimal path?\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Use Coin Collecting (Grid DP)",
+              "nextNode": "coin_collecting_node",
+              "unlocksAlgorithm": "Coin Collecting",
+              "icon": "🕹️"
+            },
+            {
+              "label": "Move zigzag randomly",
+              "nextNode": "coin_collecting_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "coin_collecting_suboptimal": {
+          "text": "Mikaela moves her character zigzag across the room. \"Hmm, wandering without calculating grid subproblems is taking longer than expected and missing the best loot. I wonder if there's a dynamic programming table approach for this... Game over, but good run!\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Work on final project",
+              "nextNode": "huffman_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "coin_collecting_node": {
+          "text": "By building a dynamic programming grid table to collect the maximum coins while moving right or down, Mikaela sets a new high score!",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "Work on final project",
+              "nextNode": "huffman_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "huffman_node": {
+          "text": "It’s 11:00 PM and Inigo is stressing out. \"I am finalizing our massive capstone documentation file, but it needs to be compressed to fit the submission portal's strict 5MB limit! How can we compress it without losing data?\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Use Huffman Coding (Greedy Compression)",
+              "nextNode": "huffman_coding_node",
+              "unlocksAlgorithm": "Huffman Coding",
+              "icon": "🗜️"
+            },
+            {
+              "label": "Delete random paragraphs",
+              "nextNode": "huffman_suboptimal",
+              "unlocksAlgorithm": null,
+              "icon": "❌"
+            }
+          ]
+        },
+        "huffman_suboptimal": {
+          "text": "Inigo starts deleting important paragraphs. \"Hmm, deleting text blindly is compromising our documentation quality and taking longer to re-edit! I wonder if there's a lossless greedy compression algorithm to assign shorter binary codes to frequent characters... Finally zipped it!\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Complete Chapter 5",
               "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
-        "dfs_fail_path": {
-          "text": "The robot wanders down the deepest blind alley, getting stuck in loops and taking way longer than expected. Time runs out.\n\n\"Hmm, blind DFS gets trapped in cycles without distance heuristics. I wonder if there's a faster, optimal way like A* Search...\"",
-          "speaker": "Anya",
+        "huffman_coding_node": {
+          "text": "Using a greedy algorithm for lossless data compression that assigns shorter binary codes to more frequent characters, the file compresses to 4.8MB perfectly!",
+          "speaker": "Narrator",
           "choices": [
             {
-              "label": "Try heuristic search",
-              "nextNode": "start",
+              "label": "Complete Chapter 5",
+              "nextNode": "end_chapter",
               "unlocksAlgorithm": null
             }
           ]
         },
         "end_chapter": {
-          "text": "Your team took home 1st place in the hackathon. Heuristics lead to trophies.\n\n*Chapter 5 Completed.*",
+          "text": "From vending machines and bench bounties to grid game high scores and flawless file compression, your dynamic programming and optimization skills are elite!\n\n*Dynamic Programming & Optimization Chapter Completed.*",
           "speaker": "Narrator",
           "choices": [
             {
@@ -552,10 +769,10 @@
     {
       "id": "Dijkstra's Algorithm",
       "title": "DIJKSTRA'S SHORTEST PATH",
-      "category": "Graph Algorithms",
-      "definition": "An iterative algorithm that finds the shortest path between nodes in a weighted graph.",
-      "useCase": "Used primarily in network routing protocols and GPS navigation to calculate the fastest route.",
-      "pseudocode": "function dijkstra(graph, start)\n  distances = map()\n  distances[start] = 0\n  pq = priority_queue()\n  pq.push(start, 0)\n  while !pq.empty():\n    current = pq.pop()\n    for neighbor in graph[current]:\n      if update(distance):\n        pq.push(neighbor, new_dist)\n  return distances",
+      "category": "Graph & Network",
+      "definition": "Finds the shortest path from a starting node to all other nodes in a weighted graph with non-negative edge weights.",
+      "useCase": "Finding the quickest campus walkway path to get to the Computer Science building when waking up late.",
+      "pseudocode": "function dijkstra(graph, start):\n  dist = map(), pq = new PriorityQueue()\n  for node in graph: dist[node] = Infinity\n  dist[start] = 0, pq.push(start, 0)\n  while !pq.isEmpty():\n    curr = pq.pop()\n    for neighbor, weight in graph[curr]:\n      newDist = dist[curr] + weight\n      if newDist < dist[neighbor]:\n        dist[neighbor] = newDist\n        pq.push(neighbor, newDist)\n  return dist",
       "icon": "📍"
     },
     {
@@ -668,75 +885,75 @@
     },
     {
       "id": "DFS",
-      "title": "DFS",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in DFS related tasks and system optimizations.",
-      "pseudocode": "function dfs() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🌊"
+      "title": "DFS (DEPTH-FIRST SEARCH)",
+      "category": "Graph & Network",
+      "definition": "Explores a graph by visiting a node and then recursively visiting all nodes along a single branch as deep as possible before backtracking.",
+      "useCase": "Unlocking a specific node in a character skill tree in an rpg game.",
+      "pseudocode": "function dfs(graph, start, visited = new Set()):\n  visited.add(start)\n  for neighbor in graph[start]:\n    if !visited.has(neighbor):\n      dfs(graph, neighbor, visited)\n  return visited",
+      "icon": "📍"
     },
     {
       "id": "BFS",
-      "title": "BFS",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in BFS related tasks and system optimizations.",
-      "pseudocode": "function bfs() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "⭐"
+      "title": "BFS (BREADTH-FIRST SEARCH)",
+      "category": "Graph & Network",
+      "definition": "Explores a graph layer by layer, visiting all neighbors of a node before moving to the next level of depth.",
+      "useCase": "Unlocking a specific node in a character skill tree in an rpg game.",
+      "pseudocode": "function bfs(graph, start):\n  visited = new Set([start])\n  queue = [start]\n  while queue.length > 0:\n    node = queue.shift()\n    for neighbor in graph[node]:\n      if !visited.has(neighbor):\n        visited.add(neighbor)\n        queue.push(neighbor)\n  return visited",
+      "icon": "🌊"
     },
     {
-      "id": "A* Search",
-      "title": "A* SEARCH",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in A* Search related tasks and system optimizations.",
-      "pseudocode": "function asearch() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🧠"
+      "id": "Coin Row",
+      "title": "COIN ROW",
+      "category": "Dynamic Programming & Optimization",
+      "definition": "A dynamic programming problem to find the maximum value of coins picked from a row, provided no two adjacent coins are chosen.",
+      "useCase": "Collecting dropped coins along a long bench protected by security laser sensors preventing adjacent pickups.",
+      "pseudocode": "function coinRow(coins):\n  n = coins.length\n  if n == 0: return 0\n  if n == 1: return coins[0]\n  dp = new Array(n + 1)\n  dp[0] = 0, dp[1] = coins[0]\n  for i = 2 to n:\n    dp[i] = max(coins[i-1] + dp[i-2], dp[i-1])\n  return dp[n]",
+      "icon": "🪙"
     },
     {
-      "id": "Dynamic Programming",
-      "title": "DYNAMIC PROGRAMMING",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Dynamic Programming related tasks and system optimizations.",
-      "pseudocode": "function dynamicprogramming() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🧩"
+      "id": "Change Making",
+      "title": "CHANGE MAKING",
+      "category": "Dynamic Programming & Optimization",
+      "definition": "Finds the minimum number of coins (of specific denominations) needed to make a target total.",
+      "useCase": "Providing exact change for a bag of chips at a vintage vending machine using minimal coins.",
+      "pseudocode": "function minChange(coins, amount):\n  dp = new Array(amount + 1).fill(Infinity)\n  dp[0] = 0\n  for i = 1 to amount:\n    for coin in coins:\n      if i - coin >= 0:\n        dp[i] = min(dp[i], dp[i - coin] + 1)\n  return dp[amount]",
+      "icon": "🏧"
     },
     {
       "id": "Kruskal's Algorithm",
       "title": "KRUSKAL'S ALGORITHM",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Kruskal's Algorithm related tasks and system optimizations.",
-      "pseudocode": "function kruskalsalgorithm() {\n  // Implementation pending\n  return true;\n}",
+      "category": "Graph & Network",
+      "definition": "A greedy algorithm that builds an MST by sorting all edges by weight and adding the cheapest ones that do not form a cycle.",
+      "useCase": "Connecting several lab workstations using the minimum amount of wiring possible to save on costs without loops.",
+      "pseudocode": "function kruskalMST(edges, numVertices):\n  mst = [], ds = new DisjointSet(numVertices)\n  edges.sort((a, b) => a.weight - b.weight)\n  for edge in edges:\n    if ds.find(edge.u) != ds.find(edge.v):\n      ds.union(edge.u, edge.v)\n      mst.push(edge)\n  return mst",
       "icon": "🔗"
     },
     {
       "id": "Prim's Algorithm",
       "title": "PRIM'S ALGORITHM",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Prim's Algorithm related tasks and system optimizations.",
-      "pseudocode": "function primsalgorithm() {\n  // Implementation pending\n  return true;\n}",
+      "category": "Graph & Network",
+      "definition": "A greedy algorithm that builds a Minimum Spanning Tree (MST) by starting from a single node and adding the cheapest edge to a new vertex.",
+      "useCase": "Connecting several lab workstations using the minimum amount of wiring possible to save on costs without loops.",
+      "pseudocode": "function primMST(graph):\n  mst = [], visited = new Set([0])\n  pq = new PriorityQueue()\n  pq.pushAll(graph.edgesFrom(0))\n  while visited.size < graph.numVertices:\n    edge = pq.popCheapest()\n    if !visited.has(edge.to):\n      visited.add(edge.to)\n      mst.push(edge)\n      pq.pushAll(graph.edgesFrom(edge.to))\n  return mst",
       "icon": "🛡️"
     },
     {
-      "id": "Floyd-Warshall",
-      "title": "FLOYD-WARSHALL",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Floyd-Warshall related tasks and system optimizations.",
-      "pseudocode": "function floydwarshall() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🗝️"
+      "id": "Coin Collecting",
+      "title": "COIN COLLECTING (GRID)",
+      "category": "Dynamic Programming & Optimization",
+      "definition": "A dynamic programming task to find the path in a grid that collects the maximum number of coins while moving only right or down.",
+      "useCase": "Moving a character from one corner of a room to the other in a grid-based mobile game grabbing maximum loot.",
+      "pseudocode": "function coinCollecting(grid):\n  rows = grid.length, cols = grid[0].length\n  dp = new Array(rows).fill(0).map(() => new Array(cols).fill(0))\n  dp[0][0] = grid[0][0]\n  for i = 1 to rows - 1: dp[i][0] = dp[i-1][0] + grid[i][0]\n  for j = 1 to cols - 1: dp[0][j] = dp[0][j-1] + grid[0][j]\n  for i = 1 to rows - 1:\n    for j = 1 to cols - 1:\n      dp[i][j] = max(dp[i-1][j], dp[i][j-1]) + grid[i][j]\n  return dp[rows-1][cols-1]",
+      "icon": "🕹️"
     },
     {
-      "id": "Bellman-Ford",
-      "title": "BELLMAN-FORD",
-      "category": "Computer Science",
-      "definition": "An iterative algorithm that finds the optimal solution for complex computational problems.",
-      "useCase": "Used primarily in Bellman-Ford related tasks and system optimizations.",
-      "pseudocode": "function bellmanford() {\n  // Implementation pending\n  return true;\n}",
-      "icon": "🫧"
+      "id": "Huffman Coding",
+      "title": "HUFFMAN CODING",
+      "category": "Dynamic Programming & Optimization",
+      "definition": "A greedy algorithm used for lossless data compression that assigns shorter binary codes to more frequent characters.",
+      "useCase": "Compressing a massive documentation file at 11:00 PM to fit a portal's 5MB limit.",
+      "pseudocode": "function buildHuffmanTree(freqMap):\n  pq = new PriorityQueue()\n  for char, freq in freqMap: pq.push(new Node(char, freq))\n  while pq.size > 1:\n    left = pq.pop(), right = pq.pop()\n    parent = new Node(null, left.freq + right.freq, left, right)\n    pq.push(parent)\n  return pq.pop()",
+      "icon": "🗜️"
     },
     {
       "id": "Topological Sort",
