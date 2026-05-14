@@ -717,6 +717,7 @@ export default function App() {
 
   const [currentChapter, setCurrentChapter] = useState(1)
   const [currentNode, setCurrentNode] = useState('start')
+  const [stamina, setStamina] = useState(100)
   const [unlockedAlgorithms, setUnlockedAlgorithms] = useState([])
   const [hoveredChoice, setHoveredChoice] = useState(null)
 
@@ -728,7 +729,26 @@ export default function App() {
   const [isTyping, setIsTyping] = useState(false)
   const [textIndex, setTextIndex] = useState(0)
   const chapter = gameData.chapters.find((c) => c.id === currentChapter)
-  const node = chapter?.nodes?.[currentNode]
+  const node = currentNode === 'out_of_stamina' ? {
+    text: "🚨 CPU OVERHEATED / STAMINA DEPLETED! 🚨\n\nYou selected too many inefficient algorithms with high time complexity! Your computational resources and mental stamina are completely drained.\n\nTake a deep breath, restart the chapter, and choose more optimal algorithms to complete your coursework!",
+    speaker: "System Monitor",
+    choices: [
+      {
+        label: "RESTART CHAPTER",
+        nextNode: "start",
+        unlocksAlgorithm: null,
+        restartChapter: true,
+        icon: "🔄"
+      },
+      {
+        label: "RETURN TO CHAPTER SELECT",
+        nextNode: "start",
+        unlocksAlgorithm: null,
+        returnToMenu: true,
+        icon: "◀️"
+      }
+    ]
+  } : chapter?.nodes?.[currentNode]
 
   useEffect(() => {
     if (screen === 'title') {
@@ -818,11 +838,13 @@ export default function App() {
       }, 4000)
     }
     if (choice.returnToMenu) {
+      setStamina(100)
       setScreen('chapter_select')
       return
     }
     if (choice.restartChapter) {
       audio.playAdvance()
+      setStamina(100)
       setCurrentNode('start')
       return
     }
@@ -831,6 +853,7 @@ export default function App() {
       setUnlockedAlgorithms([])
       setCurrentChapter(1)
       setCurrentNode('start')
+      setStamina(100)
       setScreen('title')
       return
     }
@@ -838,11 +861,37 @@ export default function App() {
       audio.playAdvance()
       const nextIdx = gameData.chapters.findIndex((c) => c.id === currentChapter) + 1
       if (nextIdx < gameData.chapters.length) {
+        setStamina(100)
         setCurrentChapter(gameData.chapters[nextIdx].id)
         setCurrentNode(choice.nextNode)
         return
       }
     }
+
+    // Deduct stamina for inefficient / suboptimal algorithm choices
+    if (
+      choice.nextNode?.includes('suboptimal') ||
+      choice.label?.toLowerCase().includes('consecutive') ||
+      choice.label?.toLowerCase().includes('middle school') ||
+      choice.label?.toLowerCase().includes('nested loop') ||
+      choice.label?.toLowerCase().includes('sort entire array') ||
+      choice.label?.toLowerCase().includes('sequential search') ||
+      choice.label?.toLowerCase().includes('random') ||
+      choice.label?.toLowerCase().includes('selection sort') ||
+      choice.label?.toLowerCase().includes('bubble sort') ||
+      choice.label?.toLowerCase().includes('blind') ||
+      choice.label?.toLowerCase().includes('greedi') ||
+      choice.label?.toLowerCase().includes('exhaust')
+    ) {
+      const nextStam = stamina - 40
+      setStamina(Math.max(0, nextStam))
+      if (nextStam <= 0) {
+        audio.playAdvance()
+        setCurrentNode('out_of_stamina')
+        return
+      }
+    }
+
     setCurrentNode(choice.nextNode)
   }
 
@@ -915,6 +964,7 @@ export default function App() {
           onSelectChapter={(chapId) => {
             setCurrentChapter(chapId)
             setCurrentNode('start')
+            setStamina(100)
             setScreen('game')
           }}
           onClose={() => setScreen('title')}
@@ -961,10 +1011,24 @@ export default function App() {
         {/* LEFT COLUMN: Narrative & Choices */}
         <div className="w-1/2 flex flex-col dialogue-panel z-10 relative">
           <header className="px-8 pt-8 pb-4 flex justify-between items-start">
-            <h2 className="font-pixel text-retro-accent text-sm md:text-base glow-accent tracking-tighter uppercase">
-              CHAPTER {chapter.id}: {chapter.title}
-            </h2>
-            <div className="flex gap-4">
+            <div>
+              <h2 className="font-pixel text-retro-accent text-sm md:text-base glow-accent tracking-tighter uppercase">
+                CHAPTER {chapter.id}: {chapter.title}
+              </h2>
+              {/* Stamina Meter */}
+              <div className="flex items-center gap-3 mt-3 font-pixel text-xs md:text-sm bg-black/40 px-3 py-2 border border-[#3a495e] rounded-sm w-fit shadow-md">
+                <span className={`font-bold flex items-center gap-1 ${stamina > 30 ? 'text-[#4ade80]' : 'text-red-500 animate-pulse'}`}>
+                  ⚡ STAMINA: {stamina}%
+                </span>
+                <div className="w-40 bg-[#1a1c2c] border-2 border-[#3a495e] h-4 rounded-sm overflow-hidden flex shadow-inner">
+                  <div
+                    className={`h-full transition-all duration-500 shadow-[0_0_10px_rgba(255,255,255,0.3)] ${stamina > 50 ? 'bg-[#4ade80]' : stamina > 25 ? 'bg-[#f7d354]' : 'bg-red-500 animate-pulse'}`}
+                    style={{ width: `${stamina}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-4 items-start">
               <button
                 onClick={() => { audio.playSelect(); setShowSettings(true); }}
                 className="font-pixel text-[8px] text-retro-accent hover:text-retro-primary transition-colors cursor-pointer"
