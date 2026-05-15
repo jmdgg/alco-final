@@ -237,7 +237,7 @@
           ]
         },
         "suboptimal_karaoke_node": {
-          "text": "Inigo flips through the massive songbook page by page. \"Hmm, this linear scan is taking way longer than expected! I wonder if there's a faster way to do this by halving the book... Finally found it!\" Before he sings, Dodo pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
+          "text": "Inigo flips through the massive songbook page by page. \"Hmm, this linear scan is taking way longer than expected! I wonder if there's a faster way to do this by halving the book... Finally found it!\" Before he sings, Cassie pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
           "speaker": "Inigo",
           "choices": [
             {
@@ -255,7 +255,7 @@
           ]
         },
         "binary_search_node": {
-          "text": "By repeatedly dividing the sorted songbook interval in half O(log N), Inigo finds his OPM song efficiently! Before he sings, Dodo pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
+          "text": "By repeatedly dividing the sorted songbook interval in half O(log N), Inigo finds his OPM song efficiently! Before he sings, Cassie pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
           "speaker": "Cassie",
           "choices": [
             {
@@ -273,7 +273,7 @@
           ]
         },
         "interpolation_search_node": {
-          "text": "Knowing the songbook is uniformly distributed alphabetically, you estimate the target position based on value. Instant match! Before Inigo sings, Dodo pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
+          "text": "Knowing the songbook is uniformly distributed alphabetically, you estimate the target position based on value. Instant match! Before Inigo sings, Cassie pulls out some index cards. \"Guys, I need to organize my flashcards for our upcoming ethics enumeration quiz. How do I insert new cards into my sorted stack?\"",
           "speaker": "Cassie",
           "choices": [
             {
@@ -291,8 +291,8 @@
           ]
         },
         "insertion_suboptimal": {
-          "text": "Dodo stuffs the flashcards in randomly. \"Hmm, inserting cards without locating the correct position is taking longer than expected when I try to find them later! I wonder if there's an insertion search method to maintain order... Stack sorted!\" Cassie then pulls out her phone to play an RPG. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
-          "speaker": "Dodo",
+          "text": "Cassie stuffs the flashcards in randomly. \"Hmm, inserting cards without locating the correct position is taking longer than expected when I try to find them later! I wonder if there's an insertion search method to maintain order... Stack sorted!\" Cassie then pulls out her phone to play an RPG. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "speaker": "Cassie",
           "choices": [
             {
               "label": "Use BF String Matching (String Processing)",
@@ -302,7 +302,7 @@
           ]
         },
         "insertion_search_node": {
-          "text": "By locating the correct position for each element within the sorted sub-list, Dodo keeps his ethics flashcards perfectly ordered! Cassie then pulls out her phone to play a multiplayer RPG game. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
+          "text": "By locating the correct position for each element within the sorted sub-list, Cassie keeps her ethics flashcards perfectly ordered! Cassie then pulls out her phone to play a multiplayer RPG game. \"I'm trying to add my friend's username in the guild search, but I only know part of their handle.\"",
           "speaker": "Narrator",
           "choices": [
             {
@@ -931,6 +931,13 @@
           "speaker": "Narrator",
           "choices": [
             {
+              "label": "CONTINUE TO BONUS STAGE",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "advanceChapter": true,
+              "icon": "▶️"
+            },
+            {
               "label": "RESTART CHAPTER",
               "nextNode": "start",
               "unlocksAlgorithm": null,
@@ -950,6 +957,84 @@
               "unlocksAlgorithm": null,
               "resetProgress": true,
               "icon": "🔄"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "ALCO BONUS STAGE: THE HIDDEN PUZZLES",
+      "nodes": {
+        "start": {
+          "text": "While cleaning up the lab after graduation, Dodo finds a mysterious folder on one of the vintage workstations labeled 'ALCO_HIDDEN_LOGS'. \"Hey guys, look at this! There are some unsolved problems here.\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Explore the hidden logs",
+              "nextNode": "cafe_node",
+              "unlocksAlgorithm": null
+            }
+          ]
+        },
+        "cafe_node": {
+          "text": "The first log is a list of numerical IDs for the local cafes: Chello, Starbucks, and Cush. \"We need to find out which two cafes have the most similar IDs to sync their systems. What's the minimum distance between any two IDs in this set?\"",
+          "speaker": "Cassie",
+          "choices": [
+            {
+              "label": "Calculate Min Distance (Closest Pair)",
+              "nextNode": "door_node",
+              "unlocksAlgorithm": "Cafe Walk Distance",
+              "icon": "☕"
+            }
+          ]
+        },
+        "door_node": {
+          "text": "The next log contains a riddle: '100 doors stand before you. You toggle every 1st, then every 2nd, then every 3rd... until 100. Which stay open?' Inigo scratches his head. \"Wait, this sounds like a classic logic puzzle!\"",
+          "speaker": "Inigo",
+          "choices": [
+            {
+              "label": "Solve Infinite Door-Problem",
+              "nextNode": "math_node",
+              "unlocksAlgorithm": "Infinite Door-Problem",
+              "icon": "🚪"
+            }
+          ]
+        },
+        "math_node": {
+          "text": "Mikaela finds a strange mathematical sequence in the logs. \"It's asking for the sum of squares for the first 50 integers. Is there a way to automate this calculation?\"",
+          "speaker": "Mikaela",
+          "choices": [
+            {
+              "label": "Calculate Sum of Squared Numbers",
+              "nextNode": "budget_node",
+              "unlocksAlgorithm": "Sum of Squared Numbers",
+              "icon": "²"
+            }
+          ]
+        },
+        "budget_node": {
+          "text": "Finally, there's a list of prices for the upcoming alumni homecoming. \"We need to find the absolute cheapest item on this menu to optimize our budget!\"",
+          "speaker": "Dodo",
+          "choices": [
+            {
+              "label": "Find Smallest Value",
+              "nextNode": "end_chapter",
+              "unlocksAlgorithm": "Smallest Value",
+              "icon": "📉"
+            }
+          ]
+        },
+        "end_chapter": {
+          "text": "The hidden logs are cleared! You've mastered even the most obscure algorithms in the CCS curriculum. \"We're truly ready for the industry now,\" Cassie smiles.\n\n*Bonus Chapter Completed!*",
+          "speaker": "Narrator",
+          "choices": [
+            {
+              "label": "RETURN TO CHAPTER SELECT",
+              "nextNode": "start",
+              "unlocksAlgorithm": null,
+              "returnToMenu": true,
+              "icon": "◀️"
             }
           ]
         }
@@ -1199,6 +1284,42 @@
       "useCase": "Packing tech pouch essentials for tomorrow's presentation, discarding heavy cable combinations early.",
       "pseudocode": "function branchAndBound(root):\n  best = Infinity, pq = new PriorityQueue()\n  pq.push(root)\n  while !pq.isEmpty():\n    node = pq.pop()\n    if node.bound < best:\n      if node.isLeaf: best = min(best, node.cost)\n      else pq.pushAll(node.children())\n  return best",
       "icon": "✂️"
+    },
+    {
+      "id": "Cafe Walk Distance",
+      "title": "MIN DISTANCE (CLOSEST PAIR)",
+      "category": "Mathematical Algorithms",
+      "definition": "Finds the smallest absolute difference between any two distinct elements in a given array of numbers.",
+      "useCase": "Finding the two most similar cafes based on their unique numerical ID or rating in the ALCO logs.",
+      "pseudocode": "function minDistance(arr):\n  min_d = infinity\n  for i = 0 to n-1:\n    for j = 0 to n-1:\n      if i != j and abs(arr[i] - arr[j]) < min_d:\n        min_d = abs(arr[i] - arr[j])\n  return min_d",
+      "icon": "☕"
+    },
+    {
+      "id": "Infinite Door-Problem",
+      "title": "INFINITE DOOR-PROBLEM",
+      "category": "Mathematical Algorithms",
+      "definition": "A toggle-based logic problem where doors are repeatedly toggled based on multiples of n. Only doors with perfect square indices remain open.",
+      "useCase": "Solving complex logic riddles found in competitive programming or interviews.",
+      "pseudocode": "function openDoors(n):\n  doors = array of n closed doors\n  for i = 1 to n:\n    for j = i to n step i:\n      doors[j] = !doors[j]\n  return doors",
+      "icon": "🚪"
+    },
+    {
+      "id": "Sum of Squared Numbers",
+      "title": "SUM OF SQUARED NUMBERS",
+      "category": "Mathematical Algorithms",
+      "definition": "Calculates the sum of squares of the first n natural numbers, often using the formula (n(n+1)(2n+1))/6.",
+      "useCase": "Statistical calculations and variance analysis in data processing.",
+      "pseudocode": "function sumSquares(n):\n  sum = 0\n  for i = 1 to n:\n    sum += i * i\n  return sum",
+      "icon": "²"
+    },
+    {
+      "id": "Smallest Value",
+      "title": "SMALLEST VALUE",
+      "category": "Searching & Pattern Matching",
+      "definition": "Finds the minimum element in an array by iterating through all elements and maintaining the current minimum.",
+      "useCase": "Finding the cheapest item in a shopping list or the lowest temperature in a dataset.",
+      "pseudocode": "function findMin(arr):\n  minVal = arr[0]\n  for i = 1 to arr.length - 1:\n    if arr[i] < minVal: minVal = arr[i]\n  return minVal",
+      "icon": "📉"
     }
   ]
 }
