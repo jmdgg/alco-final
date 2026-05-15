@@ -291,7 +291,7 @@ function VisualDiagramRenderer({ algoId }) {
   }
 
   if (algoId === "Unique Elements") {
-    const queue = ['dodo_ccs', 'cassie_dev', 'dodo_ccs (⚠️)', 'inigo_2026']
+    const queue = ['cassie_ccs', 'mika_dev', 'cassie_ccs (⚠️)', 'inigo_2026']
     return (
       <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
         <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">🛡️ Unique Elements: Set Checking</div>
@@ -548,16 +548,32 @@ function VisualDiagramRenderer({ algoId }) {
   }
 
   if (algoId?.includes("Sort")) {
-    const bars = step === 0 ? [40, 10, 30, 20] : step === 1 ? [10, 40, 30, 20] : step === 2 ? [10, 30, 40, 20] : step === 3 ? [10, 20, 30, 40] : [10, 20, 30, 40]
+    let bars = [40, 10, 30, 20]
+    let status = "Ready to sort"
+
+    if (algoId === "Bubble Sort") {
+      bars = step === 0 ? [40, 10, 30, 20] : step === 1 ? [10, 40, 30, 20] : step === 2 ? [10, 30, 40, 20] : step === 3 ? [10, 30, 20, 40] : [10, 20, 30, 40]
+      status = step === 0 ? "Initial array" : step === 3 ? "Largest '40' bubbled to end" : step > 3 ? "Fully sorted!" : "Bubbling largest element right"
+    } else if (algoId === "Selection Sort") {
+      bars = step === 0 ? [40, 10, 30, 20] : step === 1 ? [10, 40, 30, 20] : step === 2 ? [10, 20, 30, 40] : [10, 20, 30, 40]
+      status = step === 0 ? "Initial array" : step === 1 ? "Found min (10), swapped to index 0" : "Sorted min elements sequentially"
+    } else {
+      bars = step === 0 ? [40, 10, 30, 20] : step === 3 ? [10, 20, 30, 40] : bars
+      status = "Visualizing sort steps..."
+    }
+
     return (
       <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-8">
         <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">🔄 {algoId} live sorting</div>
-        <div className="flex items-end gap-3 h-24 bg-black/50 p-4 border-2 border-[#3a495e] rounded w-64 justify-center shadow-inner">
+        <div className="flex items-end gap-3 h-24 bg-black/50 p-4 border-2 border-[#3a495e] rounded w-64 justify-center shadow-inner relative">
           {bars.map((h, i) => (
             <div key={i} style={{ height: `${h}%` }} className="w-8 bg-[#f7d354] border-2 border-white transition-all duration-500 flex items-center justify-center text-[10px] text-black font-bold shadow-md">
               {h}
             </div>
           ))}
+        </div>
+        <div className="text-[10px] text-[#f7d354] font-retro italic text-center px-4">
+          {status}
         </div>
       </div>
     )
@@ -897,6 +913,111 @@ function VisualDiagramRenderer({ algoId }) {
     )
   }
 
+  if (algoId === "Cafe Walk Distance") {
+    const ids = [125, 340, 128, 450, 92]
+    const i = Math.floor(step / 2) % ids.length
+    const j = (i + 1) % ids.length
+    const diff = Math.abs(ids[i] - ids[j])
+    const currentMin = 3 // The actual min in this set is |125-128|
+
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">☕ Min Distance: Finding Closest IDs</div>
+        <div className="flex gap-3 justify-center items-end h-24 bg-black/60 p-6 border-2 border-[#3a495e] rounded shadow-inner w-full">
+          {ids.map((id, idx) => (
+            <div key={idx} className={`flex flex-col items-center gap-2 transition-all duration-300 ${idx === i || idx === j ? 'scale-110' : 'opacity-50'}`}>
+              <div className={`w-10 flex items-end justify-center bg-[#73eff7] border border-white ${idx === i || idx === j ? 'h-16 shadow-[0_0_15px_#73eff7]' : 'h-10 opacity-30'}`}>
+                <span className="text-[8px] text-black font-bold mb-1">{id}</span>
+              </div>
+              <span className="text-[6px] text-gray-500">ID {idx}</span>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col gap-2 w-full max-w-xs">
+          <div className="bg-[#1a1c2c] p-3 border border-[#3a495e] rounded-lg space-y-2">
+            <div className="flex justify-between items-center text-[10px]">
+              <span className="text-gray-400 font-mono">abs({ids[i]} - {ids[j]})</span>
+              <span className="text-yellow-400 font-bold">= {diff}</span>
+            </div>
+            <div className="h-[1px] bg-gray-800 w-full" />
+            <div className="flex justify-between items-center">
+              <span className="text-[9px] text-[#73eff7]">Current min_d:</span>
+              <span className="text-sm text-[#4ade80] font-bold">{step > 4 ? currentMin : diff}</span>
+            </div>
+          </div>
+          <p className="text-[8px] text-gray-500 italic text-center font-retro">
+            Iterating O(N²) to compare all pairs (i, j) where i != j
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Infinite Door-Problem") {
+    const doors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    const isOpen = (n) => {
+      const root = Math.sqrt(n)
+      return root === Math.floor(root)
+    }
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">🚪 Infinite Door-Problem: Square Logic</div>
+        <div className="flex gap-2 justify-center flex-wrap">
+          {doors.map(d => (
+            <div key={d} className={`p-2 border-2 rounded flex flex-col items-center gap-1 transition-all duration-500 ${isOpen(d) ? 'bg-[#4ade80] border-white text-black scale-110 shadow-[0_0_15px_#4ade80]' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              <span className="text-lg">{isOpen(d) ? '📖' : '📕'}</span>
+              <span className="text-[8px]">#{d}</span>
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-[#8b9bb4] italic font-retro text-center">
+          Only perfect square indices (1, 4, 9...) have an odd number of divisors and remain open!
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Sum of Squared Numbers") {
+    const n = 5
+    const curI = (step % n) + 1
+    const squares = Array.from({ length: n }).map((_, i) => (i + 1) * (i + 1))
+    const curSum = squares.slice(0, curI).reduce((a, b) => a + b, 0)
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">² Sum of Squared Numbers: Σ i²</div>
+        <div className="flex gap-2 items-center bg-black/60 p-4 border-2 border-[#3a495e] rounded shadow-inner">
+          {squares.map((sq, i) => (
+            <div key={i} className={`p-2 border rounded transition-all duration-300 ${i < curI ? 'bg-yellow-500 text-black font-bold scale-110' : 'bg-[#2c2f44] text-gray-500'}`}>
+              {i + 1}²={sq}
+            </div>
+          ))}
+        </div>
+        <div className="bg-black/60 px-6 py-2 border border-[#4ade80] rounded">
+          <span className="text-gray-400 mr-2">Cumulative Sum:</span>
+          <span className="text-lg text-[#4ade80] font-bold">{curSum}</span>
+        </div>
+      </div>
+    )
+  }
+
+  if (algoId === "Smallest Value") {
+    const vals = [45, 22, 67, 12, 89]
+    const curMin = Math.min(...vals.slice(0, step + 1))
+    return (
+      <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-4 w-full px-4">
+        <div className="text-[#73eff7] uppercase tracking-wider animate-pulse">📉 Smallest Value: Min Iteration</div>
+        <div className="flex gap-3 justify-center w-full">
+          {vals.map((v, i) => (
+            <div key={i} className={`p-3 border-2 rounded transition-all duration-300 font-bold ${v === curMin && i <= step ? 'bg-[#4ade80] border-white text-black shadow-[0_0_20px_#4ade80] scale-125' : i === step ? 'bg-blue-600 border-white text-white scale-110' : 'bg-[#1a1c2c] border-[#3a495e] text-[#8b9bb4]'}`}>
+              {v}
+            </div>
+          ))}
+        </div>
+        <div className="text-[10px] text-[#8b9bb4] italic font-retro">Comparing index {step}: Current Min = {curMin}</div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col items-center justify-center font-pixel text-xs space-y-3">
       <div className="text-[#f7d354] uppercase tracking-wider animate-pulse">⚡ {algoId} Execution</div>
@@ -912,7 +1033,7 @@ function VisualDiagramRenderer({ algoId }) {
    Algo Pixel Icon Helper
    ═══════════════════════════════════════════ */
 function AlgoPixelIcon({ algoId }) {
-  if (algoId?.includes("Search") || algoId?.includes("Match") || algoId?.includes("Element") || algoId?.includes("Sequential")) {
+  if (algoId?.includes("Search") || algoId?.includes("Match") || algoId?.includes("Element") || algoId?.includes("Sequential") || algoId?.includes("Smallest")) {
     return (
       <svg viewBox="0 0 16 16" className="w-8 h-8 fill-current text-[#73eff7]">
         <rect x="2" y="10" width="4" height="2" />
@@ -956,6 +1077,25 @@ function AlgoPixelIcon({ algoId }) {
         <rect x="7" y="12" width="2" height="4" fill="#8b9bb4" />
         <rect x="4" y="6" width="8" height="6" fill="none" stroke="#ef4444" strokeWidth="2" />
         <path d="M2 2 L14 14 M14 2 L2 14" stroke="#ef4444" strokeWidth="1.5" />
+      </svg>
+    )
+  }
+  if (algoId === "Cafe Walk Distance") {
+    return (
+      <svg viewBox="0 0 16 16" className="w-8 h-8 fill-current text-[#f7d354]">
+        <rect x="4" y="2" width="8" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x="5" y="4" width="6" height="4" fill="#73eff7" opacity="0.6" />
+        <path d="M12 5 Q14 5 14 7 T12 9" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="6" y="14" width="4" height="1" fill="#3a495e" />
+      </svg>
+    )
+  }
+  if (algoId === "Infinite Door-Problem") {
+    return (
+      <svg viewBox="0 0 16 16" className="w-8 h-8 fill-current text-[#73eff7]">
+        <rect x="3" y="2" width="10" height="12" fill="none" stroke="currentColor" strokeWidth="2" />
+        <rect x="4" y="3" width="8" height="10" fill="#1a1c2c" />
+        <circle cx="10" cy="8" r="1" fill="#f7d354" />
       </svg>
     )
   }
@@ -1364,7 +1504,7 @@ function ChapterSelectScreen({ onSelectChapter, onClose, crtEffect }) {
 /* ═══════════════════════════════════════════
    Settings Modal Component
    ═══════════════════════════════════════════ */
-function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress }) {
+function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress, onUnlockAll }) {
   const [resetConfirm, setResetConfirm] = useState(false)
 
   const handleVolumeChange = (e) => {
@@ -1397,6 +1537,11 @@ function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress })
       audio.playAdvance()
       onClose()
     }
+  }
+
+  const triggerUnlockAll = () => {
+    audio.playSelect()
+    onUnlockAll?.()
   }
 
   return (
@@ -1497,6 +1642,18 @@ function SettingsModal({ settings, onChangeSettings, onClose, onResetProgress })
               )}
             </div>
           )}
+
+          {onUnlockAll && (
+            <div className="pt-4">
+              <button
+                onClick={triggerUnlockAll}
+                onMouseEnter={() => audio.playHover()}
+                className="w-full font-pixel text-[6px] md:text-[8px] py-2 border-2 text-center transition-all cursor-pointer uppercase border-[#73eff7] text-[#73eff7] hover:bg-[#73eff7]/10"
+              >
+                UNLOCK ALL JOURNAL ALGORITHMS
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Close Button */}
@@ -1536,9 +1693,9 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
   const [uniqueStep, setUniqueStep] = useState(0)
   const [uniqueError, setUniqueError] = useState(null)
   const uniqueQueue = useMemo(() => [
-    { user: 'dodo_ccs', dup: false },
-    { user: 'cassie_dev', dup: false },
-    { user: 'dodo_ccs', dup: true },
+    { user: 'cassie_ccs', dup: false },
+    { user: 'mika_dev', dup: false },
+    { user: 'cassie_ccs', dup: true },
     { user: 'inigo_2026', dup: false },
     { user: 'cassie_dev', dup: true }
   ], [])
@@ -1595,7 +1752,8 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
   const [bfError, setBfError] = useState(null)
 
   // 3. Sorting (Selection, Bubble, Merge, Quick, Heap)
-  const [bars, setBars] = useState([45, 12, 89, 23, 67])
+  const [bars, setBars] = useState(type === 'bubble_sort' ? [67, 23, 89, 12, 45] : [45, 12, 89, 23, 67])
+  const [sortError, setSortError] = useState(null)
   const [selectionStep, setSelectionStep] = useState(0)
   const [mergeStep, setMergeStep] = useState(0)
   const [mergeLeft, setMergeLeft] = useState([12, 45])
@@ -1836,18 +1994,29 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
   }
 
   const handleSortSwap = (idx) => {
+    if (success) return
     audio.playSelect()
     if (idx >= bars.length - 1) return
-    const nextBars = [...bars]
-    const temp = nextBars[idx]
-    nextBars[idx] = nextBars[idx + 1]
-    nextBars[idx + 1] = temp
-    setBars(nextBars)
 
-    // Check sorted
-    if (nextBars.every((val, i) => i === 0 || val >= nextBars[i - 1])) {
-      audio.playUnlock()
-      setSuccess(true)
+    // Bubble Sort Rule: Only swap if left element > right element
+    if (bars[idx] > bars[idx + 1]) {
+      const nextBars = [...bars]
+      const temp = nextBars[idx]
+      nextBars[idx] = nextBars[idx + 1]
+      nextBars[idx + 1] = temp
+      setBars(nextBars)
+      setSortError(null)
+
+      // Check sorted
+      if (nextBars.every((val, i) => i === 0 || val >= nextBars[i - 1])) {
+        audio.playUnlock()
+        setSuccess(true)
+      } else {
+        audio.playPop()
+      }
+    } else {
+      audio.playPop()
+      setSortError(`⚠️ Bubble Sort Rule: Swapping ID #${bars[idx]} and ID #${bars[idx + 1]} is unnecessary as they are already in order!`)
     }
   }
 
@@ -2462,7 +2631,7 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
             <div className="w-full space-y-4 text-center font-pixel">
               <p className="text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Insertion Search'} (Flashcard Stack)</p>
               <p className="font-retro text-xs md:text-sm text-[#8b9bb4] leading-relaxed">
-                {!success ? "Dodo wants to insert his new flashcard [Ch 3: Rights Theory] into his sorted stack. Click the correct insert slot index so the stack remains perfectly sorted!" : "Flashcards ordered successfully!"}
+                {!success ? "Cassie wants to insert her new flashcard [Ch 3: Rights Theory] into her sorted stack. Click the correct insert slot index so the stack remains perfectly sorted!" : "Flashcards ordered successfully!"}
               </p>
 
               <div className="bg-[#10121c] border border-[#3a495e] p-4 rounded max-w-md mx-auto space-y-3">
@@ -2560,8 +2729,10 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
 
           {type === 'bubble_sort' && (
             <div className="w-full space-y-4 text-center">
-              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Bubble Sort Figma Icons</p>
-              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">Click a bar to swap it with the adjacent bar to its right until ascending!</p>
+              <p className="font-pixel text-sm md:text-base text-[#ecf0f1]">Bubble Sort User IDs</p>
+              <p className="text-xs md:text-sm text-[#8b9bb4] leading-relaxed">
+                {!success ? "Cassie needs to sort these User IDs for the management system. Click the LEFT bar of a pair to swap them ONLY if it is larger than the ID to its right!" : "User IDs bubble sorted successfully!"}
+              </p>
               <div className="flex items-end justify-center gap-6 h-36 pt-4">
                 {bars.map((val, idx) => (
                   <div key={idx} className="flex flex-col items-center gap-2">
@@ -2570,12 +2741,17 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
                       className={`w-12 bg-[#3b82f6] border-2 border-[#60a5fa] rounded-t-sm hover:bg-[#60a5fa] cursor-pointer transition-all ${success ? 'bg-[#27ae60] border-[#4ade80]' : ''}`}
                       style={{ height: `${val}px` }}
                     />
-                    <span className="font-pixel text-xs md:text-sm">{val}KB</span>
+                    <span className="font-pixel text-[10px] md:text-xs">#{val}</span>
                   </div>
                 ))}
               </div>
+              {sortError && !success && (
+                <div className="text-red-400 font-pixel text-xs md:text-sm animate-bounce bg-red-950/40 p-3 border border-red-800 rounded-sm max-w-md mx-auto">
+                  {sortError}
+                </div>
+              )}
               {success && (
-                <div className="text-[#4ade80] font-pixel text-sm md:text-base animate-pulse">🎉 Assets bubble sorted perfectly!</div>
+                <div className="text-[#4ade80] font-pixel text-sm md:text-base animate-pulse">🎉 User IDs sorted perfectly! The database is now organized!</div>
               )}
             </div>
           )}
@@ -2609,18 +2785,18 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
 
           {type === 'merge_sort' && (
             <div className="w-full space-y-4 text-center font-pixel">
-              <p className="text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Merge Sort Sub-Arrays'}</p>
+              <p className="text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Merge Sort User IDs'}</p>
               <p className="font-retro text-xs md:text-sm text-[#8b9bb4] leading-relaxed">
-                {!success ? "Compare the smallest remaining elements of Left [12, 45] and Right [23, 67]. Click the smaller element to merge it into the final sorted array!" : "Sub-arrays merged perfectly at O(N log N)!"}
+                {!success ? "Compare the smallest remaining IDs of Left [12, 45] and Right [23, 67]. Click the smaller ID to merge it into the final sorted list!" : "User IDs merged perfectly at O(N log N)!"}
               </p>
 
               <div className="grid grid-cols-2 gap-6 bg-[#10121c] border border-[#3a495e] p-4 rounded max-w-lg mx-auto text-xs">
                 <div className="p-3 bg-blue-950/40 border border-blue-700 rounded min-h-[90px] flex flex-col items-center justify-center shadow-lg">
-                  <div className="text-blue-400 font-bold mb-2">⬅️ Left Sub-Array</div>
+                  <div className="text-blue-400 font-bold mb-2">⬅️ Left IDs</div>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {mergeLeft.map((v, i) => (
                       <button key={i} onClick={() => handleMergeClick(v, 'left')} disabled={success} className="p-3 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] rounded text-white font-pixel text-xs cursor-pointer shadow transition-all">
-                        {v}KB
+                        #{v}
                       </button>
                     ))}
                     {mergeLeft.length === 0 && <span className="text-gray-500 italic">Empty</span>}
@@ -2628,11 +2804,11 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
                 </div>
 
                 <div className="p-3 bg-green-950/40 border border-green-700 rounded min-h-[90px] flex flex-col items-center justify-center shadow-lg">
-                  <div className="text-green-400 font-bold mb-2">Right Sub-Array ➡️</div>
+                  <div className="text-green-400 font-bold mb-2">Right IDs ➡️</div>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {mergeRight.map((v, i) => (
                       <button key={i} onClick={() => handleMergeClick(v, 'right')} disabled={success} className="p-3 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] rounded text-white font-pixel text-xs cursor-pointer shadow transition-all">
-                        {v}KB
+                        #{v}
                       </button>
                     ))}
                     {mergeRight.length === 0 && <span className="text-gray-500 italic">Empty</span>}
@@ -2641,11 +2817,11 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
               </div>
 
               <div className="bg-[#1a1c2c] border border-[#3a495e] p-4 rounded max-w-lg mx-auto">
-                <div className="text-[#f7d354] text-xs font-bold mb-2 tracking-wider uppercase">✨ Merged Final Array:</div>
+                <div className="text-[#f7d354] text-xs font-bold mb-2 tracking-wider uppercase">✨ Merged ID List:</div>
                 <div className="flex flex-wrap gap-3 justify-center min-h-[44px] items-center">
                   {mergedArray.map((v, i) => (
                     <span key={i} className="p-3 bg-[#27ae60] border border-[#4ade80] rounded text-white font-pixel text-xs shadow animate-pop-in">
-                      {v}KB
+                      #{v}
                     </span>
                   ))}
                   {mergedArray.length === 0 && <span className="text-gray-500 italic text-xs">Awaiting merged elements...</span>}
@@ -2653,46 +2829,46 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
               </div>
 
               {success && (
-                <div className="text-[#4ade80] text-sm md:text-base animate-pulse pt-2">🎉 Sub-arrays merged perfectly in ascending order: [12, 23, 45, 67]!</div>
+                <div className="text-[#4ade80] text-sm md:text-base animate-pulse pt-2">🎉 User IDs merged perfectly in ascending order: [12, 23, 45, 67]!</div>
               )}
             </div>
           )}
 
           {type === 'quicksort' && (
             <div className="w-full space-y-4 text-center font-pixel">
-              <p className="text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Quicksort Asset Partitioning'}</p>
+              <p className="text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Quicksort ID Partitioning'}</p>
               <p className="font-retro text-xs md:text-sm text-[#8b9bb4] leading-relaxed">
-                {!success ? (quickStep < 2 ? "Pivot is 45KB! First, select all elements SMALLER than 45 to move them to the Left Partition!" : "Now select all elements GREATER than 45 to move them to the Right Partition!") : "All assets successfully partitioned around pivot!"}
+                {!success ? (quickStep < 2 ? "Pivot ID is #45! First, select all IDs SMALLER than 45 to move them to the Left Partition!" : "Now select all IDs GREATER than 45 to move them to the Right Partition!") : "All IDs successfully partitioned around pivot!"}
               </p>
 
               <div className="grid grid-cols-3 gap-4 bg-[#10121c] border border-[#3a495e] p-4 rounded max-w-lg mx-auto text-xs">
                 <div className="p-3 bg-blue-950/40 border border-blue-700 rounded min-h-[80px] flex flex-col items-center justify-center">
                   <div className="text-blue-400 font-bold mb-2">⬅️ Left (&lt;45)</div>
                   <div className="flex flex-wrap gap-2 justify-center">
-                    {quickLeft.map((v, i) => <span key={i} className="p-2 bg-[#2c2f44] border border-blue-500 rounded text-white">{v}KB</span>)}
+                    {quickLeft.map((v, i) => <span key={i} className="p-2 bg-[#2c2f44] border border-blue-500 rounded text-white">#{v}</span>)}
                   </div>
                 </div>
 
                 <div className="p-3 bg-yellow-950/40 border border-yellow-600 rounded min-h-[80px] flex flex-col items-center justify-center shadow-lg">
-                  <div className="text-[#f7d354] font-bold mb-1">🎯 Pivot</div>
-                  <div className="p-2 bg-[#1a1c2c] border-2 border-[#f7d354] rounded text-white font-bold text-sm">45KB</div>
+                  <div className="text-[#f7d354] font-bold mb-1">🎯 Pivot ID</div>
+                  <div className="p-2 bg-[#1a1c2c] border-2 border-[#f7d354] rounded text-white font-bold text-sm">#45</div>
                 </div>
 
                 <div className="p-3 bg-green-950/40 border border-green-700 rounded min-h-[80px] flex flex-col items-center justify-center">
                   <div className="text-green-400 font-bold mb-2">Right (&gt;45) ➡️</div>
                   <div className="flex flex-wrap gap-2 justify-center">
-                    {quickRight.map((v, i) => <span key={i} className="p-2 bg-[#2c2f44] border border-green-500 rounded text-white">{v}KB</span>)}
+                    {quickRight.map((v, i) => <span key={i} className="p-2 bg-[#2c2f44] border border-green-500 rounded text-white">#{v}</span>)}
                   </div>
                 </div>
               </div>
 
               {!success && (
                 <div className="pt-4">
-                  <p className="text-xs text-[#8b9bb4] mb-3 uppercase tracking-wider">Remaining Unpartitioned Assets:</p>
+                  <p className="text-xs text-[#8b9bb4] mb-3 uppercase tracking-wider">Unpartitioned User IDs:</p>
                   <div className="flex justify-center gap-4">
                     {quickRemaining.map((val, idx) => (
                       <button key={idx} onClick={() => handleQuickClick(val)} className="py-3 px-5 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] text-white font-pixel text-xs cursor-pointer shadow">
-                        {val}KB
+                        #{val}
                       </button>
                     ))}
                   </div>
@@ -2700,25 +2876,25 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
               )}
 
               {success && (
-                <div className="text-[#4ade80] text-sm md:text-base animate-pulse pt-2">🎉 Assets partitioned perfectly! [12, 23] &lt; 45 &lt; [67, 89]!</div>
+                <div className="text-[#4ade80] text-sm md:text-base animate-pulse pt-2">🎉 IDs partitioned perfectly! [12, 23] &lt; 45 &lt; [67, 89]!</div>
               )}
             </div>
           )}
 
           {type === 'heapsort' && (
             <div className="w-full space-y-4 text-center font-pixel">
-              <p className="text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Heapsort Root Extraction'}</p>
+              <p className="text-sm md:text-base text-[#ecf0f1]">{choice.unlocksAlgorithm || 'Heapsort ID Extraction'}</p>
               <p className="font-retro text-xs md:text-sm text-[#8b9bb4] leading-relaxed">
-                {!success ? "Max-Heap built! Repeatedly extract the LARGEST remaining root element to place it at the end of the growing sorted array!" : "Max-Heap fully extracted and sorted!"}
+                {!success ? "Max-Heap built! Repeatedly extract the LARGEST remaining ID to place it at the end of the growing sorted list!" : "User IDs fully extracted and sorted!"}
               </p>
 
               <div className="grid grid-cols-2 gap-6 bg-[#10121c] border border-[#3a495e] p-6 rounded max-w-xl mx-auto text-xs">
                 <div className="p-4 bg-yellow-950/40 border border-yellow-600 rounded min-h-[100px] flex flex-col items-center justify-center shadow-lg">
-                  <div className="text-[#f7d354] font-bold mb-3">🔺 Max-Heap Elements</div>
+                  <div className="text-[#f7d354] font-bold mb-3">🔺 Max-Heap IDs</div>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {heapRemaining.map((v, i) => (
                       <button key={i} onClick={() => handleHeapClick(v)} disabled={success} className="p-3 bg-[#2c2f44] border border-[#3a495e] hover:border-[#f7d354] rounded text-white font-pixel text-xs cursor-pointer shadow transition-all">
-                        {v}KB
+                        #{v}
                       </button>
                     ))}
                     {heapRemaining.length === 0 && <span className="text-gray-500 italic">Heap Empty</span>}
@@ -2726,20 +2902,20 @@ function AlgorithmMinigameModal({ minigameData, onComplete, onClose }) {
                 </div>
 
                 <div className="p-4 bg-green-950/40 border border-green-700 rounded min-h-[100px] flex flex-col items-center justify-center shadow-lg">
-                  <div className="text-green-400 font-bold mb-3">✅ Sorted Array (End)</div>
+                  <div className="text-green-400 font-bold mb-3">✅ Sorted IDs (End)</div>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {heapSorted.map((v, i) => (
                       <span key={i} className="p-3 bg-[#27ae60] border border-[#4ade80] rounded text-white font-pixel text-xs shadow animate-pop-in">
-                        {v}KB
+                        #{v}
                       </span>
                     ))}
-                    {heapSorted.length === 0 && <span className="text-gray-500 italic">No extracted roots yet</span>}
+                    {heapSorted.length === 0 && <span className="text-gray-500 italic">No extracted IDs yet</span>}
                   </div>
                 </div>
               </div>
 
               {success && (
-                <div className="text-[#4ade80] text-sm md:text-base animate-pulse pt-2">🎉 Assets heapsorted perfectly in ascending order: [12, 23, 45, 67, 89]!</div>
+                <div className="text-[#4ade80] text-sm md:text-base animate-pulse pt-2">🎉 User IDs heapsorted perfectly in ascending order: [12, 23, 45, 67, 89]!</div>
               )}
             </div>
           )}
@@ -3321,6 +3497,12 @@ export default function App() {
   const [unlockedAlgorithms, setUnlockedAlgorithms] = useState([])
   const [hoveredChoice, setHoveredChoice] = useState(null)
 
+  const allAlgorithmIds = useMemo(() => (gameData.algorithms || []).map((algo) => algo.id), [])
+  const unlockAllJournalAlgorithms = () => {
+    audio.playUnlock()
+    setUnlockedAlgorithms(allAlgorithmIds)
+  }
+
   const [achievementPopup, setAchievementPopup] = useState(null)
 
   // Typewriter State
@@ -3578,6 +3760,7 @@ export default function App() {
               setCurrentChapter(1)
               setCurrentNode('start')
             }}
+            onUnlockAll={unlockAllJournalAlgorithms}
           />
         )}
       </>
@@ -3607,6 +3790,7 @@ export default function App() {
               setCurrentChapter(1)
               setCurrentNode('start')
             }}
+            onUnlockAll={unlockAllJournalAlgorithms}
           />
         )}
       </>
@@ -3622,6 +3806,7 @@ export default function App() {
             settings={settings}
             onChangeSettings={setSettings}
             onClose={() => setShowSettings(false)}
+            onUnlockAll={unlockAllJournalAlgorithms}
           />
         )}
       </>
@@ -3774,6 +3959,7 @@ export default function App() {
             setCurrentChapter(1)
             setCurrentNode('start')
           }}
+          onUnlockAll={unlockAllJournalAlgorithms}
         />
       )}
 
